@@ -34,38 +34,37 @@ class SASPTransmitter:
             packet = header + chunk
             self.sock.sendto(packet, self.server_addr)
             
-            if frame_type == 0:  
-                time.sleep(0.0005)
+            # Removed the 0.0005 sleep here to further reduce network queue lag
 
 def run_sasp_edge():
     detector = SemanticDetector()
     transmitter = SASPTransmitter()
     cap = cv2.VideoCapture(0)
 
-    print("SASP Unified-ROI Edge Started...")
+    print("SASP Edge Started (Optimized for Zero-Lag & High Quality)...")
 
     while cap.isOpened():
+        # Start timer to measure actual processing time
+        start_time = time.time()
+        
         ret, frame = cap.read()
         if not ret: break
 
-        # Returns a SINGLE object containing all people, or None
         combined_roi = detector.detect(frame)
 
-        # 1. Process Background
+        # Process Background
         blurred_bg = cv2.GaussianBlur(frame, (31, 31), 0)
         _, bg_bytes = cv2.imencode('.jpg', blurred_bg, [int(cv2.IMWRITE_JPEG_QUALITY), 10])
-        
-        # Tell Go if an ROI is coming (1 = Yes, 0 = No)
         has_objects = 1 if combined_roi else 0
         transmitter.send_data(bg_bytes.tobytes(), frame_type=0, priority=10, obj_class=has_objects)
 
-        # 2. Process the Unified ROI
+        # Process Unified ROI
         if combined_roi:
             roi_rgba = combined_roi['roi_rgba']
             fx1, fy1, _, _ = combined_roi['bbox']
             
-            # The transparent gaps between people are compressed massively here
-            _, roi_bytes = cv2.imencode('.png', roi_rgba, [int(cv2.IMWRITE_PNG_COMPRESSION), 3])
+            # LAG FIX: Drop PNG compression to 1 (Fastest) to save encoding milliseconds
+            _, roi_bytes = cv2.imencode('.png', roi_rgba, [int(cv2.IMWRITE_PNG_COMPRESSION), 1])
             
             transmitter.send_data(roi_bytes.tobytes(), 
                                  frame_type=1, 
@@ -73,7 +72,12 @@ def run_sasp_edge():
                                  x=fx1, y=fy1, obj_class=1)
 
         transmitter.frame_id += 1
-        time.sleep(0.03)
+        
+        # LAG FIX: Dynamically sleep only if processing took less than 33ms (targeting 30fps)
+        processing_time = time.time() - start_time
+        sleep_time = max(0, 0.033 - processing_time)
+        if sleep_time > 0:
+            time.sleep(sleep_time)
 
     cap.release()
 

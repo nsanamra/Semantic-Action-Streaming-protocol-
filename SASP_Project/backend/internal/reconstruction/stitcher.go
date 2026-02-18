@@ -6,9 +6,9 @@ import (
 	"image/draw"
 )
 
-// Stitch blends the high-quality ROI into the compressed background using an alpha mask
+// Stitch mathematically blends the high-quality ROI into the highly compressed background
 func Stitch(background image.Image, roi image.Image, x, y int) image.Image {
-	// If no background arrived yet, just return the ROI
+	// Fallback if background packets were lost in transit
 	if background == nil {
 		return roi
 	}
@@ -16,42 +16,43 @@ func Stitch(background image.Image, roi image.Image, x, y int) image.Image {
 	bounds := background.Bounds()
 	result := image.NewRGBA(bounds)
 
-	// 1. Draw the heavily compressed background first
+	// 1. Draw the blurred, 10% compressed background layer
 	draw.Draw(result, bounds, background, image.Point{}, draw.Src)
 
-	// 2. Create an Alpha Mask for the ROI to "feather" the edges
+	// 2. Setup the Feathering Mask
 	roiBounds := roi.Bounds()
 	mask := image.NewAlpha(roiBounds)
 
-	// BlendRadius determines the width of the smooth gradient fade (pixels)
-	blendRadius := 20.0
+	// Massive 45-pixel radius to create a DSLR-like depth of field transition
+	blendRadius := 45.0
 
 	for i := 0; i < roiBounds.Dx(); i++ {
 		for j := 0; j < roiBounds.Dy(); j++ {
-			// Calculate distance to nearest edge for gradient fade
+			// Find shortest distance to the physical edge of the ROI box
 			distX := minInt(i, roiBounds.Dx()-1-i)
 			distY := minInt(j, roiBounds.Dy()-1-j)
 			dist := float64(minInt(distX, distY))
 
 			if dist < blendRadius {
-				// Gradual transparency at the edges
-				alpha := uint8((dist / blendRadius) * 255)
+				// Quadratic curve math: creates a non-linear, ultra-smooth transparent fade
+				ratio := dist / blendRadius
+				alpha := uint8((ratio * ratio) * 255)
 				mask.SetAlpha(i, j, color.Alpha{A: alpha})
 			} else {
-				// The core of the ROI remains fully opaque
+				// The center mass of the target stays 100% opaque and sharp
 				mask.SetAlpha(i, j, color.Alpha{A: 255})
 			}
 		}
 	}
 
-	// 3. Overlay the ROI using the mask for seamless blending
+	// 3. Draw the ROI over the background utilizing the quadratic alpha mask
 	dstRect := roiBounds.Add(image.Pt(x, y))
 	draw.DrawMask(result, dstRect, roi, image.Point{}, mask, image.Point{}, draw.Over)
 
 	return result
 }
 
-// Helper function for the blending math
+// Utility function to calculate the nearest edge
 func minInt(a, b int) int {
 	if a < b {
 		return a

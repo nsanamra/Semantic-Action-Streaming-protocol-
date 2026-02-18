@@ -1,46 +1,226 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>SASP Live Monitor</title>
-    <style>
-        body { background: #1a1a1a; color: white; font-family: sans-serif; text-align: center; }
-        canvas { border: 2px solid #00ff00; background: black; max-width: 90%; }
-        .stats { margin-top: 20px; font-size: 1.2em; color: #00ff00; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SASP Live Monitor</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0d0d0d;
+      color: #e0e0e0;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      gap: 16px;
+    }
+
+    header {
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 1.4rem;
+      letter-spacing: 0.08em;
+      color: #00e676;
+      text-transform: uppercase;
+    }
+
+    header p {
+      font-size: 0.78rem;
+      color: #666;
+      margin-top: 4px;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Canvas wrapper ─────────────────────────────── */
+    #wrap {
+      position: relative;
+      width: 100%;
+      max-width: 800px;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 1px solid #1f1f1f;
+      border-radius: 6px;
+      background: #111;
+    }
+
+    /* ── HUD overlay ────────────────────────────────── */
+    #hud {
+      position: absolute;
+      top: 10px;
+      left: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      pointer-events: none;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0,0,0,0.6);
+      border: 1px solid #333;
+      border-radius: 4px;
+      padding: 3px 8px;
+      font-size: 0.72rem;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.04em;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #555;
+      flex-shrink: 0;
+      transition: background 0.3s;
+    }
+
+    .dot.live  { background: #00e676; box-shadow: 0 0 6px #00e676; }
+    .dot.warn  { background: #ffab00; box-shadow: 0 0 6px #ffab00; }
+    .dot.error { background: #ff1744; }
+
+    /* ── Status bar ─────────────────────────────────── */
+    #statusBar {
+      width: 100%;
+      max-width: 800px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      color: #555;
+      padding: 0 2px;
+    }
+
+    #statusBar span { transition: color 0.3s; }
+    #statusBar span.live  { color: #00e676; }
+    #statusBar span.warn  { color: #ffab00; }
+    #statusBar span.error { color: #ff1744; }
+  </style>
 </head>
 <body>
-    <h1>SASP: Semantic Adaptive Streaming</h1>
-    <canvas id="videoCanvas"></canvas>
-    <div class="stats">Status: <span id="status">Connecting...</span></div>
 
-    <script>
-        const canvas = document.getElementById('videoCanvas');
-        const ctx = canvas.getContext('2d');
-        const status = document.getElementById('status');
-        
-        // Connect to Go WebSocket server
-        const ws = new WebSocket("ws://localhost:8080/ws");
-        ws.binaryType = "blob";
+  <header>
+    <h1>SASP &mdash; Semantic Adaptive Streaming</h1>
+    <p>Dual-path background + per-person ROI reconstruction</p>
+  </header>
 
-        ws.onopen = () => status.innerText = "Live Stream Active";
-        
-        ws.onmessage = (event) => {
-            // Convert binary blob to an image
-            const blob = event.data;
-            const url = URL.createObjectURL(blob);
-            const img = new Image();
-            
-            img.onload = () => {
-                // Resize canvas to match frame on first arrival
-                if (canvas.width !== img.width) {
-                    canvas.width = img.width;
-                    canvas.height = img.height;
-                }
-                ctx.drawImage(img, 0, 0);
-                URL.revokeObjectURL(url); // Free memory
-            };
-            img.src = url;
+  <div id="wrap">
+    <canvas id="c"></canvas>
+    <div id="hud">
+      <div class="badge"><span class="dot" id="dot"></span><span id="connLabel">Connecting…</span></div>
+      <div class="badge">FPS&nbsp;<span id="fpsVal">—</span></div>
+      <div class="badge">Frame&nbsp;<span id="frameVal">—</span></div>
+      <div class="badge">KB/s&nbsp;<span id="kbpsVal">—</span></div>
+    </div>
+  </div>
+
+  <div id="statusBar">
+    <span id="statusLeft" class="warn">⬤ Connecting to ws://localhost:8080/ws</span>
+    <span id="statusRight">SASP Monitor v2</span>
+  </div>
+
+  <script>
+    "use strict";
+
+    const canvas   = document.getElementById('c');
+    const ctx      = canvas.getContext('2d');
+    const dot      = document.getElementById('dot');
+    const connLbl  = document.getElementById('connLabel');
+    const fpsEl    = document.getElementById('fpsVal');
+    const frameEl  = document.getElementById('frameVal');
+    const kbpsEl   = document.getElementById('kbpsVal');
+    const statusL  = document.getElementById('statusLeft');
+
+    // ── Metrics ────────────────────────────────────────────────────────────
+    let frameCount  = 0;
+    let totalBytes  = 0;
+    let lastFpsTime = performance.now();
+    let frameSeq    = 0;
+
+    setInterval(() => {
+      const now     = performance.now();
+      const elapsed = (now - lastFpsTime) / 1000;
+      fpsEl.textContent   = (frameCount / elapsed).toFixed(1);
+      kbpsEl.textContent  = ((totalBytes / elapsed) / 1024).toFixed(1);
+      frameCount  = 0;
+      totalBytes  = 0;
+      lastFpsTime = now;
+    }, 1000);
+
+    // ── WebSocket with auto-reconnect ──────────────────────────────────────
+    const WS_URL        = "ws://localhost:8080/ws";
+    const RECONNECT_MAX = 8000;  // ms cap for exponential back-off
+    let   reconnectDelay = 500;
+    let   ws;
+
+    function setStatus(state) {
+      const map = {
+        connecting: { cls: 'warn',  dot: 'warn',  lbl: 'Connecting…',    bar: '⬤ Connecting to ' + WS_URL },
+        live:       { cls: 'live',  dot: 'live',  lbl: 'Live',           bar: '⬤ Stream active — ' + WS_URL },
+        retry:      { cls: 'warn',  dot: 'warn',  lbl: 'Reconnecting…',  bar: '⬤ Connection lost — retrying' },
+        error:      { cls: 'error', dot: 'error', lbl: 'Disconnected',   bar: '⬤ Disconnected' },
+      };
+      const s = map[state] || map.error;
+      dot.className   = 'dot ' + s.dot;
+      connLbl.textContent = s.lbl;
+      statusL.className   = s.cls;
+      statusL.textContent = s.bar;
+    }
+
+    function connect() {
+      setStatus('connecting');
+      ws = new WebSocket(WS_URL);
+      ws.binaryType = "blob";
+
+      ws.onopen = () => {
+        setStatus('live');
+        reconnectDelay = 500;
+      };
+
+      ws.onmessage = (event) => {
+        totalBytes += event.data.size;
+        frameCount++;
+        frameSeq++;
+        frameEl.textContent = frameSeq;
+
+        const url = URL.createObjectURL(event.data);
+        const img = new Image();
+        img.onload = () => {
+          // Resize canvas to match stream on first frame (or resolution change)
+          if (canvas.width !== img.naturalWidth || canvas.height !== img.naturalHeight) {
+            canvas.width  = img.naturalWidth;
+            canvas.height = img.naturalHeight;
+          }
+          ctx.drawImage(img, 0, 0);
+          URL.revokeObjectURL(url);
         };
-    </script>
+        img.onerror = () => URL.revokeObjectURL(url);
+        img.src = url;
+      };
+
+      ws.onclose = () => {
+        setStatus('retry');
+        setTimeout(() => {
+          reconnectDelay = Math.min(reconnectDelay * 1.5, RECONNECT_MAX);
+          connect();
+        }, reconnectDelay);
+      };
+
+      ws.onerror = () => setStatus('error');
+    }
+
+    connect();
+  </script>
 </body>
 </html>

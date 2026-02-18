@@ -1,5 +1,5 @@
 import cv2
-import torch
+import numpy as np
 from ultralytics import YOLO
 
 class SemanticDetector:
@@ -7,46 +7,35 @@ class SemanticDetector:
         # Load optimized YOLOv8-Nano model
         self.model = YOLO(model_path)
         self.classes = self.model.names
-        
-        # Priority mapping: 0-10 scale
-        self.priority_map = {
-            'person': 10,
-            'car': 7,
-            'truck': 7,
-            'motorcycle': 6,
-            'bicycle': 5
-        }
-
-    def calculate_score(self, class_name, confidence, bbox, frame_shape):
-        """Assigns an importance score to a detection"""
-        base_priority = self.priority_map.get(class_name, 2)
-        
-        # Factors: High confidence and larger size = higher importance
-        h, w = frame_shape[:2]
-        bbox_area = (bbox[2] - bbox[0]) * (bbox[3] - bbox[1])
-        size_factor = min((bbox_area / (w * h)) * 10, 1.5) # Max 1.5x boost for size
-        
-        final_score = base_priority * confidence * size_factor
-        return min(final_score, 10.0)
+        self.prev_bbox = None
+        # High smoothing factor to eliminate the "flickering" box effect
+        self.smoothing = 0.85 
 
     def detect(self, frame):
-        """Runs inference and returns scored detections"""
+        """Runs inference and returns padded, smoothed detections."""
         results = self.model(frame, conf=0.4, verbose=False)[0]
         scored_detections = []
         
         for box in results.boxes:
-            coords = box.xyxy[0].cpu().numpy() # [x1, y1, x2, y2]
-            cls_id = int(box.cls[0])
-            conf = float(box.conf[0])
-            class_name = self.classes[cls_id]
+            coords = box.xyxy[0].cpu().numpy()
             
-            score = self.calculate_score(class_name, conf, coords, frame.shape)
+            # 1. Apply Temporal Smoothing (EMA)
+            if self.prev_bbox is not None:
+                coords = (self.smoothing * self.prev_bbox) + ((1 - self.smoothing) * coords)
+            self.prev_bbox = coords
+
+            # 2. Add padding for the Go stitcher's feathering algorithm
+            pad = 25 
+            h, w = frame.shape[:2]
+            x1, y1, x2, y2 = coords.astype(int)
+            
+            # Ensure boundaries don't go outside the frame
+            final_coords = [max(0, x1-pad), max(0, y1-pad), min(w, x2+pad), min(h, y2+pad)]
             
             scored_detections.append({
-                'bbox': coords.astype(int),
-                'class': class_name,
-                'score': score,
-                'priority': int(score * 25) # Scale to 0-255 for SASP priority
+                'bbox': final_coords,
+                'class': self.classes[int(box.cls[0])],
+                'priority': int(float(box.conf[0]) * 255)
             })
             
         return scored_detections

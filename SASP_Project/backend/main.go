@@ -5,60 +5,67 @@ import (
 	"encoding/binary"
 	"fmt"
 	"image"
-	"image/draw"
 	"image/jpeg"
+	"image/png"
 	"net"
 	"net/http"
 	"sync"
 
+	"sasp-backend/internal/reconstruction" // Update to your module name
+
 	"github.com/gorilla/websocket"
 )
 
-const (
-	HeaderSize = 24
-	UDPPort    = 5000
-	HTTPPort   = ":8080"
-)
+const HeaderSize = 28
 
-// Global state for the video stream
 var (
 	currentBackground image.Image
 	bgMutex           sync.Mutex
 	upgrader          = websocket.Upgrader{CheckOrigin: func(r *http.Request) bool { return true }}
 )
 
-// Reassembler manages incoming UDP packet chunks
+// FIX 1: Create a composite key so Background and ROI packets don't overwrite each other
+type ChunkKey struct {
+	ID   uint32
+	Type byte
+}
+
 type Reassembler struct {
 	mu     sync.Mutex
-	frames map[uint32]*FrameBuffer
+	frames map[ChunkKey]*FrameBuffer
 }
 
 type FrameBuffer struct {
 	Parts    [][]byte
 	Received int
 	Total    int
+	X, Y     int
 }
 
-func (r *Reassembler) AddPart(id uint32, seq, total int, data []byte) ([]byte, bool) {
+func (r *Reassembler) AddPart(id uint32, fType byte, seq, total int, data []byte, x, y int) ([]byte, int, int, bool) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
-	if _, ok := r.frames[id]; !ok {
-		r.frames[id] = &FrameBuffer{Parts: make([][]byte, total), Total: total}
+	key := ChunkKey{ID: id, Type: fType}
+
+	if _, ok := r.frames[key]; !ok {
+		r.frames[key] = &FrameBuffer{Parts: make([][]byte, total), Total: total}
 	}
 
-	fb := r.frames[id]
+	fb := r.frames[key]
 	if fb.Parts[seq] == nil {
 		fb.Parts[seq] = data
 		fb.Received++
+		fb.X = x
+		fb.Y = y
 	}
 
 	if fb.Received == fb.Total {
 		full := bytes.Join(fb.Parts, nil)
-		delete(r.frames, id)
-		return full, true
+		delete(r.frames, key)
+		return full, fb.X, fb.Y, true
 	}
-	return nil, false
+	return nil, 0, 0, false
 }
 
 type Hub struct {
@@ -68,21 +75,19 @@ type Hub struct {
 
 func main() {
 	hub := &Hub{clients: make(map[*websocket.Conn]bool), broadcast: make(chan []byte)}
-	reassembler := &Reassembler{frames: make(map[uint32]*FrameBuffer)}
+	reassembler := &Reassembler{frames: make(map[ChunkKey]*FrameBuffer)}
 	go hub.run()
 
-	// 1. WebSocket & Static File Server
 	http.Handle("/", http.FileServer(http.Dir("./public")))
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
 		conn, _ := upgrader.Upgrade(w, r, nil)
 		hub.clients[conn] = true
 	})
-	go http.ListenAndServe(HTTPPort, nil)
+	go http.ListenAndServe(":8080", nil)
 
-	// 2. UDP Receiver
 	addr, _ := net.ResolveUDPAddr("udp", "127.0.0.1:5000")
 	conn, _ := net.ListenUDP("udp", addr)
-	fmt.Println("SASP Backend Live at http://localhost:8080")
+	fmt.Println("SASP Backend Live (Sync Fixed) at http://localhost:8080")
 
 	buf := make([]byte, 2048)
 	for {
@@ -91,23 +96,36 @@ func main() {
 			continue
 		}
 
-		// Parse Header
 		fType := buf[5]
 		fID := binary.BigEndian.Uint32(buf[6:10])
 		seq := binary.BigEndian.Uint16(buf[10:12])
 		total := binary.BigEndian.Uint16(buf[12:14])
+
+		// Extract roi_count from the Class byte
+		fClass := buf[22]
+		xPos := int(binary.BigEndian.Uint16(buf[24:26]))
+		yPos := int(binary.BigEndian.Uint16(buf[26:28]))
+
 		payload := make([]byte, n-HeaderSize)
 		copy(payload, buf[HeaderSize:n])
 
-		// Reassemble and Process
-		if fullFrame, ok := reassembler.AddPart(fID, int(seq), int(total), payload); ok {
-			processFrame(fullFrame, fType, hub)
+		// Pass fType into AddPart
+		if fullFrame, x, y, ok := reassembler.AddPart(fID, fType, int(seq), int(total), payload, xPos, yPos); ok {
+			processFrame(fullFrame, fType, fClass, x, y, hub)
 		}
 	}
 }
 
-func processFrame(data []byte, fType byte, hub *Hub) {
-	img, err := jpeg.Decode(bytes.NewReader(data))
+func processFrame(data []byte, fType byte, fClass byte, x, y int, hub *Hub) {
+	var img image.Image
+	var err error
+
+	if fType == 0 {
+		img, err = jpeg.Decode(bytes.NewReader(data))
+	} else if fType == 1 {
+		img, err = png.Decode(bytes.NewReader(data))
+	}
+
 	if err != nil {
 		return
 	}
@@ -115,24 +133,20 @@ func processFrame(data []byte, fType byte, hub *Hub) {
 	bgMutex.Lock()
 	defer bgMutex.Unlock()
 
-	if fType == 0 { // Background
+	if fType == 0 {
 		currentBackground = img
-	} else if fType == 1 && currentBackground != nil { // ROI
-		// For this step, we'll overlay the ROI in the center
-		// In a later step, we'll extract (x, y) from the SASP header
-		b := currentBackground.Bounds()
-		final := image.NewRGBA(b)
-		draw.Draw(final, b, currentBackground, image.Point{}, draw.Src)
-
-		roiOffset := image.Pt(b.Dx()/2-img.Bounds().Dx()/2, b.Dy()/2-img.Bounds().Dy()/2)
-		draw.Draw(final, img.Bounds().Add(roiOffset), img, image.Point{}, draw.Over)
-		currentBackground = final
+		// FIX 2: Only broadcast the raw background if Python reported 0 objects detected
+		if fClass == 0 {
+			var out bytes.Buffer
+			jpeg.Encode(&out, currentBackground, nil)
+			hub.broadcast <- out.Bytes()
+		}
+	} else if fType == 1 && currentBackground != nil {
+		stitched := reconstruction.Stitch(currentBackground, img, x, y)
+		var out bytes.Buffer
+		jpeg.Encode(&out, stitched, nil)
+		hub.broadcast <- out.Bytes()
 	}
-
-	// Send to Dashboard
-	var out bytes.Buffer
-	jpeg.Encode(&out, currentBackground, nil)
-	hub.broadcast <- out.Bytes()
 }
 
 func (h *Hub) run() {

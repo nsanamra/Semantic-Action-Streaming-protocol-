@@ -1,0 +1,14 @@
+# Papers
+Papers/
+
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pt
+
+# Mac
+.DS_Store
+
+# Env
+.env

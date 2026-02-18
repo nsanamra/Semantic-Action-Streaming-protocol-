@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SASP Live Monitor</title>
+    <style>
+        body { background: #1a1a1a; color: white; font-family: sans-serif; text-align: center; }
+        canvas { border: 2px solid #00ff00; background: black; max-width: 90%; }
+        .stats { margin-top: 20px; font-size: 1.2em; color: #00ff00; }
+    </style>
+</head>
+<body>
+    <h1>SASP: Semantic Adaptive Streaming</h1>
+    <canvas id="videoCanvas"></canvas>
+    <div class="stats">Status: <span id="status">Connecting...</span></div>
+
+    <script>
+        const canvas = document.getElementById('videoCanvas');
+        const ctx = canvas.getContext('2d');
+        const status = document.getElementById('status');
+        
+        // Connect to Go WebSocket server
+        const ws = new WebSocket("ws://localhost:8080/ws");
+        ws.binaryType = "blob";
+
+        ws.onopen = () => status.innerText = "Live Stream Active";
+        
+        ws.onmessage = (event) => {
+            // Convert binary blob to an image
+            const blob = event.data;
+            const url = URL.createObjectURL(blob);
+            const img = new Image();
+            
+            img.onload = () => {
+                // Resize canvas to match frame on first arrival
+                if (canvas.width !== img.width) {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                }
+                ctx.drawImage(img, 0, 0);
+                URL.revokeObjectURL(url); // Free memory
+            };
+            img.src = url;
+        };
+    </script>
+</body>
+</html>

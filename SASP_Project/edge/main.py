@@ -30,7 +30,6 @@ class SASPTransmitter:
             end = min(start + MTU_SIZE, len(data))
             chunk = data[start:end]
             
-            # Now properly passing obj_class to the header packer
             header = self.pack_header(frame_type, i, total_parts, priority=priority, x=x, y=y, obj_class=obj_class)
             packet = header + chunk
             self.sock.sendto(packet, self.server_addr)
@@ -43,31 +42,34 @@ def run_sasp_edge():
     transmitter = SASPTransmitter()
     cap = cv2.VideoCapture(0)
 
-    print("SASP Segmentation Edge Started (Sync Fixed)...")
+    print("SASP Unified-ROI Edge Started...")
 
     while cap.isOpened():
         ret, frame = cap.read()
         if not ret: break
 
-        detections = detector.detect(frame)
-        roi_count = len(detections)
+        # Returns a SINGLE object containing all people, or None
+        combined_roi = detector.detect(frame)
 
-        # 1. Background processing
+        # 1. Process Background
         blurred_bg = cv2.GaussianBlur(frame, (31, 31), 0)
         _, bg_bytes = cv2.imencode('.jpg', blurred_bg, [int(cv2.IMWRITE_JPEG_QUALITY), 10])
         
-        # FIX: We pass the roi_count inside obj_class so Go knows if it should wait for an ROI
-        transmitter.send_data(bg_bytes.tobytes(), frame_type=0, priority=10, obj_class=roi_count)
+        # Tell Go if an ROI is coming (1 = Yes, 0 = No)
+        has_objects = 1 if combined_roi else 0
+        transmitter.send_data(bg_bytes.tobytes(), frame_type=0, priority=10, obj_class=has_objects)
 
-        # 2. ROI processing
-        for det in detections:
-            roi_rgba = det['roi_rgba']
-            fx1, fy1, _, _ = det['bbox']
+        # 2. Process the Unified ROI
+        if combined_roi:
+            roi_rgba = combined_roi['roi_rgba']
+            fx1, fy1, _, _ = combined_roi['bbox']
+            
+            # The transparent gaps between people are compressed massively here
             _, roi_bytes = cv2.imencode('.png', roi_rgba, [int(cv2.IMWRITE_PNG_COMPRESSION), 3])
             
             transmitter.send_data(roi_bytes.tobytes(), 
                                  frame_type=1, 
-                                 priority=det['priority'],
+                                 priority=200,
                                  x=fx1, y=fy1, obj_class=1)
 
         transmitter.frame_id += 1

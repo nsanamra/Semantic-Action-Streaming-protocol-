@@ -3,7 +3,7 @@ import numpy as np
 from ultralytics import YOLO
 
 class SemanticDetector:
-    def __init__(self, model_path='yolov8n-seg.pt'):
+    def __init__(self, model_path='yolo26s-seg.pt'):
         self.model = YOLO(model_path)
         self.prev_bbox = None
         self.smoothing = 0.85

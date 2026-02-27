@@ -79,13 +79,13 @@ TYPE_BACKGROUND = 0
 TYPE_ROI        = 1
 
 # Worker queue depth — if the worker falls >2 frames behind, drop the oldest
-PIPELINE_QUEUE_DEPTH = 2
+PIPELINE_QUEUE_DEPTH = 1
 
 # PNG compression level for ROI tiles (0=none,1=fastest…9=smallest)
 PNG_COMPRESSION = 1
 
 # JPEG quality for background (lower = smaller = faster to transmit)
-BG_JPEG_QUALITY = 10
+BG_JPEG_QUALITY = 22
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -141,6 +141,7 @@ class Telemetry:
 class SASPTransmitter:
     def __init__(self, server_ip: str = SERVER_IP, server_port: int = SERVER_PORT):
         self.sock        = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 4 * 1024 * 1024)
         self.server_addr = (server_ip, server_port)
         self.frame_id    = 0
 

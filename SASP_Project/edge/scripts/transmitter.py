@@ -98,8 +98,8 @@ class SASPTransmitter:
                 self.sock.sendto(header + chunk, self.server_addr)
             except OSError as e:
                 print(f"[transmitter] send error: {e}")
-            if frame_type == TYPE_BACKGROUND:
-                time.sleep(0.0005)
+            # if frame_type == TYPE_BACKGROUND:
+            #     time.sleep(0.0005)
 
     def close(self) -> None:
         self.sock.close()

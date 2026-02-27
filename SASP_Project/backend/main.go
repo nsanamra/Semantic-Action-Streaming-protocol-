@@ -31,10 +31,10 @@ const (
 
 	// Fallback: if Python sends roi_count=0 in a BG packet that claims to
 	// have objects, we fall back to the collect-window approach.
-	ROIFallbackWindow = 15 * time.Millisecond
+	ROIFallbackWindow = 8 * time.Millisecond
 
 	// Broadcast buffer — frames dropped for slow clients, never block pipeline
-	BroadcastBufferSize = 12
+	BroadcastBufferSize = 32
 )
 
 // ─────────────────────────────────────────────
@@ -238,7 +238,7 @@ func (fs *FrameSyncer) gcLoop() {
 		fs.mu.Lock()
 		var stale []uint32
 		for id, pf := range fs.pending {
-			if !pf.flushed && time.Since(pf.arrivedAt) > 120*time.Millisecond {
+			if !pf.flushed && time.Since(pf.arrivedAt) > 40*time.Millisecond {
 				stale = append(stale, id)
 			}
 		}
@@ -475,7 +475,7 @@ func processFrame(
 
 func encodeAndBroadcast(img image.Image, hub *Hub) {
 	var out bytes.Buffer
-	if err := jpeg.Encode(&out, img, &jpeg.Options{Quality: 88}); err != nil {
+	if err := jpeg.Encode(&out, img, &jpeg.Options{Quality: 82}); err != nil {
 		log.Printf("[encode] %v", err)
 		return
 	}
@@ -527,6 +527,9 @@ func main() {
 	udpConn, err := net.ListenUDP("udp", addr)
 	if err != nil {
 		log.Fatalf("[udp] listen: %v", err)
+	}
+	if err := udpConn.SetReadBuffer(4 * 1024 * 1024); err != nil {
+		log.Printf("[udp] SetReadBuffer: %v", err)
 	}
 	defer udpConn.Close()
 

@@ -360,7 +360,21 @@ function connect() {
 
     // createImageBitmap decodes JPEG off-main-thread (GPU-accelerated in Chrome/FF)
     try {
-      const bitmap = await createImageBitmap(ev.data);
+      
+      let decoding = false;
+
+      ws.onmessage = async (ev) => {
+        if (decoding) return;  // drop frame if still decoding previous
+        decoding = true;
+        const t0 = performance.now();
+        try {
+          const bitmap = await createImageBitmap(ev.data);
+          recordFrame(ev.data.size, performance.now() - t0);
+          scheduleRender(bitmap);
+        } catch (_) {}
+        decoding = false;
+      };
+
       const lat    = performance.now() - t0;
       recordFrame(bytes, lat);
       scheduleRender(bitmap);

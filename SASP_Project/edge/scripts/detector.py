@@ -51,9 +51,9 @@ MASK_FEATHER_KERNEL  = (15, 15) # Gaussian feather on final alpha
 MAX_TRACK_AGE        = 90       # frames before unseen track state is evicted (~3 s)
 
 # Sharpening
-SHARPEN_KERNEL = np.array([[0, -1, 0],
-                            [-1, 5, -1],
-                            [0, -1, 0]], dtype=np.float32)
+SHARPEN_KERNEL = np.array([[0, -0.5, 0],
+                            [-0.5, 3, -0.5],
+                            [0, -0.5, 0]], dtype=np.float32)
 
 MODEL_PATH = os.environ.get("YOLO_MODEL", "yolo26s-seg.pt")
 
@@ -64,7 +64,7 @@ MODEL_PATH = os.environ.get("YOLO_MODEL", "yolo26s-seg.pt")
 
 class SemanticDetector:
     """
-    Runs YOLOv11-seg (person class only) on every frame.
+    Runs YOLOv26-seg (person class only) on every frame.
 
     Public API
     ----------

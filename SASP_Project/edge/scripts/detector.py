@@ -134,7 +134,7 @@ class SemanticDetector:
         results = self.model(
             frame,
             conf=DETECTION_CONFIDENCE,
-            classes=[PERSON_CLASS_ID],   # ← only detect persons
+            #classes=[PERSON_CLASS_ID], 
             verbose=False,
         )[0]
 

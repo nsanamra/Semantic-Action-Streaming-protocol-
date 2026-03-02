@@ -31,7 +31,7 @@ const (
 
 	// Fallback: if Python sends roi_count=0 in a BG packet that claims to
 	// have objects, we fall back to the collect-window approach.
-	ROIFallbackWindow = 8 * time.Millisecond
+	ROIFallbackWindow = 80 * time.Millisecond
 
 	// Broadcast buffer — frames dropped for slow clients, never block pipeline
 	BroadcastBufferSize = 32
@@ -238,7 +238,7 @@ func (fs *FrameSyncer) gcLoop() {
 		fs.mu.Lock()
 		var stale []uint32
 		for id, pf := range fs.pending {
-			if !pf.flushed && time.Since(pf.arrivedAt) > 40*time.Millisecond {
+			if !pf.flushed && time.Since(pf.arrivedAt) > 120*time.Millisecond {
 				stale = append(stale, id)
 			}
 		}

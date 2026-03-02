@@ -1,3 +1,5 @@
+# NOT REQUIRED
+
 """
 transmitter.py — SASP Standalone Demo Transmitter
 

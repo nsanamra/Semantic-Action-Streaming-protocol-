@@ -79,7 +79,7 @@ TYPE_BACKGROUND = 0
 TYPE_ROI        = 1
 
 # Worker queue depth — if the worker falls >2 frames behind, drop the oldest
-PIPELINE_QUEUE_DEPTH = 1
+PIPELINE_QUEUE_DEPTH = 2
 
 # PNG compression level for ROI tiles (0=none,1=fastest…9=smallest)
 PNG_COMPRESSION = 1

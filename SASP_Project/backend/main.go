@@ -42,11 +42,6 @@ const (
 
 // ─────────────────────────────────────────────
 //  MetricsEngine — robust tumbling-window metrics
-//
-//  Instead of computing FPS relative to whenever
-//  the frontend happens to poll, we snapshot every
-//  1 second atomically.  All values are pre-computed
-//  and served instantly via /api/metrics.
 // ─────────────────────────────────────────────
 
 type MetricsEngine struct {
@@ -95,8 +90,6 @@ func NewMetricsEngine() *MetricsEngine {
 	return m
 }
 
-// ── Hot-path recorders (lock-free atomics) ──
-
 func (m *MetricsEngine) RecordFrameIn(bytesReceived int) {
 	atomic.AddUint64(&m.framesIn, 1)
 	atomic.AddUint64(&m.bytesIn, uint64(bytesReceived))
@@ -118,16 +111,14 @@ func (m *MetricsEngine) RecordPersons(n int) {
 func (m *MetricsEngine) RecordLatency(edgeTimestampNs uint64) {
 	nowNs := uint64(time.Now().UnixNano())
 	if edgeTimestampNs > nowNs || edgeTimestampNs == 0 {
-		return // clock skew or missing timestamp
+		return
 	}
 	latMs := float64(nowNs-edgeTimestampNs) / 1e6
 	if latMs > 5000 {
-		return // discard absurd values
+		return
 	}
-
 	m.latMu.Lock()
 	if len(m.latSamples) >= 300 {
-		// shift out oldest
 		m.latSamples = m.latSamples[1:]
 	}
 	m.latSamples = append(m.latSamples, latMs)
@@ -136,8 +127,6 @@ func (m *MetricsEngine) RecordLatency(edgeTimestampNs uint64) {
 
 func (m *MetricsEngine) ClientConnect()    { atomic.AddInt32(&m.activeClients, 1) }
 func (m *MetricsEngine) ClientDisconnect() { atomic.AddInt32(&m.activeClients, -1) }
-
-// ── Snapshot loop (runs every 1 second) ──
 
 func (m *MetricsEngine) snapshotLoop() {
 	ticker := time.NewTicker(1 * time.Second)
@@ -169,7 +158,6 @@ func (m *MetricsEngine) snapshotLoop() {
 			personsPerFrame = float64(deltaPersons) / float64(deltaOut)
 		}
 
-		// Compute latency percentiles
 		p50, p95, p99 := m.computePercentiles()
 
 		snap := MetricsSnapshot{
@@ -234,58 +222,19 @@ func (m *MetricsEngine) JSON() []byte {
 var metrics = NewMetricsEngine()
 
 // ─────────────────────────────────────────────
-//  sync.Pool for per-packet byte slices
-//  Eliminates ~150-450 allocs/sec on the hot path
-// ─────────────────────────────────────────────
-
-var packetPool = sync.Pool{
-	New: func() interface{} {
-		b := make([]byte, 0, 2048) // typical packet size
-		return &b
-	},
-}
-
-func getPooledSlice(size int) []byte {
-	bp := packetPool.Get().(*[]byte)
-	b := *bp
-	if cap(b) >= size {
-		return b[:size]
-	}
-	// Rare: packet larger than pool capacity — allocate fresh
-	return make([]byte, size)
-}
-
-func putPooledSlice(b []byte) {
-	b = b[:0]
-	packetPool.Put(&b)
-}
-
-// ─────────────────────────────────────────────
 //  FrameSyncer
-//
-//  Flush rule: a frame is emitted ONLY when BOTH:
-//    1. The background JPEG has been received, AND
-//    2. All expected ROI tiles have arrived (or timeout).
-//
-//  This prevents black-frame strobes when ROI tiles
-//  arrive before BG (which is common with ROI-first
-//  send order on the edge).
-//
-//  Two count strategies:
-//    A) Exact-count (preferred): roi_count from header.
-//    B) Fallback window: 8ms collect after first ROI.
 // ─────────────────────────────────────────────
 
 type pendingFrame struct {
 	canvas      *image.RGBA
 	arrivedAt   time.Time
 	firstROI    time.Time
-	bgReceived  bool // true once StoreBG has been called
-	roiExpected int  // 0 = unknown (use window), N = exact count
+	bgReceived  bool
+	roiExpected int
 	roiReceived int
-	roisDone    bool // true when all expected ROIs are in (or window expired)
+	roisDone    bool
 	flushed     bool
-	timer       *time.Timer // non-nil only in window-mode
+	timer       *time.Timer
 }
 
 type FrameSyncer struct {
@@ -316,7 +265,7 @@ func (fs *FrameSyncer) tryFlush(frameID uint32, pf *pendingFrame) bool {
 	fs.mu.Unlock()
 	log.Printf("[sync] frame %d flushed (bg+%d ROIs)", frameID, received)
 	encodeAndBroadcast(canvas, fs.hub)
-	return true // caller must NOT unlock again
+	return true
 }
 
 // StoreBG stores the decoded background for frameID.
@@ -326,13 +275,11 @@ func (fs *FrameSyncer) StoreBG(frameID uint32, bg image.Image, roiCount int) (im
 	pf, exists := fs.pending[frameID]
 
 	if roiCount == 0 && !exists {
-		// Fast path: no ROIs coming, BG-only frame — emit immediately
 		fs.mu.Unlock()
 		return bg, true
 	}
 
 	if !exists {
-		// BG arrived first (before any ROI) — create pending entry
 		bounds := bg.Bounds()
 		canvas := image.NewRGBA(bounds)
 		draw.Draw(canvas, bounds, bg, image.Point{}, draw.Src)
@@ -351,7 +298,6 @@ func (fs *FrameSyncer) StoreBG(frameID uint32, bg image.Image, roiCount int) (im
 	bounds := bg.Bounds()
 	canvas := image.NewRGBA(bounds)
 	draw.Draw(canvas, bounds, bg, image.Point{}, draw.Src)
-	// Re-draw any ROIs that were already composited on top
 	draw.Draw(canvas, pf.canvas.Bounds(), pf.canvas, image.Point{}, draw.Over)
 	pf.canvas = canvas
 	pf.bgReceived = true
@@ -359,12 +305,11 @@ func (fs *FrameSyncer) StoreBG(frameID uint32, bg image.Image, roiCount int) (im
 		pf.roiExpected = roiCount
 	}
 
-	// Check if ROIs are also done — if so, flush now
 	if pf.roiExpected > 0 && pf.roiReceived >= pf.roiExpected {
 		pf.roisDone = true
 	}
 	if fs.tryFlush(frameID, pf) {
-		return nil, false // tryFlush already unlocked
+		return nil, false
 	}
 	fs.mu.Unlock()
 	return nil, false
@@ -376,8 +321,6 @@ func (fs *FrameSyncer) AddROI(frameID uint32, roi image.Image, x, y int, roiCoun
 
 	pf, ok := fs.pending[frameID]
 	if !ok {
-		// ROI arrived before BG — create placeholder canvas.
-		// StoreBG will paint the real background underneath later.
 		pf = &pendingFrame{
 			canvas:      image.NewRGBA(image.Rect(0, 0, 640, 480)),
 			arrivedAt:   time.Now(),
@@ -390,7 +333,6 @@ func (fs *FrameSyncer) AddROI(frameID uint32, roi image.Image, x, y int, roiCoun
 		return
 	}
 
-	// Paint the ROI tile
 	bounds := pf.canvas.Bounds()
 	dstRect := image.Rect(x, y, x+roi.Bounds().Dx(), y+roi.Bounds().Dy()).Intersect(bounds)
 	if !dstRect.Empty() {
@@ -407,18 +349,15 @@ func (fs *FrameSyncer) AddROI(frameID uint32, roi image.Image, x, y int, roiCoun
 		pf.roiExpected = roiCount
 	}
 
-	// ── Check if all ROIs are in ──────────────────────────────────────────
 	if pf.roiExpected > 0 && pf.roiReceived >= pf.roiExpected {
 		pf.roisDone = true
-		// Try to flush (only succeeds if BG is also received)
 		if fs.tryFlush(frameID, pf) {
-			return // tryFlush already unlocked
+			return
 		}
 		fs.mu.Unlock()
 		return
 	}
 
-	// Strategy B: count unknown — start collect window on first ROI
 	if pf.roiExpected == 0 && isFirst {
 		pf.timer = time.AfterFunc(ROIFallbackWindow, func() {
 			fs.mu.Lock()
@@ -427,7 +366,7 @@ func (fs *FrameSyncer) AddROI(frameID uint32, roi image.Image, x, y int, roiCoun
 				fs.mu.Unlock()
 				return
 			}
-			pf2.roisDone = true // window expired, treat ROIs as complete
+			pf2.roisDone = true
 			if fs.tryFlush(frameID, pf2) {
 				return
 			}
@@ -458,8 +397,6 @@ func (fs *FrameSyncer) flushFrame(frameID uint32) {
 }
 
 func (fs *FrameSyncer) gcLoop() {
-	// 200ms is plenty — exact-count flush handles 99%+ of frames instantly.
-	// This is only a safety net for truly orphaned frames.
 	ticker := time.NewTicker(200 * time.Millisecond)
 	defer ticker.Stop()
 	for range ticker.C {
@@ -494,7 +431,7 @@ type FrameBuffer struct {
 	X, Y      int
 	ROICount  int
 	ROIIndex  int
-	Timestamp uint64 // edge timestamp (ns) from first chunk
+	Timestamp uint64
 	CreatedAt time.Time
 }
 
@@ -647,7 +584,7 @@ func (h *Hub) serveWS(w http.ResponseWriter, r *http.Request) {
 		log.Printf("[ws] upgrade: %v", err)
 		return
 	}
-	c := &wsClient{conn: conn, send: make(chan []byte, 24)} // bigger buffer for tab-switch tolerance
+	c := &wsClient{conn: conn, send: make(chan []byte, 24)}
 	h.register <- c
 	go c.writePump()
 	go func() {
@@ -661,118 +598,8 @@ func (h *Hub) serveWS(w http.ResponseWriter, r *http.Request) {
 }
 
 // ─────────────────────────────────────────────
-//  SmoothBuffer — jitter buffer + last-good-frame cache
-//
-//  Instead of broadcasting immediately (which causes
-//  timing jitter when YOLO takes variable time to run),
-//  frames are queued into a ring buffer and played back
-//  at a steady 30fps by a ticker goroutine.
-//
-//  Last-good-frame: when a BG-only frame arrives but
-//  recent frames had ROI composites, the BG-only frame
-//  is replaced with the last composited frame. This
-//  prevents the "momentary blur" flash when YOLO
-//  temporarily loses a detection.
-// ─────────────────────────────────────────────
-
-const (
-	SmoothBufferSize = 30 // ~1 second at 30fps
-	PlaybackFPS      = 30
-)
-
-type bufferedFrame struct {
-	data    []byte
-	hasROIs bool
-}
-
-type SmoothBuffer struct {
-	mu            sync.Mutex
-	ring          []bufferedFrame
-	writeIdx      int
-	readIdx       int
-	count         int
-	lastGoodFrame []byte // last frame that had ROI compositing
-	hub           *Hub
-}
-
-func NewSmoothBuffer(hub *Hub) *SmoothBuffer {
-	sb := &SmoothBuffer{
-		ring: make([]bufferedFrame, SmoothBufferSize),
-		hub:  hub,
-	}
-	go sb.playbackLoop()
-	return sb
-}
-
-// Push adds an encoded JPEG frame to the buffer.
-// hasROIs indicates whether this frame had ROI compositing (not BG-only).
-func (sb *SmoothBuffer) Push(data []byte, hasROIs bool) {
-	sb.mu.Lock()
-	defer sb.mu.Unlock()
-
-	if hasROIs {
-		sb.lastGoodFrame = data
-	} else if sb.lastGoodFrame != nil {
-		// BG-only frame but we have a recent composited frame — use that instead
-		// This prevents the "momentary blur" when YOLO loses detection for 1-2 frames
-		data = sb.lastGoodFrame
-	}
-
-	if sb.count == SmoothBufferSize {
-		// Buffer full — drop oldest (advance read pointer)
-		sb.readIdx = (sb.readIdx + 1) % SmoothBufferSize
-		sb.count--
-		metrics.RecordDrop()
-	}
-
-	sb.ring[sb.writeIdx] = bufferedFrame{data: data, hasROIs: hasROIs}
-	sb.writeIdx = (sb.writeIdx + 1) % SmoothBufferSize
-	sb.count++
-}
-
-// playbackLoop reads from the buffer at a steady 30fps and broadcasts.
-func (sb *SmoothBuffer) playbackLoop() {
-	ticker := time.NewTicker(time.Second / PlaybackFPS)
-	defer ticker.Stop()
-
-	for range ticker.C {
-		sb.mu.Lock()
-		if sb.count == 0 {
-			// Buffer empty — if we have a last-good-frame, repeat it (prevents black/freeze)
-			if sb.lastGoodFrame != nil {
-				frame := sb.lastGoodFrame
-				sb.mu.Unlock()
-				sb.broadcast(frame)
-			} else {
-				sb.mu.Unlock()
-			}
-			continue
-		}
-
-		frame := sb.ring[sb.readIdx]
-		sb.readIdx = (sb.readIdx + 1) % SmoothBufferSize
-		sb.count--
-		sb.mu.Unlock()
-
-		sb.broadcast(frame.data)
-	}
-}
-
-func (sb *SmoothBuffer) broadcast(data []byte) {
-	metrics.RecordFrameOut(len(data))
-	select {
-	case sb.hub.broadcast <- data:
-	default:
-		metrics.RecordDrop()
-	}
-}
-
-// ─────────────────────────────────────────────
 //  Frame processing
 // ─────────────────────────────────────────────
-
-// Global smooth buffer — initialized in main()
-var smoothBuffer *SmoothBuffer
 
 func processFrame(
 	data []byte,
@@ -785,8 +612,6 @@ func processFrame(
 	syncer *FrameSyncer,
 ) {
 	metrics.RecordFrameIn(len(data))
-
-	// Record edge-to-backend latency from SASP header timestamp
 	metrics.RecordLatency(timestamp)
 
 	var img image.Image
@@ -796,7 +621,6 @@ func processFrame(
 	case TypeBackground:
 		img, err = jpeg.Decode(bytes.NewReader(data))
 	case TypeROI:
-		// Auto-detect format: supports PNG and WebP via registered decoders
 		img, _, err = image.Decode(bytes.NewReader(data))
 	default:
 		return
@@ -810,8 +634,7 @@ func processFrame(
 	case TypeBackground:
 		result, ready := syncer.StoreBG(frameID, img, roiCount)
 		if ready {
-			// BG-only frame (roiCount == 0)
-			encodeAndBuffer(result, false)
+			encodeAndBroadcast(result, hub)
 		}
 	case TypeROI:
 		syncer.AddROI(frameID, img, x, y, roiCount)
@@ -821,19 +644,22 @@ func processFrame(
 	}
 }
 
-func encodeAndBuffer(img image.Image, hasROIs bool) {
+// encodeAndBroadcast encodes img as JPEG and sends directly to all clients.
+// Called by both FrameSyncer (composited frames) and processFrame (BG-only frames).
+func encodeAndBroadcast(img image.Image, hub *Hub) {
 	var out bytes.Buffer
 	if err := jpeg.Encode(&out, img, &jpeg.Options{Quality: 82}); err != nil {
 		log.Printf("[encode] %v", err)
 		return
 	}
-	smoothBuffer.Push(out.Bytes(), hasROIs)
-}
-
-// encodeAndBroadcast is called by FrameSyncer when a composited frame is ready.
-// These frames have ROIs composited on top of BG.
-func encodeAndBroadcast(img image.Image, hub *Hub) {
-	encodeAndBuffer(img, true) // true = has ROI compositing
+	b := out.Bytes()
+	metrics.RecordFrameOut(len(b))
+	select {
+	case hub.broadcast <- b:
+	default:
+		metrics.RecordDrop()
+		log.Printf("[broadcast] channel full — frame dropped")
+	}
 }
 
 // ─────────────────────────────────────────────
@@ -871,32 +697,26 @@ func main() {
 	hub := NewHub()
 	reassembler := NewReassembler()
 	syncer := NewFrameSyncer(hub)
-	smoothBuffer = NewSmoothBuffer(hub)
 
 	go hub.run()
 
 	// ── API Routes ───────────────────────────────────────────────────────────
 
-	// Serve static frontend
 	http.Handle("/", http.FileServer(http.Dir("./public")))
 
-	// Video stream — WebSocket (backward-compatible + new API path)
 	http.HandleFunc("/ws", hub.serveWS)
 	http.HandleFunc("/api/stream", hub.serveWS)
 
-	// Metrics — robust server-side computed metrics
 	http.HandleFunc("/api/metrics", corsMiddleware(func(w http.ResponseWriter, r *http.Request) {
 		snap := metrics.GetSnapshot()
 		jsonResponse(w, snap)
 	}))
 
-	// Legacy /stats endpoint — redirects to new API for backward compat
 	http.HandleFunc("/stats", corsMiddleware(func(w http.ResponseWriter, r *http.Request) {
 		snap := metrics.GetSnapshot()
 		jsonResponse(w, snap)
 	}))
 
-	// Health check
 	http.HandleFunc("/api/health", corsMiddleware(func(w http.ResponseWriter, r *http.Request) {
 		jsonResponse(w, map[string]interface{}{
 			"healthy":        true,
@@ -905,7 +725,6 @@ func main() {
 		})
 	}))
 
-	// Config — current system configuration
 	http.HandleFunc("/api/config", corsMiddleware(func(w http.ResponseWriter, r *http.Request) {
 		jsonResponse(w, map[string]interface{}{
 			"roi_fallback_window_ms": ROIFallbackWindow.Milliseconds(),
@@ -965,9 +784,7 @@ func main() {
 		xPos := int(binary.BigEndian.Uint16(buf[24:26]))
 		yPos := int(binary.BigEndian.Uint16(buf[26:28]))
 
-		// Use pooled slice instead of heap allocation per packet
-		payloadSize := n - HeaderSize
-		payload := getPooledSlice(payloadSize)
+		payload := make([]byte, n-HeaderSize)
 		copy(payload, buf[HeaderSize:n])
 
 		full, x, y, rc, ts, ok := reassembler.AddPart(

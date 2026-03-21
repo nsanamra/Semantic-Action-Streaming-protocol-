@@ -139,6 +139,7 @@ class SemanticDetector:
         results = self.model.track(
             frame,
             conf=DETECTION_CONFIDENCE,
+            classes=[PERSON_CLASS_ID],
             persist=True,      # maintain tracker state across frames
             verbose=False,
         )[0]

@@ -1,176 +1,136 @@
 """
-traditional_streamer.py — Naive full-frame JPEG streamer
+traditional_streamer.py — Simple full-frame webcam streamer
 
-This is the "dumb" baseline that most streaming systems use.
-Every frame: capture → JPEG encode at high quality → send entire frame over UDP.
-No semantic understanding. No ROI. No blurring. Just brute-force transmission.
+No YOLO. No segmentation. No blurring.
+Just: grab frame → JPEG encode → send over UDP → repeat.
 
-Run this in a SEPARATE terminal:
+This is the baseline to compare against SASP.
+
+Usage:
     python traditional_streamer.py
 
-It streams to port 5001 (the traditional Go backend listens there).
-Open http://localhost:8081 to see it.
+Streams to 127.0.0.1:5001
+View at http://localhost:8081
 """
 
-import signal
-import sys
-import time
+import cv2
 import socket
 import struct
-import threading
-from collections import deque
+import time
+import signal
+import sys
 
-import cv2
+# ── Config ────────────────────────────────────────────────────────────────────
 
-# ─────────────────────────────────────────────────────────────────────────────
-#  Config
-# ─────────────────────────────────────────────────────────────────────────────
+SERVER_IP   = "127.0.0.1"
+SERVER_PORT = 5001
 
-SERVER_IP    = "127.0.0.1"
-SERVER_PORT  = 5001          # different port from SASP (5000)
+CAMERA_INDEX  = 0
+FRAME_WIDTH   = 640
+FRAME_HEIGHT  = 480
+TARGET_FPS    = 30
+JPEG_QUALITY  = 80      # same quality a normal streaming app would use
+MTU_SIZE      = 1400
+FRAME_ID_MAX  = 2 ** 32
 
-CAMERA_INDEX = 0
-FRAME_WIDTH  = 640
-FRAME_HEIGHT = 480
-TARGET_FPS   = 30
-FRAME_BUDGET = 1.0 / TARGET_FPS
+# Header: FrameID(4) + SeqNum(2) + TotalParts(2) + Timestamp_ns(8) = 16 bytes
+HEADER_FMT  = "!IHH Q"
+HEADER_SIZE = struct.calcsize(HEADER_FMT)   # = 16 bytes
 
-JPEG_QUALITY = 80            # high quality — as a naive streamer would use
-MTU_SIZE     = 1400
-FRAME_ID_MAX = 2 ** 32
-
-# Simple 8-byte header: FrameID(4) + SeqNum(2) + TotalParts(2)
-# Intentionally minimal — traditional streamers don't need semantic headers
-HEADER_FMT = "!IHH"
-HEADER_SIZE = struct.calcsize(HEADER_FMT)   # = 8 bytes
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-#  Telemetry
-# ─────────────────────────────────────────────────────────────────────────────
-
-class Telemetry:
-    def __init__(self):
-        self._lock       = threading.Lock()
-        self._frames     = 0
-        self._bytes      = 0
-        self._encode_ms  = deque(maxlen=60)
-        self._start      = time.time()
-        threading.Thread(target=self._loop, daemon=True).start()
-
-    def record(self, bytes_sent: int, encode_ms: float):
-        with self._lock:
-            self._frames += 1
-            self._bytes  += bytes_sent
-            self._encode_ms.append(encode_ms)
-
-    def _loop(self):
-        while True:
-            time.sleep(1.0)
-            with self._lock:
-                elapsed  = time.time() - self._start
-                fps      = self._frames / elapsed if elapsed > 0 else 0
-                bw       = self._bytes  / elapsed / 1024 if elapsed > 0 else 0
-                enc      = (sum(self._encode_ms)/len(self._encode_ms)
-                            if self._encode_ms else 0)
-                self._frames = 0
-                self._bytes  = 0
-                self._start  = time.time()
-            print(
-                f"[traditional] fps={fps:4.1f}  "
-                f"encode={enc:5.1f}ms  "
-                f"bw={bw:7.1f} KB/s  "
-                f"(~{bw/1024:.2f} MB/s)"
-            )
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-#  Streamer
-# ─────────────────────────────────────────────────────────────────────────────
+# ── Streamer ──────────────────────────────────────────────────────────────────
 
 class TraditionalStreamer:
     def __init__(self):
         self.sock        = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 4 * 1024 * 1024)
         self.server_addr = (SERVER_IP, SERVER_PORT)
         self.frame_id    = 0
 
     def send_frame(self, data: bytes) -> int:
-        """Chunk full-frame JPEG into MTU-sized UDP packets."""
+        """Chunk JPEG into MTU-sized UDP packets. Returns total bytes sent."""
         total_parts = (len(data) + MTU_SIZE - 1) // MTU_SIZE
         sent = 0
+        ts = time.time_ns()
         for i in range(total_parts):
             chunk  = data[i * MTU_SIZE : (i + 1) * MTU_SIZE]
-            header = struct.pack(HEADER_FMT, self.frame_id, i, total_parts)
+            header = struct.pack(HEADER_FMT, self.frame_id, i, total_parts, ts)
             self.sock.sendto(header + chunk, self.server_addr)
             sent += HEADER_SIZE + len(chunk)
+        self.frame_id = (self.frame_id + 1) % FRAME_ID_MAX
         return sent
 
     def close(self):
         self.sock.close()
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-#  Main loop
-# ─────────────────────────────────────────────────────────────────────────────
+# ── Main loop ─────────────────────────────────────────────────────────────────
 
 def run():
-    streamer  = TraditionalStreamer()
-    telemetry = Telemetry()
+    streamer = TraditionalStreamer()
 
     cap = cv2.VideoCapture(CAMERA_INDEX)
-    cap.set(cv2.CAP_PROP_BUFFERSIZE,    1)
-    cap.set(cv2.CAP_PROP_FRAME_WIDTH,   FRAME_WIDTH)
-    cap.set(cv2.CAP_PROP_FRAME_HEIGHT,  FRAME_HEIGHT)
+    cap.set(cv2.CAP_PROP_BUFFERSIZE,   1)
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH,  FRAME_WIDTH)
+    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, FRAME_HEIGHT)
 
     if not cap.isOpened():
-        print("[traditional] ERROR: Cannot open camera.")
+        print("[trad] ERROR: Cannot open camera.")
         sys.exit(1)
 
     running = True
     def _shutdown(sig, _):
         nonlocal running
-        print("\n[traditional] Shutting down…")
+        print("\n[trad] Shutting down...")
         running = False
 
     signal.signal(signal.SIGINT,  _shutdown)
     signal.signal(signal.SIGTERM, _shutdown)
 
-    print("══════════════════════════════════════════════════")
-    print("  Traditional Full-Frame Streamer")
+    frame_budget = 1.0 / TARGET_FPS
+
+    # Telemetry counters
+    tele_frames = 0
+    tele_bytes  = 0
+    tele_start  = time.time()
+
+    print("=" * 52)
+    print("  Traditional Streamer — NO segmentation, NO blurring")
     print(f"  → {SERVER_IP}:{SERVER_PORT}   JPEG quality={JPEG_QUALITY}%")
     print(f"  View at: http://localhost:8081")
-    print("══════════════════════════════════════════════════")
+    print("=" * 52)
 
     while running and cap.isOpened():
         loop_start = time.perf_counter()
 
         ret, frame = cap.read()
         if not ret:
-            print("[traditional] Camera read failed.")
+            print("[trad] Camera read failed.")
             break
 
-        # Encode entire frame at high quality — no blurring, no segmentation
-        t0 = time.perf_counter()
-        _, buf = cv2.imencode(
-            '.jpg', frame,
-            [cv2.IMWRITE_JPEG_QUALITY, JPEG_QUALITY]
-        )
-        encode_ms  = (time.perf_counter() - t0) * 1000
-        frame_data = buf.tobytes()
+        _, buf  = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, JPEG_QUALITY])
+        sent    = streamer.send_frame(buf.tobytes())
 
-        bytes_sent = streamer.send_frame(frame_data)
-        telemetry.record(bytes_sent, encode_ms)
+        tele_frames += 1
+        tele_bytes  += sent
 
-        streamer.frame_id = (streamer.frame_id + 1) % FRAME_ID_MAX
+        # Print telemetry every second
+        elapsed = time.time() - tele_start
+        if elapsed >= 1.0:
+            fps = tele_frames / elapsed
+            bw  = tele_bytes  / elapsed / 1024
+            print(f"[trad] fps={fps:4.1f}  bw={bw:7.1f} KB/s  "
+                  f"frame_size={tele_bytes//max(tele_frames,1)//1024:.1f} KB")
+            tele_frames = 0
+            tele_bytes  = 0
+            tele_start  = time.time()
 
-        elapsed   = time.perf_counter() - loop_start
-        sleep_for = max(0.0, FRAME_BUDGET - elapsed)
+        sleep_for = max(0.0, frame_budget - (time.perf_counter() - loop_start))
         if sleep_for:
             time.sleep(sleep_for)
 
     cap.release()
     streamer.close()
-    print("[traditional] Stopped.")
+    print("[trad] Stopped.")
 
 
 if __name__ == "__main__":

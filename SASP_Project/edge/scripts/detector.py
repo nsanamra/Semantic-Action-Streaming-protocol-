@@ -31,7 +31,7 @@ from ultralytics import YOLO
 #  Tuning Constants  (tweak here, nowhere else)
 # ─────────────────────────────────────────────────────────────────────────────
 
-DETECTION_CONFIDENCE = 0.40     # YOLO detection threshold
+DETECTION_CONFIDENCE = 0.30     # YOLO detection threshold (lower = fewer missed detections during motion)
 PERSON_CLASS_ID      = 0        # COCO class 0 = person — only class we care about
 
 SMOOTHING_ALPHA      = 0.82     # EMA weight: higher = smoother but laggier bbox
@@ -104,12 +104,17 @@ class SemanticDetector:
         • Reuses cached result when the scene is static (diff < threshold).
         • Adapts blur kernel to scene motion so fast-moving backgrounds
           don't show ghosting edges.
+        • Diff is computed on a 160×120 thumbnail for speed (~16× less work).
         """
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        # Downsample to 160×120 for cheap diff — same accuracy for a mean metric
+        small_gray = cv2.cvtColor(
+            cv2.resize(frame, (160, 120), interpolation=cv2.INTER_AREA),
+            cv2.COLOR_BGR2GRAY,
+        )
 
         if self._prev_gray is not None:
             diff = float(np.mean(np.abs(
-                gray.astype(np.float32) - self._prev_gray.astype(np.float32)
+                small_gray.astype(np.float32) - self._prev_gray.astype(np.float32)
             )))
             self._last_diff = diff
             if diff < BG_DIFF_THRESHOLD and self._cached_blur is not None:
@@ -117,7 +122,7 @@ class SemanticDetector:
         else:
             diff = 999.0
 
-        self._prev_gray = gray
+        self._prev_gray = small_gray
 
         # Adaptive kernel: use heavier blur when scene is calm
         kernel = BG_BLUR_STATIC if diff < 20.0 else BG_BLUR_MOTION
@@ -131,10 +136,10 @@ class SemanticDetector:
         """
         h, w = frame.shape[:2]
 
-        results = self.model(
+        results = self.model.track(
             frame,
             conf=DETECTION_CONFIDENCE,
-            #classes=[PERSON_CLASS_ID], 
+            persist=True,      # maintain tracker state across frames
             verbose=False,
         )[0]
 

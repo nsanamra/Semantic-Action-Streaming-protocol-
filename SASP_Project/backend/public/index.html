@@ -158,7 +158,7 @@
 
 <header>
   <h1>SASP &mdash; Semantic Adaptive Streaming</h1>
-  <p>Blurred background · Per-person sharp ROI · Real-time reconstruction</p>
+  <p>Blurred background · Per-subject sharp ROI · Real-time reconstruction</p>
 </header>
 
 <div id="wrap">
@@ -180,24 +180,32 @@
 
 <div id="statsBar">
   <div class="stat-card">
-    <span class="stat-label">Receive FPS</span>
-    <span class="stat-value" id="sFps">—</span>
+    <span class="stat-label">FPS In</span>
+    <span class="stat-value" id="sFpsIn">—</span>
   </div>
   <div class="stat-card">
-    <span class="stat-label">Bandwidth</span>
-    <span class="stat-value" id="sBw">—</span>
+    <span class="stat-label">FPS Out</span>
+    <span class="stat-value" id="sFpsOut">—</span>
   </div>
   <div class="stat-card">
-    <span class="stat-label">Frame latency</span>
-    <span class="stat-value" id="sLat">—</span>
+    <span class="stat-label">BW In</span>
+    <span class="stat-value" id="sBwIn">—</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">BW Out</span>
+    <span class="stat-value" id="sBwOut">—</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">Latency p50</span>
+    <span class="stat-value" id="sLatP50">—</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">Latency p95</span>
+    <span class="stat-value" id="sLatP95">—</span>
   </div>
   <div class="stat-card">
     <span class="stat-label">Persons</span>
     <span class="stat-value" id="sPersons">—</span>
-  </div>
-  <div class="stat-card">
-    <span class="stat-label">Frames out (Go)</span>
-    <span class="stat-value" id="sOut">—</span>
   </div>
   <div class="stat-card">
     <span class="stat-label">Dropped</span>
@@ -207,15 +215,11 @@
     <span class="stat-label">Clients</span>
     <span class="stat-value" id="sClients">—</span>
   </div>
-  <div class="stat-card">
-    <span class="stat-label">Go FPS</span>
-    <span class="stat-value" id="sGoFps">—</span>
-  </div>
 </div>
 
 <div id="foot">
   <span id="connState" class="warn">⬤ Connecting…</span>
-  <span>SASP Monitor v3</span>
+  <span>SASP Monitor v4</span>
 </div>
 
 <script>
@@ -231,24 +235,12 @@ const hudFps      = document.getElementById('hudFps');
 const hudPersons  = document.getElementById('hudPersons');
 const personsPill = document.getElementById('personsPill');
 
-const sFps     = document.getElementById('sFps');
-const sBw      = document.getElementById('sBw');
-const sLat     = document.getElementById('sLat');
-const sPersons = document.getElementById('sPersons');
-const sOut     = document.getElementById('sOut');
-const sDrop    = document.getElementById('sDrop');
-const sClients = document.getElementById('sClients');
-const sGoFps   = document.getElementById('sGoFps');
-
 // ── Renderer using ImageBitmap + requestAnimationFrame ───────────────────────
-// ImageBitmap decodes on the GPU compositor thread — never blocks the main
-// thread and avoids the GC pressure of creating 30 Image objects/second.
-
-let pendingBitmap = null;   // latest decoded bitmap waiting to be drawn
+let pendingBitmap = null;
 let renderScheduled = false;
 
 function scheduleRender(bitmap) {
-  if (pendingBitmap) pendingBitmap.close();   // discard previous undrawn frame
+  if (pendingBitmap) pendingBitmap.close();
   pendingBitmap = bitmap;
   if (!renderScheduled) {
     renderScheduled = true;
@@ -271,61 +263,41 @@ function renderFrame() {
   bm.close();
 }
 
-// ── Metrics ──────────────────────────────────────────────────────────────────
-let rxFrames    = 0;
-let rxBytes     = 0;
-let latSamples  = [];   // rolling latency samples (ms)
-let lastMetricT = performance.now();
-
-function recordFrame(bytes, latencyMs) {
-  rxFrames++;
-  rxBytes += bytes;
-  if (latSamples.length >= 60) latSamples.shift();
-  latSamples.push(latencyMs);
+// ── /api/metrics polling — server-computed metrics are ground truth ───────────
+function formatBW(kb) {
+  if (kb > 1024) return (kb / 1024).toFixed(2) + ' MB/s';
+  return kb.toFixed(1) + ' KB/s';
 }
 
-setInterval(() => {
-  const now     = performance.now();
-  const elapsed = (now - lastMetricT) / 1000;
-  const fps  = rxFrames / elapsed;
-  const bwKB = rxBytes  / elapsed / 1024;
-  const lat  = latSamples.length
-    ? (latSamples.reduce((a,b)=>a+b,0) / latSamples.length).toFixed(0)
-    : '—';
-
-  hudFps.textContent  = fps.toFixed(1);
-  sFps.textContent    = fps.toFixed(1);
-  sBw.textContent     = bwKB > 1024
-    ? (bwKB/1024).toFixed(2) + ' MB/s'
-    : bwKB.toFixed(1) + ' KB/s';
-  sLat.textContent    = lat + ' ms';
-
-  rxFrames    = 0;
-  rxBytes     = 0;
-  lastMetricT = now;
-}, 1000);
-
-// ── /stats polling ────────────────────────────────────────────────────────────
-async function pollStats() {
+async function pollMetrics() {
   try {
-    const r = await fetch('/stats');
-    const s = await r.json();
+    const r = await fetch('/api/metrics');
+    const envelope = await r.json();
+    const s = envelope.data;
 
-    const persons = s.avg_persons ?? '—';
-    hudPersons.textContent   = persons;
-    sPersons.textContent     = persons;
-    personsPill.classList.toggle('active', parseInt(persons) > 0);
+    // HUD
+    hudFps.textContent     = s.fps_out.toFixed(1);
+    const persons = s.persons_per_frame.toFixed(1);
+    hudPersons.textContent = persons;
+    personsPill.classList.toggle('active', s.persons_per_frame > 0);
 
-    sOut.textContent     = s.frames_out  ?? '—';
-    sDrop.textContent    = s.dropped_frames ?? '—';
-    sClients.textContent = s.active_clients ?? '—';
-    sGoFps.textContent   = s.avg_fps ?? '—';
+    // Stats cards
+    document.getElementById('sFpsIn').textContent   = s.fps_in.toFixed(1);
+    document.getElementById('sFpsOut').textContent   = s.fps_out.toFixed(1);
+    document.getElementById('sBwIn').textContent     = formatBW(s.bandwidth_in_kbps);
+    document.getElementById('sBwOut').textContent     = formatBW(s.bandwidth_out_kbps);
+    document.getElementById('sLatP50').textContent   = s.latency_p50_ms.toFixed(1) + ' ms';
+    document.getElementById('sLatP95').textContent   = s.latency_p95_ms.toFixed(1) + ' ms';
+    document.getElementById('sPersons').textContent  = persons;
+    document.getElementById('sDrop').textContent     = s.dropped_frames;
+    document.getElementById('sClients').textContent  = s.active_clients;
 
-    // Highlight dropped frames in red
-    sDrop.style.color = parseInt(s.dropped_frames) > 0 ? 'var(--red)' : '';
+    // Highlight
+    const dropEl = document.getElementById('sDrop');
+    dropEl.style.color = s.dropped_frames > 0 ? 'var(--red)' : '';
   } catch (_) { /* server might not be ready yet */ }
 }
-setInterval(pollStats, 1000);
+setInterval(pollMetrics, 1000);
 
 // ── Status helper ─────────────────────────────────────────────────────────────
 function setStatus(state) {
@@ -343,7 +315,7 @@ function setStatus(state) {
 }
 
 // ── WebSocket + auto-reconnect ────────────────────────────────────────────────
-const WS_URL = `ws://${location.host}/ws`;
+const WS_URL = `ws://${location.host}/api/stream`;
 let   retryDelay = 500;
 let   ws;
 
@@ -355,28 +327,8 @@ function connect() {
   ws.onopen = () => { setStatus('live'); retryDelay = 500; };
 
   ws.onmessage = async (ev) => {
-    const t0    = performance.now();
-    const bytes = ev.data.size;
-
-    // createImageBitmap decodes JPEG off-main-thread (GPU-accelerated in Chrome/FF)
     try {
-      
-      let decoding = false;
-
-      ws.onmessage = async (ev) => {
-        if (decoding) return;  // drop frame if still decoding previous
-        decoding = true;
-        const t0 = performance.now();
-        try {
-          const bitmap = await createImageBitmap(ev.data);
-          recordFrame(ev.data.size, performance.now() - t0);
-          scheduleRender(bitmap);
-        } catch (_) {}
-        decoding = false;
-      };
-
-      const lat    = performance.now() - t0;
-      recordFrame(bytes, lat);
+      const bitmap = await createImageBitmap(ev.data);
       scheduleRender(bitmap);
     } catch (_) { /* malformed frame — skip */ }
   };

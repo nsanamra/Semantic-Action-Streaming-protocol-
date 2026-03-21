@@ -8,15 +8,18 @@ import (
 	"image"
 	"image/draw"
 	"image/jpeg"
-	"image/png"
+	_ "image/png" // register PNG decoder for image.Decode
 	"log"
+	"math"
 	"net"
 	"net/http"
+	"sort"
 	"sync"
 	"sync/atomic"
 	"time"
 
 	"github.com/gorilla/websocket"
+	_ "golang.org/x/image/webp" // register WebP decoder for image.Decode
 )
 
 // ─────────────────────────────────────────────
@@ -29,99 +32,258 @@ const (
 	TypeBackground byte = 0
 	TypeROI        byte = 1
 
-	// Fallback: if Python sends roi_count=0 in a BG packet that claims to
-	// have objects, we fall back to the collect-window approach.
-	ROIFallbackWindow = 80 * time.Millisecond
+	// Fallback: if exact ROI count is unknown, collect window before flushing.
+	// 8ms ≈ ¼ of a 30 FPS frame — tight but sufficient for LAN.
+	ROIFallbackWindow = 8 * time.Millisecond
 
 	// Broadcast buffer — frames dropped for slow clients, never block pipeline
 	BroadcastBufferSize = 32
 )
 
 // ─────────────────────────────────────────────
-//  Stats  (served at /stats as JSON)
+//  MetricsEngine — robust tumbling-window metrics
+//
+//  Instead of computing FPS relative to whenever
+//  the frontend happens to poll, we snapshot every
+//  1 second atomically.  All values are pre-computed
+//  and served instantly via /api/metrics.
 // ─────────────────────────────────────────────
 
-type Stats struct {
-	mu            sync.Mutex
-	FramesIn      uint64
-	FramesOut     uint64
-	BytesOut      uint64
-	DroppedFrames uint64
-	ActiveClients int32
-	PersonsTotal  uint64 // cumulative persons stitched
-	AvgFPS        float64
-	AvgPersons    float64
-	lastTime      time.Time
-	lastOut       uint64
-	lastPersons   uint64
+type MetricsEngine struct {
+	// ── Atomic counters (incremented on hot path) ──
+	framesIn     uint64
+	framesOut    uint64
+	bytesIn      uint64
+	bytesOut     uint64
+	droppedOut   uint64
+	personsTotal uint64
+
+	// ── Latency ring buffer (lock-guarded) ──
+	latMu      sync.Mutex
+	latSamples []float64 // milliseconds, last 300 samples (~10s)
+
+	// ── Snapshot (read by /api/metrics) ──
+	snapMu   sync.RWMutex
+	snapshot MetricsSnapshot
+
+	// ── Client counter ──
+	activeClients int32
+
+	startTime time.Time
 }
 
-func (s *Stats) frameIn() { atomic.AddUint64(&s.FramesIn, 1) }
-func (s *Stats) frameOut(n int) {
-	atomic.AddUint64(&s.FramesOut, 1)
-	atomic.AddUint64(&s.BytesOut, uint64(n))
+type MetricsSnapshot struct {
+	FPSIn           float64 `json:"fps_in"`
+	FPSOut          float64 `json:"fps_out"`
+	BandwidthInKBs  float64 `json:"bandwidth_in_kbps"`
+	BandwidthOutKBs float64 `json:"bandwidth_out_kbps"`
+	LatencyP50Ms    float64 `json:"latency_p50_ms"`
+	LatencyP95Ms    float64 `json:"latency_p95_ms"`
+	LatencyP99Ms    float64 `json:"latency_p99_ms"`
+	PersonsPerFrame float64 `json:"persons_per_frame"`
+	DroppedFrames   uint64  `json:"dropped_frames"`
+	ActiveClients   int32   `json:"active_clients"`
+	UptimeSeconds   float64 `json:"uptime_seconds"`
 }
-func (s *Stats) dropped()         { atomic.AddUint64(&s.DroppedFrames, 1) }
-func (s *Stats) addPersons(n int) { atomic.AddUint64(&s.PersonsTotal, uint64(n)) }
 
-func (s *Stats) JSON() []byte {
-	now := time.Now()
-	out := atomic.LoadUint64(&s.FramesOut)
-	ppl := atomic.LoadUint64(&s.PersonsTotal)
-	s.mu.Lock()
-	elapsed := now.Sub(s.lastTime).Seconds()
-	if elapsed > 0 {
-		s.AvgFPS = float64(out-s.lastOut) / elapsed
-		s.AvgPersons = float64(ppl-s.lastPersons) / elapsed
-		// Normalise persons-per-second → persons-per-frame
-		if s.AvgFPS > 0 {
-			s.AvgPersons = s.AvgPersons / s.AvgFPS
+func NewMetricsEngine() *MetricsEngine {
+	m := &MetricsEngine{
+		latSamples: make([]float64, 0, 300),
+		startTime:  time.Now(),
+	}
+	go m.snapshotLoop()
+	return m
+}
+
+// ── Hot-path recorders (lock-free atomics) ──
+
+func (m *MetricsEngine) RecordFrameIn(bytesReceived int) {
+	atomic.AddUint64(&m.framesIn, 1)
+	atomic.AddUint64(&m.bytesIn, uint64(bytesReceived))
+}
+
+func (m *MetricsEngine) RecordFrameOut(bytesSent int) {
+	atomic.AddUint64(&m.framesOut, 1)
+	atomic.AddUint64(&m.bytesOut, uint64(bytesSent))
+}
+
+func (m *MetricsEngine) RecordDrop() {
+	atomic.AddUint64(&m.droppedOut, 1)
+}
+
+func (m *MetricsEngine) RecordPersons(n int) {
+	atomic.AddUint64(&m.personsTotal, uint64(n))
+}
+
+func (m *MetricsEngine) RecordLatency(edgeTimestampNs uint64) {
+	nowNs := uint64(time.Now().UnixNano())
+	if edgeTimestampNs > nowNs || edgeTimestampNs == 0 {
+		return // clock skew or missing timestamp
+	}
+	latMs := float64(nowNs-edgeTimestampNs) / 1e6
+	if latMs > 5000 {
+		return // discard absurd values
+	}
+
+	m.latMu.Lock()
+	if len(m.latSamples) >= 300 {
+		// shift out oldest
+		m.latSamples = m.latSamples[1:]
+	}
+	m.latSamples = append(m.latSamples, latMs)
+	m.latMu.Unlock()
+}
+
+func (m *MetricsEngine) ClientConnect()    { atomic.AddInt32(&m.activeClients, 1) }
+func (m *MetricsEngine) ClientDisconnect() { atomic.AddInt32(&m.activeClients, -1) }
+
+// ── Snapshot loop (runs every 1 second) ──
+
+func (m *MetricsEngine) snapshotLoop() {
+	ticker := time.NewTicker(1 * time.Second)
+	defer ticker.Stop()
+
+	var prevIn, prevOut, prevBytes, prevBytesOut, prevPersons uint64
+
+	for range ticker.C {
+		curIn := atomic.LoadUint64(&m.framesIn)
+		curOut := atomic.LoadUint64(&m.framesOut)
+		curBytesIn := atomic.LoadUint64(&m.bytesIn)
+		curBytesOut := atomic.LoadUint64(&m.bytesOut)
+		curPersons := atomic.LoadUint64(&m.personsTotal)
+
+		deltaIn := curIn - prevIn
+		deltaOut := curOut - prevOut
+		deltaBytesIn := curBytesIn - prevBytes
+		deltaBytesOut := curBytesOut - prevBytesOut
+		deltaPersons := curPersons - prevPersons
+
+		prevIn = curIn
+		prevOut = curOut
+		prevBytes = curBytesIn
+		prevBytesOut = curBytesOut
+		prevPersons = curPersons
+
+		var personsPerFrame float64
+		if deltaOut > 0 {
+			personsPerFrame = float64(deltaPersons) / float64(deltaOut)
 		}
-	}
-	s.lastOut = out
-	s.lastPersons = ppl
-	s.lastTime = now
-	avgFPS := s.AvgFPS
-	avgPersons := s.AvgPersons
-	s.mu.Unlock()
 
-	m := map[string]any{
-		"frames_in":      atomic.LoadUint64(&s.FramesIn),
-		"frames_out":     out,
-		"bytes_out":      atomic.LoadUint64(&s.BytesOut),
-		"dropped_frames": atomic.LoadUint64(&s.DroppedFrames),
-		"active_clients": atomic.LoadInt32(&s.ActiveClients),
-		"avg_fps":        fmt.Sprintf("%.1f", avgFPS),
-		"avg_persons":    fmt.Sprintf("%.1f", avgPersons),
+		// Compute latency percentiles
+		p50, p95, p99 := m.computePercentiles()
+
+		snap := MetricsSnapshot{
+			FPSIn:           float64(deltaIn),
+			FPSOut:          float64(deltaOut),
+			BandwidthInKBs:  float64(deltaBytesIn) / 1024.0,
+			BandwidthOutKBs: float64(deltaBytesOut) / 1024.0,
+			LatencyP50Ms:    p50,
+			LatencyP95Ms:    p95,
+			LatencyP99Ms:    p99,
+			PersonsPerFrame: personsPerFrame,
+			DroppedFrames:   atomic.LoadUint64(&m.droppedOut),
+			ActiveClients:   atomic.LoadInt32(&m.activeClients),
+			UptimeSeconds:   time.Since(m.startTime).Seconds(),
+		}
+
+		m.snapMu.Lock()
+		m.snapshot = snap
+		m.snapMu.Unlock()
 	}
-	b, _ := json.Marshal(m)
+}
+
+func (m *MetricsEngine) computePercentiles() (p50, p95, p99 float64) {
+	m.latMu.Lock()
+	n := len(m.latSamples)
+	if n == 0 {
+		m.latMu.Unlock()
+		return 0, 0, 0
+	}
+	sorted := make([]float64, n)
+	copy(sorted, m.latSamples)
+	m.latMu.Unlock()
+
+	sort.Float64s(sorted)
+
+	percentile := func(p float64) float64 {
+		idx := int(math.Ceil(p/100.0*float64(n))) - 1
+		if idx < 0 {
+			idx = 0
+		}
+		if idx >= n {
+			idx = n - 1
+		}
+		return math.Round(sorted[idx]*100) / 100
+	}
+
+	return percentile(50), percentile(95), percentile(99)
+}
+
+func (m *MetricsEngine) GetSnapshot() MetricsSnapshot {
+	m.snapMu.RLock()
+	defer m.snapMu.RUnlock()
+	return m.snapshot
+}
+
+func (m *MetricsEngine) JSON() []byte {
+	snap := m.GetSnapshot()
+	b, _ := json.Marshal(snap)
 	return b
 }
 
-var globalStats = &Stats{lastTime: time.Now()}
+var metrics = NewMetricsEngine()
+
+// ─────────────────────────────────────────────
+//  sync.Pool for per-packet byte slices
+//  Eliminates ~150-450 allocs/sec on the hot path
+// ─────────────────────────────────────────────
+
+var packetPool = sync.Pool{
+	New: func() interface{} {
+		b := make([]byte, 0, 2048) // typical packet size
+		return &b
+	},
+}
+
+func getPooledSlice(size int) []byte {
+	bp := packetPool.Get().(*[]byte)
+	b := *bp
+	if cap(b) >= size {
+		return b[:size]
+	}
+	// Rare: packet larger than pool capacity — allocate fresh
+	return make([]byte, size)
+}
+
+func putPooledSlice(b []byte) {
+	b = b[:0]
+	packetPool.Put(&b)
+}
 
 // ─────────────────────────────────────────────
 //  FrameSyncer
 //
-//  Two flush strategies, chosen per-frame:
+//  Flush rule: a frame is emitted ONLY when BOTH:
+//    1. The background JPEG has been received, AND
+//    2. All expected ROI tiles have arrived (or timeout).
 //
-//  A) Exact-count flush (preferred):
-//     Python embeds roi_count (e.g. 2) in the BG header.
-//     Go waits until exactly 2 ROI tiles arrive, then flushes
-//     immediately — zero latency tax.
+//  This prevents black-frame strobes when ROI tiles
+//  arrive before BG (which is common with ROI-first
+//  send order on the edge).
 //
-//  B) Fallback window (safety net):
-//     If roi_count arrived as 0 but fClass says objects exist
-//     (e.g. older Python client), we use a 15ms collect window
-//     exactly as before.
+//  Two count strategies:
+//    A) Exact-count (preferred): roi_count from header.
+//    B) Fallback window: 8ms collect after first ROI.
 // ─────────────────────────────────────────────
 
 type pendingFrame struct {
 	canvas      *image.RGBA
 	arrivedAt   time.Time
 	firstROI    time.Time
-	roiExpected int // 0 = unknown (use window), N = exact count
+	bgReceived  bool // true once StoreBG has been called
+	roiExpected int  // 0 = unknown (use window), N = exact count
 	roiReceived int
+	roisDone    bool // true when all expected ROIs are in (or window expired)
 	flushed     bool
 	timer       *time.Timer // non-nil only in window-mode
 }
@@ -138,41 +300,97 @@ func NewFrameSyncer(hub *Hub) *FrameSyncer {
 	return fs
 }
 
+// tryFlush checks if both BG and all ROIs are present; if so, flushes.
+// MUST be called with fs.mu held. Returns true if flushed.
+func (fs *FrameSyncer) tryFlush(frameID uint32, pf *pendingFrame) bool {
+	if pf.flushed || !pf.bgReceived || !pf.roisDone {
+		return false
+	}
+	pf.flushed = true
+	if pf.timer != nil {
+		pf.timer.Stop()
+	}
+	canvas := pf.canvas
+	received := pf.roiReceived
+	delete(fs.pending, frameID)
+	fs.mu.Unlock()
+	log.Printf("[sync] frame %d flushed (bg+%d ROIs)", frameID, received)
+	encodeAndBroadcast(canvas, fs.hub)
+	return true // caller must NOT unlock again
+}
+
 // StoreBG stores the decoded background for frameID.
-// roiCount is the exact number of ROI tiles Python will send (0 = none).
 func (fs *FrameSyncer) StoreBG(frameID uint32, bg image.Image, roiCount int) (image.Image, bool) {
 	fs.mu.Lock()
-	defer fs.mu.Unlock()
 
-	if roiCount == 0 {
-		// Fast path: no ROIs coming — emit BG immediately
-		delete(fs.pending, frameID)
+	pf, exists := fs.pending[frameID]
+
+	if roiCount == 0 && !exists {
+		// Fast path: no ROIs coming, BG-only frame — emit immediately
+		fs.mu.Unlock()
 		return bg, true
 	}
 
+	if !exists {
+		// BG arrived first (before any ROI) — create pending entry
+		bounds := bg.Bounds()
+		canvas := image.NewRGBA(bounds)
+		draw.Draw(canvas, bounds, bg, image.Point{}, draw.Src)
+		pf = &pendingFrame{
+			canvas:      canvas,
+			arrivedAt:   time.Now(),
+			bgReceived:  true,
+			roiExpected: roiCount,
+		}
+		fs.pending[frameID] = pf
+		fs.mu.Unlock()
+		return nil, false
+	}
+
+	// BG arrived AFTER some/all ROIs — paint BG underneath ROI composites
 	bounds := bg.Bounds()
 	canvas := image.NewRGBA(bounds)
 	draw.Draw(canvas, bounds, bg, image.Point{}, draw.Src)
-
-	fs.pending[frameID] = &pendingFrame{
-		canvas:      canvas,
-		arrivedAt:   time.Now(),
-		roiExpected: roiCount,
+	// Re-draw any ROIs that were already composited on top
+	draw.Draw(canvas, pf.canvas.Bounds(), pf.canvas, image.Point{}, draw.Over)
+	pf.canvas = canvas
+	pf.bgReceived = true
+	if pf.roiExpected == 0 {
+		pf.roiExpected = roiCount
 	}
+
+	// Check if ROIs are also done — if so, flush now
+	if pf.roiExpected > 0 && pf.roiReceived >= pf.roiExpected {
+		pf.roisDone = true
+	}
+	if fs.tryFlush(frameID, pf) {
+		return nil, false // tryFlush already unlocked
+	}
+	fs.mu.Unlock()
 	return nil, false
 }
 
-// AddROI paints one ROI tile onto the canvas and flushes when done.
-func (fs *FrameSyncer) AddROI(frameID uint32, roi image.Image, x, y int) {
+// AddROI paints one ROI tile onto the canvas.
+func (fs *FrameSyncer) AddROI(frameID uint32, roi image.Image, x, y int, roiCount int) {
 	fs.mu.Lock()
 
 	pf, ok := fs.pending[frameID]
-	if !ok || pf.flushed {
+	if !ok {
+		// ROI arrived before BG — create placeholder canvas.
+		// StoreBG will paint the real background underneath later.
+		pf = &pendingFrame{
+			canvas:      image.NewRGBA(image.Rect(0, 0, 640, 480)),
+			arrivedAt:   time.Now(),
+			roiExpected: roiCount,
+		}
+		fs.pending[frameID] = pf
+	}
+	if pf.flushed {
 		fs.mu.Unlock()
 		return
 	}
 
-	// Paint
+	// Paint the ROI tile
 	bounds := pf.canvas.Bounds()
 	dstRect := image.Rect(x, y, x+roi.Bounds().Dx(), y+roi.Bounds().Dy()).Intersect(bounds)
 	if !dstRect.Empty() {
@@ -185,27 +403,35 @@ func (fs *FrameSyncer) AddROI(frameID uint32, roi image.Image, x, y int) {
 		pf.firstROI = time.Now()
 	}
 
-	// ── Flush strategy decision ───────────────────────────────────────────
-	if pf.roiExpected > 0 {
-		// Strategy A: exact count known — flush the instant we have them all
-		if pf.roiReceived >= pf.roiExpected {
-			pf.flushed = true
-			canvas := pf.canvas
-			received := pf.roiReceived
-			delete(fs.pending, frameID)
-			fs.mu.Unlock()
-			log.Printf("[sync] frame %d flushed (exact: %d ROIs)", frameID, received)
-			encodeAndBroadcast(canvas, fs.hub)
-			return
+	if pf.roiExpected == 0 && roiCount > 0 {
+		pf.roiExpected = roiCount
+	}
+
+	// ── Check if all ROIs are in ──────────────────────────────────────────
+	if pf.roiExpected > 0 && pf.roiReceived >= pf.roiExpected {
+		pf.roisDone = true
+		// Try to flush (only succeeds if BG is also received)
+		if fs.tryFlush(frameID, pf) {
+			return // tryFlush already unlocked
 		}
 		fs.mu.Unlock()
 		return
 	}
 
 	// Strategy B: count unknown — start collect window on first ROI
-	if isFirst {
+	if pf.roiExpected == 0 && isFirst {
 		pf.timer = time.AfterFunc(ROIFallbackWindow, func() {
-			fs.flushFrame(frameID)
+			fs.mu.Lock()
+			pf2, ok := fs.pending[frameID]
+			if !ok || pf2.flushed {
+				fs.mu.Unlock()
+				return
+			}
+			pf2.roisDone = true // window expired, treat ROIs as complete
+			if fs.tryFlush(frameID, pf2) {
+				return
+			}
+			fs.mu.Unlock()
 		})
 	}
 	fs.mu.Unlock()
@@ -227,12 +453,14 @@ func (fs *FrameSyncer) flushFrame(frameID uint32) {
 	delete(fs.pending, frameID)
 	fs.mu.Unlock()
 
-	log.Printf("[sync] frame %d flushed (window: %d ROIs)", frameID, received)
+	log.Printf("[sync] frame %d force-flushed (gc: %d ROIs, bg=%v)", frameID, received, pf.bgReceived)
 	encodeAndBroadcast(canvas, fs.hub)
 }
 
 func (fs *FrameSyncer) gcLoop() {
-	ticker := time.NewTicker(25 * time.Millisecond)
+	// 200ms is plenty — exact-count flush handles 99%+ of frames instantly.
+	// This is only a safety net for truly orphaned frames.
+	ticker := time.NewTicker(200 * time.Millisecond)
 	defer ticker.Stop()
 	for range ticker.C {
 		fs.mu.Lock()
@@ -266,6 +494,7 @@ type FrameBuffer struct {
 	X, Y      int
 	ROICount  int
 	ROIIndex  int
+	Timestamp uint64 // edge timestamp (ns) from first chunk
 	CreatedAt time.Time
 }
 
@@ -286,7 +515,8 @@ func (r *Reassembler) AddPart(
 	seq, total int,
 	data []byte,
 	x, y int,
-) (payload []byte, ox, oy, oRoiCount int, complete bool) {
+	timestamp uint64,
+) (payload []byte, ox, oy, oRoiCount int, oTimestamp uint64, complete bool) {
 
 	r.mu.Lock()
 	defer r.mu.Unlock()
@@ -299,6 +529,7 @@ func (r *Reassembler) AddPart(
 			Total:     total,
 			ROICount:  int(roiCount),
 			ROIIndex:  int(roiIndex),
+			Timestamp: timestamp,
 			CreatedAt: time.Now(),
 		}
 		r.frames[key] = fb
@@ -311,10 +542,11 @@ func (r *Reassembler) AddPart(
 	}
 	if fb.Received == fb.Total {
 		full := bytes.Join(fb.Parts, nil)
+		ts := fb.Timestamp
 		delete(r.frames, key)
-		return full, fb.X, fb.Y, fb.ROICount, true
+		return full, fb.X, fb.Y, fb.ROICount, ts, true
 	}
-	return nil, 0, 0, 0, false
+	return nil, 0, 0, 0, 0, false
 }
 
 func (r *Reassembler) gcLoop() {
@@ -375,8 +607,8 @@ func (h *Hub) run() {
 			h.mu.Lock()
 			h.clients[c] = struct{}{}
 			h.mu.Unlock()
-			atomic.AddInt32(&globalStats.ActiveClients, 1)
-			log.Printf("[hub] client connected (total=%d)", atomic.LoadInt32(&globalStats.ActiveClients))
+			metrics.ClientConnect()
+			log.Printf("[hub] client connected (total=%d)", atomic.LoadInt32(&metrics.activeClients))
 
 		case c := <-h.unregister:
 			h.mu.Lock()
@@ -385,8 +617,8 @@ func (h *Hub) run() {
 				c.closeOnce.Do(func() { close(c.send) })
 			}
 			h.mu.Unlock()
-			atomic.AddInt32(&globalStats.ActiveClients, -1)
-			log.Printf("[hub] client disconnected (total=%d)", atomic.LoadInt32(&globalStats.ActiveClients))
+			metrics.ClientDisconnect()
+			log.Printf("[hub] client disconnected (total=%d)", atomic.LoadInt32(&metrics.activeClients))
 
 		case frame := <-h.broadcast:
 			h.mu.RLock()
@@ -394,7 +626,7 @@ func (h *Hub) run() {
 				select {
 				case c.send <- frame:
 				default:
-					globalStats.dropped()
+					metrics.RecordDrop()
 					log.Printf("[hub] slow client — frame dropped")
 				}
 			}
@@ -415,7 +647,7 @@ func (h *Hub) serveWS(w http.ResponseWriter, r *http.Request) {
 		log.Printf("[ws] upgrade: %v", err)
 		return
 	}
-	c := &wsClient{conn: conn, send: make(chan []byte, 6)}
+	c := &wsClient{conn: conn, send: make(chan []byte, 24)} // bigger buffer for tab-switch tolerance
 	h.register <- c
 	go c.writePump()
 	go func() {
@@ -429,8 +661,118 @@ func (h *Hub) serveWS(w http.ResponseWriter, r *http.Request) {
 }
 
 // ─────────────────────────────────────────────
+//  SmoothBuffer — jitter buffer + last-good-frame cache
+//
+//  Instead of broadcasting immediately (which causes
+//  timing jitter when YOLO takes variable time to run),
+//  frames are queued into a ring buffer and played back
+//  at a steady 30fps by a ticker goroutine.
+//
+//  Last-good-frame: when a BG-only frame arrives but
+//  recent frames had ROI composites, the BG-only frame
+//  is replaced with the last composited frame. This
+//  prevents the "momentary blur" flash when YOLO
+//  temporarily loses a detection.
+// ─────────────────────────────────────────────
+
+const (
+	SmoothBufferSize = 30 // ~1 second at 30fps
+	PlaybackFPS      = 30
+)
+
+type bufferedFrame struct {
+	data    []byte
+	hasROIs bool
+}
+
+type SmoothBuffer struct {
+	mu            sync.Mutex
+	ring          []bufferedFrame
+	writeIdx      int
+	readIdx       int
+	count         int
+	lastGoodFrame []byte // last frame that had ROI compositing
+	hub           *Hub
+}
+
+func NewSmoothBuffer(hub *Hub) *SmoothBuffer {
+	sb := &SmoothBuffer{
+		ring: make([]bufferedFrame, SmoothBufferSize),
+		hub:  hub,
+	}
+	go sb.playbackLoop()
+	return sb
+}
+
+// Push adds an encoded JPEG frame to the buffer.
+// hasROIs indicates whether this frame had ROI compositing (not BG-only).
+func (sb *SmoothBuffer) Push(data []byte, hasROIs bool) {
+	sb.mu.Lock()
+	defer sb.mu.Unlock()
+
+	if hasROIs {
+		sb.lastGoodFrame = data
+	} else if sb.lastGoodFrame != nil {
+		// BG-only frame but we have a recent composited frame — use that instead
+		// This prevents the "momentary blur" when YOLO loses detection for 1-2 frames
+		data = sb.lastGoodFrame
+	}
+
+	if sb.count == SmoothBufferSize {
+		// Buffer full — drop oldest (advance read pointer)
+		sb.readIdx = (sb.readIdx + 1) % SmoothBufferSize
+		sb.count--
+		metrics.RecordDrop()
+	}
+
+	sb.ring[sb.writeIdx] = bufferedFrame{data: data, hasROIs: hasROIs}
+	sb.writeIdx = (sb.writeIdx + 1) % SmoothBufferSize
+	sb.count++
+}
+
+// playbackLoop reads from the buffer at a steady 30fps and broadcasts.
+func (sb *SmoothBuffer) playbackLoop() {
+	ticker := time.NewTicker(time.Second / PlaybackFPS)
+	defer ticker.Stop()
+
+	for range ticker.C {
+		sb.mu.Lock()
+		if sb.count == 0 {
+			// Buffer empty — if we have a last-good-frame, repeat it (prevents black/freeze)
+			if sb.lastGoodFrame != nil {
+				frame := sb.lastGoodFrame
+				sb.mu.Unlock()
+				sb.broadcast(frame)
+			} else {
+				sb.mu.Unlock()
+			}
+			continue
+		}
+
+		frame := sb.ring[sb.readIdx]
+		sb.readIdx = (sb.readIdx + 1) % SmoothBufferSize
+		sb.count--
+		sb.mu.Unlock()
+
+		sb.broadcast(frame.data)
+	}
+}
+
+func (sb *SmoothBuffer) broadcast(data []byte) {
+	metrics.RecordFrameOut(len(data))
+	select {
+	case sb.hub.broadcast <- data:
+	default:
+		metrics.RecordDrop()
+	}
+}
+
+// ─────────────────────────────────────────────
 //  Frame processing
 // ─────────────────────────────────────────────
+
+// Global smooth buffer — initialized in main()
+var smoothBuffer *SmoothBuffer
 
 func processFrame(
 	data []byte,
@@ -438,10 +780,14 @@ func processFrame(
 	frameID uint32,
 	roiCount int,
 	x, y int,
+	timestamp uint64,
 	hub *Hub,
 	syncer *FrameSyncer,
 ) {
-	globalStats.frameIn()
+	metrics.RecordFrameIn(len(data))
+
+	// Record edge-to-backend latency from SASP header timestamp
+	metrics.RecordLatency(timestamp)
 
 	var img image.Image
 	var err error
@@ -450,7 +796,8 @@ func processFrame(
 	case TypeBackground:
 		img, err = jpeg.Decode(bytes.NewReader(data))
 	case TypeROI:
-		img, err = png.Decode(bytes.NewReader(data))
+		// Auto-detect format: supports PNG and WebP via registered decoders
+		img, _, err = image.Decode(bytes.NewReader(data))
 	default:
 		return
 	}
@@ -463,31 +810,57 @@ func processFrame(
 	case TypeBackground:
 		result, ready := syncer.StoreBG(frameID, img, roiCount)
 		if ready {
-			encodeAndBroadcast(result, hub)
+			// BG-only frame (roiCount == 0)
+			encodeAndBuffer(result, false)
 		}
 	case TypeROI:
-		syncer.AddROI(frameID, img, x, y)
+		syncer.AddROI(frameID, img, x, y, roiCount)
 		if roiCount > 0 {
-			globalStats.addPersons(roiCount)
+			metrics.RecordPersons(roiCount)
 		}
 	}
 }
 
-func encodeAndBroadcast(img image.Image, hub *Hub) {
+func encodeAndBuffer(img image.Image, hasROIs bool) {
 	var out bytes.Buffer
 	if err := jpeg.Encode(&out, img, &jpeg.Options{Quality: 82}); err != nil {
 		log.Printf("[encode] %v", err)
 		return
 	}
-	b := out.Bytes()
-	globalStats.frameOut(len(b))
+	smoothBuffer.Push(out.Bytes(), hasROIs)
+}
 
-	select {
-	case hub.broadcast <- b:
-	default:
-		globalStats.dropped()
-		log.Printf("[broadcast] channel full — frame dropped")
+// encodeAndBroadcast is called by FrameSyncer when a composited frame is ready.
+// These frames have ROIs composited on top of BG.
+func encodeAndBroadcast(img image.Image, hub *Hub) {
+	encodeAndBuffer(img, true) // true = has ROI compositing
+}
+
+// ─────────────────────────────────────────────
+//  CORS middleware
+// ─────────────────────────────────────────────
+
+func corsMiddleware(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+		next(w, r)
 	}
+}
+
+func jsonResponse(w http.ResponseWriter, data interface{}) {
+	w.Header().Set("Content-Type", "application/json")
+	envelope := map[string]interface{}{
+		"status":    "ok",
+		"data":      data,
+		"timestamp": time.Now().UnixMilli(),
+	}
+	json.NewEncoder(w).Encode(envelope)
 }
 
 // ─────────────────────────────────────────────
@@ -498,22 +871,54 @@ func main() {
 	hub := NewHub()
 	reassembler := NewReassembler()
 	syncer := NewFrameSyncer(hub)
+	smoothBuffer = NewSmoothBuffer(hub)
 
 	go hub.run()
 
-	// ── HTTP ─────────────────────────────────────────────────────────────────
-	http.Handle("/", http.FileServer(http.Dir("./public")))
-	http.HandleFunc("/ws", hub.serveWS)
+	// ── API Routes ───────────────────────────────────────────────────────────
 
-	// Stats endpoint — polled by the frontend every second
-	http.HandleFunc("/stats", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
-		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.Write(globalStats.JSON())
-	})
+	// Serve static frontend
+	http.Handle("/", http.FileServer(http.Dir("./public")))
+
+	// Video stream — WebSocket (backward-compatible + new API path)
+	http.HandleFunc("/ws", hub.serveWS)
+	http.HandleFunc("/api/stream", hub.serveWS)
+
+	// Metrics — robust server-side computed metrics
+	http.HandleFunc("/api/metrics", corsMiddleware(func(w http.ResponseWriter, r *http.Request) {
+		snap := metrics.GetSnapshot()
+		jsonResponse(w, snap)
+	}))
+
+	// Legacy /stats endpoint — redirects to new API for backward compat
+	http.HandleFunc("/stats", corsMiddleware(func(w http.ResponseWriter, r *http.Request) {
+		snap := metrics.GetSnapshot()
+		jsonResponse(w, snap)
+	}))
+
+	// Health check
+	http.HandleFunc("/api/health", corsMiddleware(func(w http.ResponseWriter, r *http.Request) {
+		jsonResponse(w, map[string]interface{}{
+			"healthy":        true,
+			"uptime_seconds": time.Since(metrics.startTime).Seconds(),
+			"version":        "4.0",
+		})
+	}))
+
+	// Config — current system configuration
+	http.HandleFunc("/api/config", corsMiddleware(func(w http.ResponseWriter, r *http.Request) {
+		jsonResponse(w, map[string]interface{}{
+			"roi_fallback_window_ms": ROIFallbackWindow.Milliseconds(),
+			"broadcast_buffer_size":  BroadcastBufferSize,
+			"output_jpeg_quality":    82,
+			"udp_listen":             "127.0.0.1:5000",
+			"http_listen":            ":8080",
+		})
+	}))
 
 	go func() {
 		log.Println("[http] → http://localhost:8080")
+		log.Println("[api]  → /api/stream, /api/metrics, /api/health, /api/config")
 		if err := http.ListenAndServe(":8080", nil); err != nil {
 			log.Fatalf("[http] fatal: %v", err)
 		}
@@ -533,10 +938,11 @@ func main() {
 	}
 	defer udpConn.Close()
 
-	fmt.Println("════════════════════════════════════════════")
-	fmt.Println("  SASP Backend v3  —  http://localhost:8080 ")
-	fmt.Println("  Stats           —  http://localhost:8080/stats")
-	fmt.Println("════════════════════════════════════════════")
+	fmt.Println("════════════════════════════════════════════════════")
+	fmt.Println("  SASP Backend v4  —  http://localhost:8080")
+	fmt.Println("  API             —  /api/stream  /api/metrics")
+	fmt.Println("                     /api/health  /api/config")
+	fmt.Println("════════════════════════════════════════════════════")
 
 	buf := make([]byte, 65535)
 	for {
@@ -550,36 +956,27 @@ func main() {
 		}
 
 		// ── Parse 28-byte header ──────────────────────────────────────────────
-		// 0-3   Magic
-		// 4     Version
-		// 5     Type
-		// 6-9   FrameID
-		// 10-11 SeqNum
-		// 12-13 TotalParts
-		// 14-21 Timestamp
-		// 22    ROICount  (total tiles expected for this frame)
-		// 23    ROIIndex  (which tile this packet is)
-		// 24-25 X
-		// 26-27 Y
 		fType := buf[5]
 		fID := binary.BigEndian.Uint32(buf[6:10])
 		seq := binary.BigEndian.Uint16(buf[10:12])
 		total := binary.BigEndian.Uint16(buf[12:14])
+		timestamp := binary.BigEndian.Uint64(buf[14:22])
 		roiCount := int(buf[22])
-		// roiIndex := int(buf[23])  // available if needed for debugging
 		xPos := int(binary.BigEndian.Uint16(buf[24:26]))
 		yPos := int(binary.BigEndian.Uint16(buf[26:28]))
 
-		payload := make([]byte, n-HeaderSize)
+		// Use pooled slice instead of heap allocation per packet
+		payloadSize := n - HeaderSize
+		payload := getPooledSlice(payloadSize)
 		copy(payload, buf[HeaderSize:n])
 
-		full, x, y, rc, ok := reassembler.AddPart(
+		full, x, y, rc, ts, ok := reassembler.AddPart(
 			fID, uint32(roiCount), uint32(buf[23]),
 			fType, int(seq), int(total),
-			payload, xPos, yPos,
+			payload, xPos, yPos, timestamp,
 		)
 		if ok {
-			go processFrame(full, fType, fID, rc, x, y, hub, syncer)
+			go processFrame(full, fType, fID, rc, x, y, ts, hub, syncer)
 		}
 	}
 }

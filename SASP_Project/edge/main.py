@@ -187,9 +187,6 @@ class SASPTransmitter:
             )
             self.sock.sendto(header + chunk, self.server_addr)
             sent += len(header) + len(chunk)
-            # Yield after each BG chunk so ROI can overtake in the buffer
-            if frame_type == TYPE_BACKGROUND:
-                time.sleep(0.0005)
         return sent
 
     def close(self) -> None:
@@ -201,9 +198,9 @@ class SASPTransmitter:
 # ─────────────────────────────────────────────────────────────────────────────
 
 def _encode_roi(args: tuple) -> tuple[bytes, int, int]:
-    """Encode one ROI tile to PNG. Returns (bytes, x, y). Used in thread pool."""
+    """Encode one ROI tile to WebP (with alpha). Returns (bytes, x, y)."""
     roi_rgba, fx1, fy1 = args
-    _, buf = cv2.imencode('.png', roi_rgba, [cv2.IMWRITE_PNG_COMPRESSION, PNG_COMPRESSION])
+    _, buf = cv2.imencode('.webp', roi_rgba, [cv2.IMWRITE_WEBP_QUALITY, 90])
     return buf.tobytes(), fx1, fy1
 
 
@@ -230,8 +227,28 @@ def _worker(
         roi_count   = detector.last_roi_count   # exact count to embed in header
         infer_ms    = (time.perf_counter() - t0) * 1000
 
-        # ── Background encode & send ─────────────────────────────────────────
         t1 = time.perf_counter()
+
+        # ── ROI encode (parallel) & send — FIRST for lowest latency ──────────
+        # Go's FrameSyncer flushes the instant all ROI tiles arrive.
+        # Sending ROIs before BG means the flush-triggering data arrives ASAP.
+        if detections:
+            encode_args = [
+                (det['roi_rgba'], det['bbox'][0], det['bbox'][1])
+                for det in detections
+            ]
+            # Encode all tiles concurrently (WebP with alpha)
+            encoded = list(pool.map(_encode_roi, encode_args))
+
+            for idx, (roi_bytes, fx1, fy1) in enumerate(encoded):
+                bytes_sent += transmitter.send(
+                    roi_bytes, TYPE_ROI,
+                    roi_count=roi_count,
+                    roi_index=idx,
+                    x=fx1, y=fy1,
+                )
+
+        # ── Background encode & send ─────────────────────────────────────────
         blurred_bg  = detector.get_background(frame)
         _, bg_buf   = cv2.imencode('.jpg', blurred_bg, [cv2.IMWRITE_JPEG_QUALITY, BG_JPEG_QUALITY])
         bg_bytes    = bg_buf.tobytes()
@@ -242,23 +259,6 @@ def _worker(
             roi_count=roi_count,   # 0 means "send BG immediately, no ROI coming"
             roi_index=0,
         )
-
-        # ── ROI encode (parallel) & send ─────────────────────────────────────
-        if detections:
-            encode_args = [
-                (det['roi_rgba'], det['bbox'][0], det['bbox'][1])
-                for det in detections
-            ]
-            # Encode all tiles concurrently
-            encoded = list(pool.map(_encode_roi, encode_args))
-
-            for idx, (roi_bytes, fx1, fy1) in enumerate(encoded):
-                bytes_sent += transmitter.send(
-                    roi_bytes, TYPE_ROI,
-                    roi_count=roi_count,
-                    roi_index=idx,
-                    x=fx1, y=fy1,
-                )
 
         encode_ms = (time.perf_counter() - t1) * 1000
 

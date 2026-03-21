@@ -198,9 +198,18 @@ class SASPTransmitter:
 # ─────────────────────────────────────────────────────────────────────────────
 
 def _encode_roi(args: tuple) -> tuple[bytes, int, int]:
-    """Encode one ROI tile to WebP (with alpha). Returns (bytes, x, y)."""
+    """Encode one ROI tile to PNG (lossless, full BGRA alpha). Returns (bytes, x, y).
+    
+    PNG is used instead of WebP because Go's golang.org/x/image/webp decoder
+    does not support the alpha channel — it silently drops transparency and
+    returns an opaque image, which causes draw.Over to paint a solid rectangle
+    over the blurred background instead of blending through the feathered mask.
+    Go's stdlib image/png decoder handles BGRA (4-channel) PNG correctly,
+    preserving the full alpha channel for proper draw.Over compositing.
+    PNG_COMPRESSION=1 (fastest) keeps encode time low (~2-4 ms per tile).
+    """
     roi_rgba, fx1, fy1 = args
-    _, buf = cv2.imencode('.webp', roi_rgba, [cv2.IMWRITE_WEBP_QUALITY, 90])
+    _, buf = cv2.imencode('.png', roi_rgba, [cv2.IMWRITE_PNG_COMPRESSION, PNG_COMPRESSION])
     return buf.tobytes(), fx1, fy1
 
 

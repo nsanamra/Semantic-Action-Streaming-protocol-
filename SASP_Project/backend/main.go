@@ -19,7 +19,11 @@ import (
 	"time"
 
 	"github.com/gorilla/websocket"
-	_ "golang.org/x/image/webp" // register WebP decoder for image.Decode
+	// NOTE: golang.org/x/image/webp is intentionally NOT imported.
+	// Go's webp decoder does not support the alpha channel — it silently
+	// returns an opaque image, causing draw.Over to paint solid rectangles
+	// instead of blending through the feathered mask. ROI tiles are sent
+	// as PNG from the Python edge (image/png is registered by stdlib).
 )
 
 // ─────────────────────────────────────────────
@@ -32,20 +36,15 @@ const (
 	TypeBackground byte = 0
 	TypeROI        byte = 1
 
-	// Fallback: if exact ROI count is unknown, collect window before flushing.
-	// 8ms ≈ ¼ of a 30 FPS frame — tight but sufficient for LAN.
-	ROIFallbackWindow = 8 * time.Millisecond
-
-	// Broadcast buffer — frames dropped for slow clients, never block pipeline
+	ROIFallbackWindow   = 8 * time.Millisecond
 	BroadcastBufferSize = 32
 )
 
 // ─────────────────────────────────────────────
-//  MetricsEngine — robust tumbling-window metrics
+//  MetricsEngine
 // ─────────────────────────────────────────────
 
 type MetricsEngine struct {
-	// ── Atomic counters (incremented on hot path) ──
 	framesIn     uint64
 	framesOut    uint64
 	bytesIn      uint64
@@ -53,18 +52,14 @@ type MetricsEngine struct {
 	droppedOut   uint64
 	personsTotal uint64
 
-	// ── Latency ring buffer (lock-guarded) ──
 	latMu      sync.Mutex
-	latSamples []float64 // milliseconds, last 300 samples (~10s)
+	latSamples []float64
 
-	// ── Snapshot (read by /api/metrics) ──
 	snapMu   sync.RWMutex
 	snapshot MetricsSnapshot
 
-	// ── Client counter ──
 	activeClients int32
-
-	startTime time.Time
+	startTime     time.Time
 }
 
 type MetricsSnapshot struct {
@@ -223,10 +218,26 @@ var metrics = NewMetricsEngine()
 
 // ─────────────────────────────────────────────
 //  FrameSyncer
+//
+//  Flush rule: emit ONLY when BOTH:
+//    1. Background JPEG received, AND
+//    2. All expected ROI tiles received (or timeout).
+//
+//  ROI-before-BG race is handled by queuing ROI tiles
+//  in pendingROIs and replaying onto the real canvas
+//  once StoreBG creates it with correct bounds.
 // ─────────────────────────────────────────────
 
+// pendingROI holds one ROI tile that arrived before its BG.
+type pendingROI struct {
+	img  image.Image
+	x, y int
+}
+
+// pendingFrame tracks assembly state for one logical frame.
 type pendingFrame struct {
-	canvas      *image.RGBA
+	canvas      *image.RGBA  // nil until BG arrives
+	pendingROIs []pendingROI // ROIs queued before BG arrived
 	arrivedAt   time.Time
 	firstROI    time.Time
 	bgReceived  bool
@@ -250,7 +261,7 @@ func NewFrameSyncer(hub *Hub) *FrameSyncer {
 }
 
 // tryFlush checks if both BG and all ROIs are present; if so, flushes.
-// MUST be called with fs.mu held. Returns true if flushed.
+// MUST be called with fs.mu held. Returns true if flushed (and unlocked).
 func (fs *FrameSyncer) tryFlush(frameID uint32, pf *pendingFrame) bool {
 	if pf.flushed || !pf.bgReceived || !pf.roisDone {
 		return false
@@ -275,14 +286,18 @@ func (fs *FrameSyncer) StoreBG(frameID uint32, bg image.Image, roiCount int) (im
 	pf, exists := fs.pending[frameID]
 
 	if roiCount == 0 && !exists {
+		// Fast path: BG-only frame, no ROIs expected — emit immediately.
 		fs.mu.Unlock()
 		return bg, true
 	}
 
+	// Create the real canvas from BG (always correct bounds).
+	bounds := bg.Bounds()
+	canvas := image.NewRGBA(bounds)
+	draw.Draw(canvas, bounds, bg, image.Point{}, draw.Src)
+
 	if !exists {
-		bounds := bg.Bounds()
-		canvas := image.NewRGBA(bounds)
-		draw.Draw(canvas, bounds, bg, image.Point{}, draw.Src)
+		// BG arrived first — create pending entry with real canvas.
 		pf = &pendingFrame{
 			canvas:      canvas,
 			arrivedAt:   time.Now(),
@@ -294,11 +309,16 @@ func (fs *FrameSyncer) StoreBG(frameID uint32, bg image.Image, roiCount int) (im
 		return nil, false
 	}
 
-	// BG arrived AFTER some/all ROIs — paint BG underneath ROI composites
-	bounds := bg.Bounds()
-	canvas := image.NewRGBA(bounds)
-	draw.Draw(canvas, bounds, bg, image.Point{}, draw.Src)
-	draw.Draw(canvas, pf.canvas.Bounds(), pf.canvas, image.Point{}, draw.Over)
+	// BG arrived AFTER some ROIs — replay any queued ROI tiles onto the
+	// real canvas now that we know the correct bounds.
+	for _, r := range pf.pendingROIs {
+		dstRect := image.Rect(r.x, r.y, r.x+r.img.Bounds().Dx(), r.y+r.img.Bounds().Dy()).Intersect(bounds)
+		if !dstRect.Empty() {
+			draw.Draw(canvas, dstRect, r.img, image.Point{}, draw.Over)
+		}
+	}
+	pf.pendingROIs = nil
+
 	pf.canvas = canvas
 	pf.bgReceived = true
 	if pf.roiExpected == 0 {
@@ -309,20 +329,21 @@ func (fs *FrameSyncer) StoreBG(frameID uint32, bg image.Image, roiCount int) (im
 		pf.roisDone = true
 	}
 	if fs.tryFlush(frameID, pf) {
-		return nil, false
+		return nil, false // tryFlush already unlocked
 	}
 	fs.mu.Unlock()
 	return nil, false
 }
 
-// AddROI paints one ROI tile onto the canvas.
+// AddROI stores or paints one ROI tile.
 func (fs *FrameSyncer) AddROI(frameID uint32, roi image.Image, x, y int, roiCount int) {
 	fs.mu.Lock()
 
 	pf, ok := fs.pending[frameID]
 	if !ok {
+		// ROI arrived before BG — create entry with nil canvas.
 		pf = &pendingFrame{
-			canvas:      image.NewRGBA(image.Rect(0, 0, 640, 480)),
+			canvas:      nil, // BG not arrived yet — StoreBG will create it
 			arrivedAt:   time.Now(),
 			roiExpected: roiCount,
 		}
@@ -333,10 +354,16 @@ func (fs *FrameSyncer) AddROI(frameID uint32, roi image.Image, x, y int, roiCoun
 		return
 	}
 
-	bounds := pf.canvas.Bounds()
-	dstRect := image.Rect(x, y, x+roi.Bounds().Dx(), y+roi.Bounds().Dy()).Intersect(bounds)
-	if !dstRect.Empty() {
-		draw.Draw(pf.canvas, dstRect, roi, image.Point{}, draw.Over)
+	// Either paint directly (canvas exists) or queue for replay (canvas nil).
+	if pf.canvas == nil {
+		// BG not here yet — queue this tile; StoreBG will replay it
+		pf.pendingROIs = append(pf.pendingROIs, pendingROI{img: roi, x: x, y: y})
+	} else {
+		bounds := pf.canvas.Bounds()
+		dstRect := image.Rect(x, y, x+roi.Bounds().Dx(), y+roi.Bounds().Dy()).Intersect(bounds)
+		if !dstRect.Empty() {
+			draw.Draw(pf.canvas, dstRect, roi, image.Point{}, draw.Over)
+		}
 	}
 	pf.roiReceived++
 
@@ -352,12 +379,13 @@ func (fs *FrameSyncer) AddROI(frameID uint32, roi image.Image, x, y int, roiCoun
 	if pf.roiExpected > 0 && pf.roiReceived >= pf.roiExpected {
 		pf.roisDone = true
 		if fs.tryFlush(frameID, pf) {
-			return
+			return // tryFlush already unlocked
 		}
 		fs.mu.Unlock()
 		return
 	}
 
+	// Strategy B: count unknown — start collect window on first ROI
 	if pf.roiExpected == 0 && isFirst {
 		pf.timer = time.AfterFunc(ROIFallbackWindow, func() {
 			fs.mu.Lock()
@@ -645,8 +673,11 @@ func processFrame(
 }
 
 // encodeAndBroadcast encodes img as JPEG and sends directly to all clients.
-// Called by both FrameSyncer (composited frames) and processFrame (BG-only frames).
+// Single broadcast path — no intermediate buffer.
 func encodeAndBroadcast(img image.Image, hub *Hub) {
+	if img == nil {
+		return
+	}
 	var out bytes.Buffer
 	if err := jpeg.Encode(&out, img, &jpeg.Options{Quality: 82}); err != nil {
 		log.Printf("[encode] %v", err)
@@ -700,10 +731,7 @@ func main() {
 
 	go hub.run()
 
-	// ── API Routes ───────────────────────────────────────────────────────────
-
 	http.Handle("/", http.FileServer(http.Dir("./public")))
-
 	http.HandleFunc("/ws", hub.serveWS)
 	http.HandleFunc("/api/stream", hub.serveWS)
 
@@ -774,7 +802,6 @@ func main() {
 			continue
 		}
 
-		// ── Parse 28-byte header ──────────────────────────────────────────────
 		fType := buf[5]
 		fID := binary.BigEndian.Uint32(buf[6:10])
 		seq := binary.BigEndian.Uint16(buf[10:12])

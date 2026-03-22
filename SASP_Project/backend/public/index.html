@@ -106,6 +106,32 @@
     #personsPill { transition: border-color .3s; }
     #personsPill.active { border-color: rgba(0,230,118,.35); }
 
+    /* ── Controls ────────────────────────────────── */
+    #controls {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      gap: 6px;
+      z-index: 10;
+    }
+    .btn {
+      background: rgba(10,10,10,0.72);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--dim);
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: all .2s;
+    }
+    .btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    .btn.active { background: var(--amber); color: #000; border-color: var(--amber); }
+
     /* ── Stats bar below stream ──────────────────── */
     #statsBar {
       width: 100%;
@@ -175,6 +201,15 @@
     <div class="pill" id="personsPill">
       👤&thinsp;<span id="hudPersons">—</span>
     </div>
+    <div class="pill" id="modePill" style="border-color: rgba(255,171,0,0.5)">
+      <span id="hudMode" style="color: var(--amber)">AUTO</span>
+    </div>
+  </div>
+
+  <div id="controls">
+    <button class="btn active" id="btnAuto" onclick="setForceMode('auto')">Auto</button>
+    <button class="btn" id="btnTrad" onclick="setForceMode('traditional')">Force High BW</button>
+    <button class="btn" id="btnSasp" onclick="setForceMode('sasp')">Force Low BW</button>
   </div>
 </div>
 
@@ -281,6 +316,14 @@ async function pollMetrics() {
     hudPersons.textContent = persons;
     personsPill.classList.toggle('active', s.persons_per_frame > 0);
 
+    const forceMode = s.force_mode || 'auto';
+    document.getElementById('hudMode').textContent = forceMode === 'auto' ? 'AUTO BW' : (forceMode === 'traditional' ? 'HIGH BW (TRAD)' : 'LOW BW (SASP)');
+    
+    // Update button states
+    document.getElementById('btnAuto').classList.toggle('active', forceMode === 'auto');
+    document.getElementById('btnTrad').classList.toggle('active', forceMode === 'traditional');
+    document.getElementById('btnSasp').classList.toggle('active', forceMode === 'sasp');
+
     // Stats cards
     document.getElementById('sFpsIn').textContent   = s.fps_in.toFixed(1);
     document.getElementById('sFpsOut').textContent   = s.fps_out.toFixed(1);
@@ -298,6 +341,20 @@ async function pollMetrics() {
   } catch (_) { /* server might not be ready yet */ }
 }
 setInterval(pollMetrics, 1000);
+
+// ── Overrides ─────────────────────────────────────────────────────────────────
+async function setForceMode(mode) {
+  try {
+    await fetch('/api/mode', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mode })
+    });
+    pollMetrics(); // instant feedback
+  } catch (e) {
+    console.error('Failed to set mode:', e);
+  }
+}
 
 // ── Status helper ─────────────────────────────────────────────────────────────
 function setStatus(state) {

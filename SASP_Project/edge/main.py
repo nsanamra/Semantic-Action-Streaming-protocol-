@@ -47,6 +47,8 @@ import signal
 import sys
 import threading
 import time
+import urllib.request
+import json
 from concurrent.futures import ThreadPoolExecutor
 from collections import deque
 
@@ -86,6 +88,51 @@ PNG_COMPRESSION = 1
 
 # JPEG quality for background (lower = smaller = faster to transmit)
 BG_JPEG_QUALITY = 22
+TRAD_JPEG_QUALITY = 80
+
+# Adaptive Streaming Settings
+MODE_TRADITIONAL = "traditional"
+MODE_SASP        = "sasp"
+
+BW_HIGH_THRESHOLD = 2000.0  # KB/s — switch to Traditional
+BW_LOW_THRESHOLD  = 1000.0  # KB/s — switch to SASP
+
+# Global state updated by the background poller
+g_streaming_mode = MODE_SASP
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  Adaptive Bandwidth Poller
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _poll_metrics(stop_event: threading.Event) -> None:
+    global g_streaming_mode
+    while not stop_event.is_set():
+        try:
+            req = urllib.request.Request("http://localhost:8080/api/metrics")
+            with urllib.request.urlopen(req, timeout=1.0) as response:
+                payload = json.loads(response.read().decode())
+                data = payload.get("data", {})
+                
+                force_mode = data.get("force_mode", "auto")
+                bw_out = data.get("bandwidth_out_kbps", 0.0)
+
+                if force_mode == "traditional":
+                    g_streaming_mode = MODE_TRADITIONAL
+                elif force_mode == "sasp":
+                    g_streaming_mode = MODE_SASP
+                else:
+                    # Auto mode based on thresholds
+                    if g_streaming_mode == MODE_SASP and bw_out > BW_HIGH_THRESHOLD:
+                        g_streaming_mode = MODE_TRADITIONAL
+                        print(f"[adaptive] BW is {bw_out:.1f} KB/s > threshold. Switching to TRADITIONAL.")
+                    elif g_streaming_mode == MODE_TRADITIONAL and bw_out < BW_LOW_THRESHOLD:
+                        g_streaming_mode = MODE_SASP
+                        print(f"[adaptive] BW is {bw_out:.1f} KB/s < threshold. Switching to SASP.")
+        except Exception:
+            pass  # Server might be restarting, just keep current mode
+        
+        # Poll every 1 second
+        stop_event.wait(1.0)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -130,7 +177,8 @@ class Telemetry:
                 f"infer={infer:5.1f}ms  "
                 f"encode={enc:5.1f}ms  "
                 f"bw={bw:6.1f}KB/s  "
-                f"persons={ppl:.1f}"
+                f"persons={ppl:.1f}  "
+                f"mode={g_streaming_mode.upper()}"
             )
 
 
@@ -229,47 +277,60 @@ def _worker(
             continue
 
         bytes_sent = 0
+        current_mode = g_streaming_mode
 
-        # ── Inference ────────────────────────────────────────────────────────
-        t0 = time.perf_counter()
-        detections  = detector.detect(frame)
-        roi_count   = detector.last_roi_count   # exact count to embed in header
-        infer_ms    = (time.perf_counter() - t0) * 1000
+        if current_mode == MODE_TRADITIONAL:
+            # ── Traditional Mode: Skip YOLO, Skip blur ────────────────────────
+            t0 = time.perf_counter()
+            infer_ms = 0.0
+            roi_count = 0
+            
+            t1 = time.perf_counter()
+            _, bg_buf = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, TRAD_JPEG_QUALITY])
+            bg_bytes = bg_buf.tobytes()
 
-        t1 = time.perf_counter()
+            bytes_sent += transmitter.send(
+                bg_bytes, TYPE_BACKGROUND,
+                roi_count=0,
+                roi_index=0,
+            )
+            encode_ms = (time.perf_counter() - t1) * 1000
 
-        # ── ROI encode (parallel) & send — FIRST for lowest latency ──────────
-        # Go's FrameSyncer flushes the instant all ROI tiles arrive.
-        # Sending ROIs before BG means the flush-triggering data arrives ASAP.
-        if detections:
-            encode_args = [
-                (det['roi_rgba'], det['bbox'][0], det['bbox'][1])
-                for det in detections
-            ]
-            # Encode all tiles concurrently (WebP with alpha)
-            encoded = list(pool.map(_encode_roi, encode_args))
+        else:
+            # ── SASP Mode: YOLO + Blur + Composite ────────────────────────────
+            t0 = time.perf_counter()
+            detections  = detector.detect(frame)
+            roi_count   = detector.last_roi_count
+            infer_ms    = (time.perf_counter() - t0) * 1000
 
-            for idx, (roi_bytes, fx1, fy1) in enumerate(encoded):
-                bytes_sent += transmitter.send(
-                    roi_bytes, TYPE_ROI,
-                    roi_count=roi_count,
-                    roi_index=idx,
-                    x=fx1, y=fy1,
-                )
+            t1 = time.perf_counter()
 
-        # ── Background encode & send ─────────────────────────────────────────
-        blurred_bg  = detector.get_background(frame)
-        _, bg_buf   = cv2.imencode('.jpg', blurred_bg, [cv2.IMWRITE_JPEG_QUALITY, BG_JPEG_QUALITY])
-        bg_bytes    = bg_buf.tobytes()
+            if detections:
+                encode_args = [
+                    (det['roi_rgba'], det['bbox'][0], det['bbox'][1])
+                    for det in detections
+                ]
+                encoded = list(pool.map(_encode_roi, encode_args))
 
-        # roi_count in BG header tells Go exactly how many ROI tiles to expect
-        bytes_sent += transmitter.send(
-            bg_bytes, TYPE_BACKGROUND,
-            roi_count=roi_count,   # 0 means "send BG immediately, no ROI coming"
-            roi_index=0,
-        )
+                for idx, (roi_bytes, fx1, fy1) in enumerate(encoded):
+                    bytes_sent += transmitter.send(
+                        roi_bytes, TYPE_ROI,
+                        roi_count=roi_count,
+                        roi_index=idx,
+                        x=fx1, y=fy1,
+                    )
 
-        encode_ms = (time.perf_counter() - t1) * 1000
+            blurred_bg  = detector.get_background(frame)
+            _, bg_buf   = cv2.imencode('.jpg', blurred_bg, [cv2.IMWRITE_JPEG_QUALITY, BG_JPEG_QUALITY])
+            bg_bytes    = bg_buf.tobytes()
+
+            bytes_sent += transmitter.send(
+                bg_bytes, TYPE_BACKGROUND,
+                roi_count=roi_count,
+                roi_index=0,
+            )
+
+            encode_ms = (time.perf_counter() - t1) * 1000
 
         # ── Advance frame ID ─────────────────────────────────────────────────
         transmitter.frame_id = (transmitter.frame_id + 1) % FRAME_ID_MAX
@@ -303,6 +364,13 @@ def run_sasp_edge() -> None:
         name="sasp-worker",
     )
 
+    poller_thread = threading.Thread(
+        target=_poll_metrics,
+        args=(stop_event,),
+        daemon=True,
+        name="sasp-poller",
+    )
+
     # ── Camera setup ──────────────────────────────────────────────────────────
     cap = cv2.VideoCapture(CAMERA_INDEX)
     cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
@@ -326,6 +394,7 @@ def run_sasp_edge() -> None:
     print(f"  → {SERVER_IP}:{SERVER_PORT}   target {TARGET_FPS} FPS")
     print("══════════════════════════════════════════════════════")
 
+    poller_thread.start()
     worker_thread.start()
 
     # ── Camera grab loop (main thread — never stalls) ────────────────────────

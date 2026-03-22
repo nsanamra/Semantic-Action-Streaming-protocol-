@@ -74,7 +74,13 @@ type MetricsSnapshot struct {
 	DroppedFrames   uint64  `json:"dropped_frames"`
 	ActiveClients   int32   `json:"active_clients"`
 	UptimeSeconds   float64 `json:"uptime_seconds"`
+	ForceMode       string  `json:"force_mode"`
 }
+
+var (
+	modeMu           sync.RWMutex
+	currentForceMode = "auto"
+)
 
 func NewMetricsEngine() *MetricsEngine {
 	m := &MetricsEngine{
@@ -155,6 +161,10 @@ func (m *MetricsEngine) snapshotLoop() {
 
 		p50, p95, p99 := m.computePercentiles()
 
+		modeMu.RLock()
+		fMode := currentForceMode
+		modeMu.RUnlock()
+
 		snap := MetricsSnapshot{
 			FPSIn:           float64(deltaIn),
 			FPSOut:          float64(deltaOut),
@@ -167,6 +177,7 @@ func (m *MetricsEngine) snapshotLoop() {
 			DroppedFrames:   atomic.LoadUint64(&m.droppedOut),
 			ActiveClients:   atomic.LoadInt32(&m.activeClients),
 			UptimeSeconds:   time.Since(m.startTime).Seconds(),
+			ForceMode:       fMode,
 		}
 
 		m.snapMu.Lock()
@@ -743,6 +754,26 @@ func main() {
 	http.HandleFunc("/stats", corsMiddleware(func(w http.ResponseWriter, r *http.Request) {
 		snap := metrics.GetSnapshot()
 		jsonResponse(w, snap)
+	}))
+
+	http.HandleFunc("/api/mode", corsMiddleware(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == "POST" {
+			var req struct {
+				Mode string `json:"mode"`
+			}
+			if err := json.NewDecoder(r.Body).Decode(&req); err == nil {
+				modeMu.Lock()
+				currentForceMode = req.Mode
+				modeMu.Unlock()
+				jsonResponse(w, map[string]string{"status": "updated", "mode": req.Mode})
+				return
+			}
+		}
+		
+		modeMu.RLock()
+		m := currentForceMode
+		modeMu.RUnlock()
+		jsonResponse(w, map[string]string{"mode": m})
 	}))
 
 	http.HandleFunc("/api/health", corsMiddleware(func(w http.ResponseWriter, r *http.Request) {

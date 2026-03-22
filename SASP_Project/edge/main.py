@@ -94,11 +94,13 @@ TRAD_JPEG_QUALITY = 80
 MODE_TRADITIONAL = "traditional"
 MODE_SASP        = "sasp"
 
-BW_HIGH_THRESHOLD = 2000.0  # KB/s — switch to Traditional
-BW_LOW_THRESHOLD  = 1000.0  # KB/s — switch to SASP
+LATENCY_THRESH_HIGH = 100.0   # p50 ms — switch to SASP immediately
+LATENCY_THRESH_LOW  = 40.0    # p50 ms — prepare to switch to Traditional
+UPGRADE_WAIT_SEC    = 3       # Seconds of stability before upgrading
 
 # Global state updated by the background poller
 g_streaming_mode = MODE_SASP
+g_upgrade_counter = 0
 
 # ─────────────────────────────────────────────────────────────────────────────
 #  Adaptive Bandwidth Poller
@@ -114,20 +116,33 @@ def _poll_metrics(stop_event: threading.Event) -> None:
                 data = payload.get("data", {})
                 
                 force_mode = data.get("force_mode", "auto")
-                bw_out = data.get("bandwidth_out_kbps", 0.0)
+                lat_p50    = data.get("latency_p50_ms", 0.0)
+                drops      = data.get("dropped_frames", 0)
 
                 if force_mode == "traditional":
                     g_streaming_mode = MODE_TRADITIONAL
                 elif force_mode == "sasp":
                     g_streaming_mode = MODE_SASP
                 else:
-                    # Auto mode based on thresholds
-                    if g_streaming_mode == MODE_SASP and bw_out > BW_HIGH_THRESHOLD:
-                        g_streaming_mode = MODE_TRADITIONAL
-                        print(f"[adaptive] BW is {bw_out:.1f} KB/s > threshold. Switching to TRADITIONAL.")
-                    elif g_streaming_mode == MODE_TRADITIONAL and bw_out < BW_LOW_THRESHOLD:
-                        g_streaming_mode = MODE_SASP
-                        print(f"[adaptive] BW is {bw_out:.1f} KB/s < threshold. Switching to SASP.")
+                    # Auto mode based on network health (Latency and Dropped frames)
+                    if lat_p50 > LATENCY_THRESH_HIGH or drops > 0:
+                        # Congestion detected -> Drop down to SASP immediately
+                        if g_streaming_mode == MODE_TRADITIONAL:
+                            g_streaming_mode = MODE_SASP
+                            print(f"[adaptive] Congestion! Latency={lat_p50:.1f}ms Drops={drops}. Switching to SASP.")
+                        g_upgrade_counter = 0
+
+                    elif lat_p50 < LATENCY_THRESH_LOW and drops == 0:
+                        # Network is crystal clear -> Prepare to upgrade
+                        if g_streaming_mode == MODE_SASP:
+                            g_upgrade_counter += 1
+                            if g_upgrade_counter >= UPGRADE_WAIT_SEC:
+                                g_streaming_mode = MODE_TRADITIONAL
+                                g_upgrade_counter = 0
+                                print(f"[adaptive] Network healthy for {UPGRADE_WAIT_SEC}s. Upgrading to TRADITIONAL.")
+                    else:
+                        if g_streaming_mode == MODE_SASP:
+                            g_upgrade_counter = 0
         except Exception:
             pass  # Server might be restarting, just keep current mode
         

@@ -133,7 +133,7 @@ func (m *MetricsEngine) snapshotLoop() {
 	ticker := time.NewTicker(1 * time.Second)
 	defer ticker.Stop()
 
-	var prevIn, prevOut, prevBytes, prevBytesOut, prevPersons uint64
+	var prevIn, prevOut, prevBytes, prevBytesOut, prevPersons, prevDrop uint64
 
 	for range ticker.C {
 		curIn := atomic.LoadUint64(&m.framesIn)
@@ -141,18 +141,21 @@ func (m *MetricsEngine) snapshotLoop() {
 		curBytesIn := atomic.LoadUint64(&m.bytesIn)
 		curBytesOut := atomic.LoadUint64(&m.bytesOut)
 		curPersons := atomic.LoadUint64(&m.personsTotal)
+		curDrop := atomic.LoadUint64(&m.droppedOut)
 
 		deltaIn := curIn - prevIn
 		deltaOut := curOut - prevOut
 		deltaBytesIn := curBytesIn - prevBytes
 		deltaBytesOut := curBytesOut - prevBytesOut
 		deltaPersons := curPersons - prevPersons
+		deltaDrop := curDrop - prevDrop
 
 		prevIn = curIn
 		prevOut = curOut
 		prevBytes = curBytesIn
 		prevBytesOut = curBytesOut
 		prevPersons = curPersons
+		prevDrop = curDrop
 
 		var personsPerFrame float64
 		if deltaOut > 0 {
@@ -174,7 +177,7 @@ func (m *MetricsEngine) snapshotLoop() {
 			LatencyP95Ms:    p95,
 			LatencyP99Ms:    p99,
 			PersonsPerFrame: personsPerFrame,
-			DroppedFrames:   atomic.LoadUint64(&m.droppedOut),
+			DroppedFrames:   deltaDrop,
 			ActiveClients:   atomic.LoadInt32(&m.activeClients),
 			UptimeSeconds:   time.Since(m.startTime).Seconds(),
 			ForceMode:       fMode,

@@ -261,19 +261,31 @@ class SASPTransmitter:
 # ─────────────────────────────────────────────────────────────────────────────
 
 def _encode_roi(args: tuple) -> tuple[bytes, int, int]:
-    """Encode one ROI tile to PNG (lossless, full BGRA alpha). Returns (bytes, x, y).
+    """Encode one ROI tile. Returns (bytes, x, y).
     
-    PNG is used instead of WebP because Go's golang.org/x/image/webp decoder
-    does not support the alpha channel — it silently drops transparency and
-    returns an opaque image, which causes draw.Over to paint a solid rectangle
-    over the blurred background instead of blending through the feathered mask.
-    Go's stdlib image/png decoder handles BGRA (4-channel) PNG correctly,
-    preserving the full alpha channel for proper draw.Over compositing.
-    PNG_COMPRESSION=1 (fastest) keeps encode time low (~2-4 ms per tile).
+    To solve the massive bandwidth problem of lossless PNG, we split the ROI:
+      - RGB channels are compressed as High Quality JPEG
+      - Alpha channel is compressed circularly as a grayscale PNG
+    The payload is packed as: [4-byte LittleEndian uint32 JPG_LEN] [JPG_BYTES] [PNG_BYTES]
     """
     roi_rgba, fx1, fy1 = args
-    _, buf = cv2.imencode('.png', roi_rgba, [cv2.IMWRITE_PNG_COMPRESSION, PNG_COMPRESSION])
-    return buf.tobytes(), fx1, fy1
+    
+    roi_rgb = roi_rgba[:, :, :3]
+    roi_alpha = roi_rgba[:, :, 3]
+
+    # Compress RGB as JPEG (Quality 85 is visually flawless here)
+    _, jpg_buf = cv2.imencode('.jpg', roi_rgb, [cv2.IMWRITE_JPEG_QUALITY, 85])
+    
+    # Compress Alpha mask (Since it's highly homogeneous, PNG compression collapses it to ~1-3KB)
+    _, png_buf = cv2.imencode('.png', roi_alpha, [cv2.IMWRITE_PNG_COMPRESSION, 9])
+    
+    jpg_bytes = jpg_buf.tobytes()
+    png_bytes = png_buf.tobytes()
+    
+    # Pack into a custom compound payload for the Go server
+    payload = struct.pack("<I", len(jpg_bytes)) + jpg_bytes + png_bytes
+    
+    return payload, fx1, fy1
 
 
 def _worker(

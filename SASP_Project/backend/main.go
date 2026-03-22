@@ -6,9 +6,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"image"
+	"image/color"
 	"image/draw"
 	"image/jpeg"
-	_ "image/png" // register PNG decoder for image.Decode
+	"image/png"
 	"log"
 	"math"
 	"net"
@@ -662,13 +663,68 @@ func processFrame(
 	switch fType {
 	case TypeBackground:
 		img, err = jpeg.Decode(bytes.NewReader(data))
+		if err != nil {
+			log.Printf("[process] BG decode error frameID=%d: %v", frameID, err)
+			return
+		}
 	case TypeROI:
-		img, _, err = image.Decode(bytes.NewReader(data))
+		if len(data) < 4 {
+			log.Printf("[process] ROI decode error frameID=%d: payload too short", frameID)
+			return
+		}
+
+		// 1. Read the 4-byte little-endian length of the JPEG data
+		jpgLen := binary.LittleEndian.Uint32(data[:4])
+
+		if uint32(len(data)) < 4+jpgLen {
+			log.Printf("[process] ROI decode error frameID=%d: payload truncated", frameID)
+			return
+		}
+
+		// 2. Split the slices
+		jpgData := data[4 : 4+jpgLen]
+		pngData := data[4+jpgLen:]
+
+		// 3. Decode the High-Quality RGB JPEG
+		rgbImg, err := jpeg.Decode(bytes.NewReader(jpgData))
+		if err != nil {
+			log.Printf("[process] ROI JPEG decode error frameID=%d: %v", frameID, err)
+			return
+		}
+
+		// 4. Decode the highly-compressed 1-bit Alpha PNG mask
+		maskImg, err := png.Decode(bytes.NewReader(pngData))
+		if err != nil {
+			log.Printf("[process] ROI PNG mask decode error frameID=%d: %v", frameID, err)
+			return
+		}
+
+		// 5. Reconstruct the NRGBA image for the composite engine
+		bounds := rgbImg.Bounds()
+		combined := image.NewNRGBA(bounds)
+
+		for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
+			for x := bounds.Min.X; x < bounds.Max.X; x++ {
+				// Extract RGB from JPEG
+				r, g, b, _ := rgbImg.At(x, y).RGBA()
+
+				// Extract Alpha from PNG
+				// Go's image decoder strictly respects color models. A 1-channel Grayscale PNG
+				// returns fully opaque alpha (0xffff) when `.RGBA()` is called. 
+				// The actual mask value is stored in the luminance/color channels (e.g. R).
+				maskVal, _, _, _ := maskImg.At(x, y).RGBA()
+
+				// Convert 16-bit to 8-bit
+				r8 := uint8(r >> 8)
+				g8 := uint8(g >> 8)
+				b8 := uint8(b >> 8)
+				a8 := uint8(maskVal >> 8)
+
+				combined.SetNRGBA(x, y, color.NRGBA{R: r8, G: g8, B: b8, A: a8})
+			}
+		}
+		img = combined
 	default:
-		return
-	}
-	if err != nil {
-		log.Printf("[process] decode error fType=%d frameID=%d: %v", fType, frameID, err)
 		return
 	}
 

@@ -87,9 +87,14 @@ def main():
         bx1, by1, bx2, by2 = map(int, det['bbox'])
         roi_rgba = det['roi_rgba']
         
-        # Simulate PNG encoding of ROI
-        _, roi_png_buf = cv2.imencode('.png', roi_rgba, [cv2.IMWRITE_PNG_COMPRESSION, 1])
-        sasp_size_kb += len(roi_png_buf) / 1024.0
+        # Simulate new Dual Payload (JPEG RGB + PNG Alpha)
+        roi_rgb = roi_rgba[:, :, :3]
+        roi_alpha = roi_rgba[:, :, 3]
+
+        _, jpg_buf = cv2.imencode('.jpg', roi_rgb, [cv2.IMWRITE_JPEG_QUALITY, 85])
+        _, mask_buf = cv2.imencode('.png', roi_alpha, [cv2.IMWRITE_PNG_COMPRESSION, 9])
+        
+        sasp_size_kb += (len(jpg_buf) + len(mask_buf) + 4) / 1024.0
         
         # Composite ROI over background (Alpha blending)
         roi_rgb = roi_rgba[:, :, :3]

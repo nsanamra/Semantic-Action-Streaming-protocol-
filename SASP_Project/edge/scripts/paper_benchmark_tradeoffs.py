@@ -49,8 +49,13 @@ def main():
         
         if detections:
             roi_rgba = detections[0]['roi_rgba']
-            _, roi_png_buf = cv2.imencode('.png', roi_rgba, [cv2.IMWRITE_PNG_COMPRESSION, 1])
-            sasp_bytes += len(roi_png_buf)
+            roi_rgb = roi_rgba[:, :, :3]
+            roi_alpha = roi_rgba[:, :, 3]
+
+            _, jpg_buf = cv2.imencode('.jpg', roi_rgb, [cv2.IMWRITE_JPEG_QUALITY, 85])
+            _, mask_buf = cv2.imencode('.png', roi_alpha, [cv2.IMWRITE_PNG_COMPRESSION, 9])
+            
+            sasp_bytes += len(jpg_buf) + len(mask_buf) + 4
             
     avg_infer_ms = (total_infer_time / args.iterations) * 1000
     avg_trad_kb = (trad_bytes / args.iterations) / 1024.0

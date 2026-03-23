@@ -55,7 +55,7 @@ SHARPEN_KERNEL = np.array([[0, -0.5, 0],
                             [-0.5, 3, -0.5],
                             [0, -0.5, 0]], dtype=np.float32)
 
-MODEL_PATH = os.environ.get("YOLO_MODEL", "yolov8n-seg.pt")
+MODEL_PATH = os.environ.get("YOLO_MODEL", "yolo26n-seg.pt")
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -139,7 +139,7 @@ class SemanticDetector:
         results = self.model.track(
             frame,
             conf=DETECTION_CONFIDENCE,
-            #classes=[PERSON_CLASS_ID],
+            classes=[PERSON_CLASS_ID],
             persist=True,      # maintain tracker state across frames
             verbose=False,
         )[0]

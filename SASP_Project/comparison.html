@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SASP vs MJPEG — Live Benchmark</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #0a0a0f;
+    --surface:   #11111a;
+    --border:    #1e1e2e;
+    --muted:     #3a3a55;
+
+    --sasp:      #00e5ff;
+    --sasp-dim:  #00e5ff22;
+    --mjpeg:     #ff6b35;
+    --mjpeg-dim: #ff6b3522;
+
+    --good:      #39ff7e;
+    --warn:      #ffd600;
+    --bad:       #ff3d71;
+    --text:      #e8e8f4;
+    --subtext:   #7a7a9a;
+
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-disp: 'Syne', sans-serif;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-mono);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── Scanline overlay ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.08) 2px,
+      rgba(0,0,0,0.08) 4px
+    );
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  /* ── Header ── */
+  header {
+    padding: 1.5rem 2rem 1rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+  }
+
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0;
+    width: 100%; height: 1px;
+    background: linear-gradient(90deg, var(--sasp), transparent 40%, transparent 60%, var(--mjpeg));
+  }
+
+  .header-left h1 {
+    font-family: var(--font-disp);
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+
+  .header-left h1 span.sasp  { color: var(--sasp); }
+  .header-left h1 span.vs    { color: var(--muted); font-size: 1rem; margin: 0 0.4rem; }
+  .header-left h1 span.mjpeg { color: var(--mjpeg); }
+
+  .header-left p {
+    font-size: 0.7rem;
+    color: var(--subtext);
+    margin-top: 0.2rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .status-bar {
+    display: flex;
+    gap: 1.2rem;
+    align-items: center;
+  }
+
+  .status-pill {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.7rem;
+    border-radius: 2px;
+    border: 1px solid;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .status-pill .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    animation: pulse 1.4s ease-in-out infinite;
+  }
+
+  .status-pill.sasp  { color: var(--sasp);  border-color: var(--sasp);  background: var(--sasp-dim); }
+  .status-pill.mjpeg { color: var(--mjpeg); border-color: var(--mjpeg); background: var(--mjpeg-dim); }
+  .status-pill.sasp  .dot { background: var(--sasp);  }
+  .status-pill.mjpeg .dot { background: var(--mjpeg); }
+  .status-pill.offline { color: var(--muted); border-color: var(--muted); background: transparent; }
+  .status-pill.offline .dot { background: var(--muted); animation: none; }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.4; transform: scale(0.7); }
+  }
+
+  /* ── Winner Banner ── */
+  #winner-banner {
+    text-align: center;
+    padding: 0.5rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    transition: all 0.5s;
+    min-height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  /* ── Main layout ── */
+  .main-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+
+  /* ── Stream panels ── */
+  .stream-panel {
+    position: relative;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .stream-panel.left  { border-right: 1px solid var(--border); }
+
+  .stream-label {
+    position: absolute;
+    top: 0.75rem; left: 0.75rem;
+    z-index: 10;
+    font-family: var(--font-disp);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.6rem;
+    border-radius: 2px;
+  }
+
+  .stream-label.sasp  { color: var(--bg); background: var(--sasp); }
+  .stream-label.mjpeg { color: var(--bg); background: var(--mjpeg); }
+
+  .stream-panel img,
+  .stream-panel .stream-placeholder {
+    width: 100%;
+    aspect-ratio: 4/3;
+    display: block;
+    object-fit: cover;
+  }
+
+  .stream-placeholder {
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+  }
+
+  /* Live BW ticker on each stream */
+  .bw-overlay {
+    position: absolute;
+    bottom: 0.75rem; right: 0.75rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    padding: 0.2rem 0.6rem;
+    background: rgba(10,10,15,0.85);
+    border-radius: 2px;
+    border-left: 3px solid;
+  }
+
+  .bw-overlay.sasp  { border-color: var(--sasp);  color: var(--sasp);  }
+  .bw-overlay.mjpeg { border-color: var(--mjpeg); color: var(--mjpeg); }
+
+  /* ── Metrics section ── */
+  .metrics-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .metrics-panel {
+    padding: 1.25rem 1.5rem;
+  }
+
+  .metrics-panel.left { border-right: 1px solid var(--border); }
+
+  .metrics-panel h3 {
+    font-family: var(--font-disp);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--subtext);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .metrics-panel h3::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+  }
+
+  .stat {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 0.6rem 0.75rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 2px; height: 100%;
+  }
+
+  .sasp  .stat::before { background: var(--sasp); }
+  .mjpeg .stat::before { background: var(--mjpeg); }
+
+  .stat-label {
+    font-size: 0.58rem;
+    color: var(--subtext);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+
+  .stat-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1;
+    transition: color 0.3s;
+  }
+
+  .stat-unit {
+    font-size: 0.6rem;
+    color: var(--subtext);
+    margin-left: 0.2rem;
+  }
+
+  /* ── Savings bar ── */
+  .savings-section {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .savings-section h3 {
+    font-family: var(--font-disp);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--subtext);
+    margin-bottom: 1rem;
+  }
+
+  .compare-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .bar-label {
+    font-size: 0.65rem;
+    color: var(--subtext);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    width: 4.5rem;
+    flex-shrink: 0;
+  }
+
+  .bar-track {
+    flex: 1;
+    height: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 1px;
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    height: 100%;
+    border-radius: 1px;
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .bar-fill.sasp  { background: var(--sasp); }
+  .bar-fill.mjpeg { background: var(--mjpeg); }
+
+  .bar-val {
+    font-size: 0.7rem;
+    font-weight: 600;
+    width: 5.5rem;
+    flex-shrink: 0;
+    text-align: right;
+  }
+
+  .bar-val.sasp  { color: var(--sasp); }
+  .bar-val.mjpeg { color: var(--mjpeg); }
+
+  .savings-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.75rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 2px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+
+  .savings-pill.saving { background: rgba(57,255,126,0.12); color: var(--good); border: 1px solid var(--good); }
+  .savings-pill.worse  { background: rgba(255,61,113,0.12);  color: var(--bad);  border: 1px solid var(--bad); }
+
+  /* ── History chart ── */
+  .chart-section {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .chart-section h3 {
+    font-family: var(--font-disp);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--subtext);
+    margin-bottom: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .chart-legend {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.6rem;
+  }
+
+  .legend-dot {
+    display: inline-block;
+    width: 8px; height: 2px;
+    border-radius: 1px;
+    margin-right: 0.3rem;
+    vertical-align: middle;
+  }
+
+  canvas#bwChart {
+    width: 100% !important;
+    height: 120px !important;
+    display: block;
+  }
+
+  /* ── Footer ── */
+  footer {
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.62rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  #clock { font-weight: 600; }
+
+  /* ── Number color helpers ── */
+  .c-good { color: var(--good) !important; }
+  .c-warn { color: var(--warn) !important; }
+  .c-bad  { color: var(--bad)  !important; }
+  .c-sasp  { color: var(--sasp);  }
+  .c-mjpeg { color: var(--mjpeg); }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .main-grid, .metrics-row { grid-template-columns: 1fr; }
+    .stream-panel.left, .metrics-panel.left { border-right: none; border-bottom: 1px solid var(--border); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ Header ══ -->
+<header>
+  <div class="header-left">
+    <h1>
+      <span class="sasp">SASP</span>
+      <span class="vs">vs</span>
+      <span class="mjpeg">MJPEG</span>
+    </h1>
+    <p>Live Bandwidth Benchmark — Semantic Adaptive vs Industry Standard</p>
+  </div>
+  <div class="status-bar">
+    <div class="status-pill sasp offline" id="sasp-status">
+      <span class="dot"></span> SASP :8080
+    </div>
+    <div class="status-pill mjpeg offline" id="mjpeg-status">
+      <span class="dot"></span> MJPEG :8081
+    </div>
+  </div>
+</header>
+
+<!-- ══ Winner Banner ══ -->
+<div id="winner-banner">Waiting for both streams…</div>
+
+<!-- ══ Streams ══ -->
+<div class="main-grid">
+  <div class="stream-panel left">
+    <div class="stream-label sasp">SASP</div>
+    <!-- SASP speaks WebSocket+JPEG frames, not MJPEG HTTP — use canvas -->
+    <canvas id="sasp-feed" style="width:100%;aspect-ratio:4/3;display:block;background:#0a0a0f"></canvas>
+    <div class="stream-placeholder" id="sasp-placeholder" style="display:none">
+      SASP stream offline — start main.py
+    </div>
+    <div class="bw-overlay sasp" id="sasp-bw-overlay">— KB/s</div>
+  </div>
+
+  <div class="stream-panel">
+    <div class="stream-label mjpeg">MJPEG</div>
+    <img id="mjpeg-feed"
+         src="http://localhost:8081/stream"
+         alt="MJPEG stream"
+         onerror="this.style.display='none'; document.getElementById('mjpeg-placeholder').style.display='flex'"
+         style="width:100%;aspect-ratio:4/3;display:block;object-fit:cover">
+    <div class="stream-placeholder" id="mjpeg-placeholder" style="display:none">
+      MJPEG stream offline — start mjpeg_server.py
+    </div>
+    <div class="bw-overlay mjpeg" id="mjpeg-bw-overlay">— KB/s</div>
+  </div>
+</div>
+
+<!-- ══ Metrics ══ -->
+<div class="metrics-row">
+  <!-- SASP stats -->
+  <div class="metrics-panel left sasp">
+    <h3>SASP Metrics</h3>
+    <div class="stat-grid">
+      <div class="stat">
+        <div class="stat-label">Bandwidth Out</div>
+        <div class="stat-value" id="s-bw">—<span class="stat-unit">KB/s</span></div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">FPS Out</div>
+        <div class="stat-value" id="s-fps">—</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Latency P50</div>
+        <div class="stat-value" id="s-lat">—<span class="stat-unit">ms</span></div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Persons/frame</div>
+        <div class="stat-value" id="s-persons">—</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Dropped Frames</div>
+        <div class="stat-value" id="s-drops">—</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Mode</div>
+        <div class="stat-value" id="s-mode" style="font-size:0.8rem">—</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MJPEG stats -->
+  <div class="metrics-panel mjpeg">
+    <h3>MJPEG Metrics</h3>
+    <div class="stat-grid">
+      <div class="stat">
+        <div class="stat-label">Bandwidth</div>
+        <div class="stat-value" id="m-bw">—<span class="stat-unit">KB/s</span></div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">FPS</div>
+        <div class="stat-value" id="m-fps">—</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Bytes/Frame</div>
+        <div class="stat-value" id="m-bpf">—<span class="stat-unit">B</span></div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">JPEG Quality</div>
+        <div class="stat-value" id="m-quality">—</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Total Sent</div>
+        <div class="stat-value" id="m-total">—<span class="stat-unit">MB</span></div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Protocol</div>
+        <div class="stat-value" style="font-size:0.6rem;line-height:1.3" id="m-proto">—</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ Savings Bar ══ -->
+<div class="savings-section">
+  <h3>Bandwidth Comparison</h3>
+  <div class="compare-bars">
+    <div class="bar-row">
+      <span class="bar-label c-sasp">SASP</span>
+      <div class="bar-track"><div class="bar-fill sasp" id="bar-sasp" style="width:0%"></div></div>
+      <span class="bar-val sasp" id="barval-sasp">— KB/s</span>
+    </div>
+    <div class="bar-row">
+      <span class="bar-label c-mjpeg">MJPEG</span>
+      <div class="bar-track"><div class="bar-fill mjpeg" id="bar-mjpeg" style="width:100%"></div></div>
+      <span class="bar-val mjpeg" id="barval-mjpeg">— KB/s</span>
+    </div>
+  </div>
+  <div id="savings-pill-container" style="margin-top:0.75rem"></div>
+</div>
+
+<!-- ══ History Chart ══ -->
+<div class="chart-section">
+  <h3>
+    Bandwidth History (60s)
+    <span class="chart-legend">
+      <span><span class="legend-dot" style="background:var(--sasp)"></span>SASP</span>
+      <span><span class="legend-dot" style="background:var(--mjpeg)"></span>MJPEG</span>
+    </span>
+  </h3>
+  <canvas id="bwChart"></canvas>
+</div>
+
+<!-- ══ Footer ══ -->
+<footer>
+  <span>SASP → ws://localhost:8080/api/metrics &nbsp;|&nbsp; MJPEG → http://localhost:8081/metrics</span>
+  <span id="clock"></span>
+</footer>
+
+<script>
+// ── State ──────────────────────────────────────────────────────────────────
+const MAX_HISTORY = 60;
+const history = { sasp: [], mjpeg: [] };
+
+let saspData  = null;
+let mjpegData = null;
+
+// ── SASP WebSocket → Canvas renderer ──────────────────────────────────────
+
+(function initSASPCanvas() {
+  const canvas = document.getElementById('sasp-feed');
+  const ctx    = canvas.getContext('2d');
+  const placeholder = document.getElementById('sasp-placeholder');
+  let ws = null;
+
+  function connect() {
+    ws = new WebSocket('ws://localhost:8080/api/stream');
+    ws.binaryType = 'arraybuffer';
+
+    ws.onopen = () => {
+      canvas.style.display = 'block';
+      placeholder.style.display = 'none';
+    };
+
+    ws.onmessage = (evt) => {
+      const blob = new Blob([evt.data], { type: 'image/jpeg' });
+      const url  = URL.createObjectURL(blob);
+      const img  = new Image();
+      img.onload = () => {
+        canvas.width  = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        ctx.drawImage(img, 0, 0);
+        URL.revokeObjectURL(url);
+      };
+      img.src = url;
+    };
+
+    ws.onclose = () => {
+      canvas.style.display = 'none';
+      placeholder.style.display = 'flex';
+      // Reconnect after 2s
+      setTimeout(connect, 2000);
+    };
+
+    ws.onerror = () => ws.close();
+  }
+
+  connect();
+})();
+
+// ── Fetch helpers ──────────────────────────────────────────────────────────
+
+async function fetchJSON(url) {
+  const ctrl = new AbortController();
+  const id = setTimeout(() => ctrl.abort(), 1500);
+  try {
+    const r = await fetch(url, { signal: ctrl.signal });
+    clearTimeout(id);
+    if (!r.ok) return null;
+    return await r.json();
+  } catch { clearTimeout(id); return null; }
+}
+
+// ── Poll SASP (/api/metrics) ───────────────────────────────────────────────
+
+async function pollSASP() {
+  const res = await fetchJSON('http://localhost:8080/api/metrics');
+  const pill = document.getElementById('sasp-status');
+
+  if (!res || !res.data) {
+    pill.classList.add('offline');
+    saspData = null;
+    setEl('s-bw', '—'); setEl('s-fps', '—');
+    setEl('s-lat', '—'); setEl('s-persons', '—');
+    setEl('s-drops', '—'); setEl('s-mode', '—');
+    document.getElementById('sasp-bw-overlay').textContent = '— KB/s';
+    return;
+  }
+
+  pill.classList.remove('offline');
+  saspData = res.data;
+  const d = saspData;
+
+  const bw = d.bandwidth_out_kbps ?? 0;
+  setEl('s-bw', fmtNum(bw), bwColor(bw));
+  setEl('s-fps', fmtNum(d.fps_out ?? 0));
+  setEl('s-lat', fmtNum(d.latency_p50_ms ?? 0), latColor(d.latency_p50_ms ?? 0));
+  setEl('s-persons', fmtNum(d.persons_per_frame ?? 0, 1));
+  setEl('s-drops', d.dropped_frames ?? 0, (d.dropped_frames ?? 0) > 0 ? 'c-bad' : 'c-good');
+  setEl('s-mode', (d.force_mode ?? 'auto').toUpperCase());
+  document.getElementById('sasp-bw-overlay').textContent = fmtNum(bw) + ' KB/s';
+
+  pushHistory('sasp', bw);
+}
+
+// ── Poll MJPEG (/metrics) ──────────────────────────────────────────────────
+
+async function pollMJPEG() {
+  const res = await fetchJSON('http://localhost:8081/metrics');
+  const pill = document.getElementById('mjpeg-status');
+
+  if (!res || !res.data) {
+    pill.classList.add('offline');
+    mjpegData = null;
+    setEl('m-bw', '—'); setEl('m-fps', '—');
+    setEl('m-bpf', '—'); setEl('m-quality', '—');
+    setEl('m-total', '—'); setEl('m-proto', '—');
+    document.getElementById('mjpeg-bw-overlay').textContent = '— KB/s';
+    return;
+  }
+
+  pill.classList.remove('offline');
+  mjpegData = res.data;
+  const d = mjpegData;
+
+  const bw = d.bandwidth_kbps ?? 0;
+  setEl('m-bw', fmtNum(bw), bwColor(bw));
+  setEl('m-fps', fmtNum(d.fps ?? 0));
+  setEl('m-bpf', (d.bytes_per_frame ?? 0).toLocaleString());
+  setEl('m-quality', d.jpeg_quality ?? '—');
+  setEl('m-total', fmtNum(d.total_mb_sent ?? 0, 1));
+  setEl('m-proto', d.protocol ?? '—');
+  document.getElementById('mjpeg-bw-overlay').textContent = fmtNum(bw) + ' KB/s';
+
+  pushHistory('mjpeg', bw);
+}
+
+// ── Comparison bars & winner ───────────────────────────────────────────────
+
+function updateComparison() {
+  const sBW = saspData?.bandwidth_out_kbps ?? null;
+  const mBW = mjpegData?.bandwidth_kbps    ?? null;
+
+  if (sBW === null || mBW === null) {
+    document.getElementById('winner-banner').textContent = 'Waiting for both streams…';
+    document.getElementById('savings-pill-container').innerHTML = '';
+    return;
+  }
+
+  const max = Math.max(sBW, mBW, 1);
+  document.getElementById('bar-sasp').style.width  = (sBW / max * 100) + '%';
+  document.getElementById('bar-mjpeg').style.width = (mBW / max * 100) + '%';
+  document.getElementById('barval-sasp').textContent  = fmtNum(sBW)  + ' KB/s';
+  document.getElementById('barval-mjpeg').textContent = fmtNum(mBW) + ' KB/s';
+
+  const banner  = document.getElementById('winner-banner');
+  const pillBox = document.getElementById('savings-pill-container');
+
+  if (sBW < mBW) {
+    const pct = ((mBW - sBW) / mBW * 100).toFixed(1);
+    const abs = (mBW - sBW).toFixed(0);
+    banner.innerHTML = `<span style="color:var(--sasp)">▼ SASP</span>&nbsp; is using <strong style="color:var(--good)">${pct}% less bandwidth</strong> — saving ${abs} KB/s vs MJPEG`;
+    pillBox.innerHTML = `<span class="savings-pill saving">▼ ${pct}% bandwidth saved by SASP</span>`;
+  } else if (mBW < sBW) {
+    const pct = ((sBW - mBW) / sBW * 100).toFixed(1);
+    banner.innerHTML = `<span style="color:var(--mjpeg)">▲ MJPEG</span>&nbsp; is using less bandwidth — SASP overhead is <strong style="color:var(--bad)">${pct}% higher</strong>`;
+    pillBox.innerHTML = `<span class="savings-pill worse">▲ SASP using ${pct}% more BW than MJPEG</span>`;
+  } else {
+    banner.innerHTML = 'Both streams are using equal bandwidth';
+    pillBox.innerHTML = '';
+  }
+}
+
+// ── Canvas chart ───────────────────────────────────────────────────────────
+
+function pushHistory(key, value) {
+  history[key].push(value);
+  if (history[key].length > MAX_HISTORY) history[key].shift();
+}
+
+function drawChart() {
+  const canvas = document.getElementById('bwChart');
+  const dpr    = window.devicePixelRatio || 1;
+  const W      = canvas.offsetWidth;
+  const H      = 120;
+  canvas.width  = W * dpr;
+  canvas.height = H * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  const sasp  = history.sasp;
+  const mjpeg = history.mjpeg;
+
+  const allVals = [...sasp, ...mjpeg].filter(v => v > 0);
+  const maxVal  = allVals.length ? Math.max(...allVals) * 1.15 : 100;
+
+  const PAD_L = 46, PAD_R = 10, PAD_T = 10, PAD_B = 20;
+  const cW = W - PAD_L - PAD_R;
+  const cH = H - PAD_T - PAD_B;
+
+  ctx.clearRect(0, 0, W, H);
+
+  // Grid lines
+  const steps = 4;
+  ctx.strokeStyle = '#1e1e2e';
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= steps; i++) {
+    const y = PAD_T + cH - (i / steps) * cH;
+    ctx.beginPath(); ctx.moveTo(PAD_L, y); ctx.lineTo(PAD_L + cW, y); ctx.stroke();
+    ctx.fillStyle = '#3a3a55';
+    ctx.font = `${9 * dpr / dpr}px JetBrains Mono`;
+    ctx.textAlign = 'right';
+    ctx.fillText(fmtNum(maxVal * i / steps), PAD_L - 6, y + 3);
+  }
+
+  function drawLine(data, color) {
+    if (data.length < 2) return;
+    const step = cW / (MAX_HISTORY - 1);
+    const offset = MAX_HISTORY - data.length;
+
+    // Gradient fill
+    const grad = ctx.createLinearGradient(0, PAD_T, 0, PAD_T + cH);
+    grad.addColorStop(0, color + '33');
+    grad.addColorStop(1, color + '00');
+    ctx.beginPath();
+    data.forEach((v, i) => {
+      const x = PAD_L + (offset + i) * step;
+      const y = PAD_T + cH - (v / maxVal) * cH;
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    });
+    ctx.lineTo(PAD_L + (offset + data.length - 1) * step, PAD_T + cH);
+    ctx.lineTo(PAD_L + offset * step, PAD_T + cH);
+    ctx.closePath();
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    // Line
+    ctx.beginPath();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 1.5;
+    ctx.lineJoin = 'round';
+    data.forEach((v, i) => {
+      const x = PAD_L + (offset + i) * step;
+      const y = PAD_T + cH - (v / maxVal) * cH;
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+  }
+
+  drawLine(mjpeg, '#ff6b35');
+  drawLine(sasp,  '#00e5ff');
+}
+
+// ── Utilities ──────────────────────────────────────────────────────────────
+
+function setEl(id, val, cls) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  // Preserve any inner <span class="stat-unit"> tags
+  const unit = el.querySelector('.stat-unit');
+  if (unit) {
+    el.firstChild.textContent = val;
+  } else {
+    el.textContent = val;
+  }
+  el.className = 'stat-value' + (cls ? ' ' + cls : '');
+}
+
+function fmtNum(n, dec = 0) {
+  return typeof n === 'number' ? n.toFixed(dec) : '—';
+}
+
+function bwColor(kbs) {
+  if (kbs < 200) return 'c-good';
+  if (kbs < 500) return 'c-warn';
+  return 'c-bad';
+}
+
+function latColor(ms) {
+  if (ms < 40)  return 'c-good';
+  if (ms < 100) return 'c-warn';
+  return 'c-bad';
+}
+
+function updateClock() {
+  document.getElementById('clock').textContent = new Date().toLocaleTimeString();
+}
+
+// ── Polling loop ───────────────────────────────────────────────────────────
+
+async function tick() {
+  await Promise.all([pollSASP(), pollMJPEG()]);
+  updateComparison();
+  drawChart();
+}
+
+setInterval(tick, 1000);
+setInterval(updateClock, 1000);
+tick();
+updateClock();
+
+// Redraw chart on resize
+window.addEventListener('resize', drawChart);
+</script>
+</body>
+</html>

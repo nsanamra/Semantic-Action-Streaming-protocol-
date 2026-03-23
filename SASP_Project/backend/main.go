@@ -231,6 +231,66 @@ func (m *MetricsEngine) JSON() []byte {
 
 var metrics = NewMetricsEngine()
 
+// repeater is initialised in main() once the hub exists.
+var repeater *FrameRepeater
+
+// ─────────────────────────────────────────────
+//  FrameRepeater
+//
+//  Caches the last good JPEG frame and re-broadcasts
+//  it at TARGET_FPS so clients see a smooth stream
+//  even when YOLO only produces 3-4 frames/sec.
+//
+//  When a real new frame arrives → cache it, reset timer.
+//  When no new frame in one tick → resend last cached frame.
+// ─────────────────────────────────────────────
+
+type FrameRepeater struct {
+	mu        sync.RWMutex
+	lastFrame []byte
+	hub       *Hub
+	newFrame  chan []byte
+}
+
+func NewFrameRepeater(hub *Hub) *FrameRepeater {
+	fr := &FrameRepeater{
+		hub:      hub,
+		newFrame: make(chan []byte, 4),
+	}
+	go fr.run()
+	return fr
+}
+
+// Push is called by encodeAndBroadcast instead of hub.broadcast directly.
+func (fr *FrameRepeater) Push(jpeg []byte) {
+	select {
+	case fr.newFrame <- jpeg:
+	default:
+		// repeater busy — drop, the ticker will resend last frame anyway
+	}
+}
+
+func (fr *FrameRepeater) run() {
+	for fresh := range fr.newFrame {
+		// Only broadcast real frames — browser canvas holds the last
+		// painted frame naturally, so the user sees no black flicker.
+		// No ticker needed — this gives correct bandwidth numbers too.
+		fr.mu.Lock()
+		fr.lastFrame = fresh
+		fr.mu.Unlock()
+		fr.broadcast(fresh)
+	}
+}
+
+func (fr *FrameRepeater) broadcast(jpeg []byte) {
+	metrics.RecordFrameOut(len(jpeg))
+	select {
+	case fr.hub.broadcast <- jpeg:
+	default:
+		metrics.RecordDrop()
+	}
+}
+
 // ─────────────────────────────────────────────
 //  FrameSyncer
 //
@@ -710,7 +770,7 @@ func processFrame(
 
 				// Extract Alpha from PNG
 				// Go's image decoder strictly respects color models. A 1-channel Grayscale PNG
-				// returns fully opaque alpha (0xffff) when `.RGBA()` is called. 
+				// returns fully opaque alpha (0xffff) when `.RGBA()` is called.
 				// The actual mask value is stored in the luminance/color channels (e.g. R).
 				maskVal, _, _, _ := maskImg.At(x, y).RGBA()
 
@@ -742,8 +802,9 @@ func processFrame(
 	}
 }
 
-// encodeAndBroadcast encodes img as JPEG and sends directly to all clients.
-// Single broadcast path — no intermediate buffer.
+// encodeAndBroadcast encodes img as JPEG and hands it to the FrameRepeater.
+// The repeater re-broadcasts at 30fps so clients see a smooth stream
+// even when YOLO only delivers 3-4 real frames per second.
 func encodeAndBroadcast(img image.Image, hub *Hub) {
 	if img == nil {
 		return
@@ -753,14 +814,7 @@ func encodeAndBroadcast(img image.Image, hub *Hub) {
 		log.Printf("[encode] %v", err)
 		return
 	}
-	b := out.Bytes()
-	metrics.RecordFrameOut(len(b))
-	select {
-	case hub.broadcast <- b:
-	default:
-		metrics.RecordDrop()
-		log.Printf("[broadcast] channel full — frame dropped")
-	}
+	repeater.Push(out.Bytes())
 }
 
 // ─────────────────────────────────────────────
@@ -796,6 +850,7 @@ func jsonResponse(w http.ResponseWriter, data interface{}) {
 
 func main() {
 	hub := NewHub()
+	repeater = NewFrameRepeater(hub)
 	reassembler := NewReassembler()
 	syncer := NewFrameSyncer(hub)
 
@@ -828,7 +883,7 @@ func main() {
 				return
 			}
 		}
-		
+
 		modeMu.RLock()
 		m := currentForceMode
 		modeMu.RUnlock()

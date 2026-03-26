@@ -1,0 +1,3026 @@
+[
+    {
+        "timestamp": "2026-03-25T22:25:09.603687",
+        "metrics": {
+            "data": {
+                "fps_in": 0,
+                "fps_out": 0,
+                "bandwidth_in_kbps": 0,
+                "bandwidth_out_kbps": 0,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.32,
+                "latency_p99_ms": 0.37,
+                "persons_per_frame": 0,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 152.001136209,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457709602
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:10.610599",
+        "metrics": {
+            "data": {
+                "fps_in": 0,
+                "fps_out": 0,
+                "bandwidth_in_kbps": 0,
+                "bandwidth_out_kbps": 0,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.32,
+                "latency_p99_ms": 0.37,
+                "persons_per_frame": 0,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 153.001143792,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457710610
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:11.617263",
+        "metrics": {
+            "data": {
+                "fps_in": 0,
+                "fps_out": 0,
+                "bandwidth_in_kbps": 0,
+                "bandwidth_out_kbps": 0,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.32,
+                "latency_p99_ms": 0.37,
+                "persons_per_frame": 0,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 154.001109959,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457711616
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:12.624148",
+        "metrics": {
+            "data": {
+                "fps_in": 0,
+                "fps_out": 0,
+                "bandwidth_in_kbps": 0,
+                "bandwidth_out_kbps": 0,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.32,
+                "latency_p99_ms": 0.37,
+                "persons_per_frame": 0,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 155.001113417,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457712623
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:13.631093",
+        "metrics": {
+            "data": {
+                "fps_in": 36,
+                "fps_out": 9,
+                "bandwidth_in_kbps": 679.447265625,
+                "bandwidth_out_kbps": 204.169921875,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.32,
+                "latency_p99_ms": 0.37,
+                "persons_per_frame": 9,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 156.001106625,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457713630
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:14.637879",
+        "metrics": {
+            "data": {
+                "fps_in": 52,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 997.6875,
+                "bandwidth_out_kbps": 296.06640625,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.33,
+                "latency_p99_ms": 0.38,
+                "persons_per_frame": 9,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 157.001141834,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457714637
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:15.644882",
+        "metrics": {
+            "data": {
+                "fps_in": 56,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 1085.333984375,
+                "bandwidth_out_kbps": 296.4189453125,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.32,
+                "latency_p99_ms": 0.38,
+                "persons_per_frame": 9.461538461538462,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 158.000580792,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457715644
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:16.648628",
+        "metrics": {
+            "data": {
+                "fps_in": 48,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 920.30859375,
+                "bandwidth_out_kbps": 296.3876953125,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.32,
+                "latency_p99_ms": 0.4,
+                "persons_per_frame": 8.538461538461538,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 159.001114334,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457716648
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:17.651670",
+        "metrics": {
+            "data": {
+                "fps_in": 56,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 1064.513671875,
+                "bandwidth_out_kbps": 295.17578125,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.32,
+                "latency_p99_ms": 0.42,
+                "persons_per_frame": 9.461538461538462,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 160.00047125,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457717650
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:18.653836",
+        "metrics": {
+            "data": {
+                "fps_in": 52,
+                "fps_out": 14,
+                "bandwidth_in_kbps": 977.353515625,
+                "bandwidth_out_kbps": 315.767578125,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.32,
+                "latency_p99_ms": 0.42,
+                "persons_per_frame": 8.571428571428571,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 161.001125542,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457718653
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:19.660638",
+        "metrics": {
+            "data": {
+                "fps_in": 51,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 962.0859375,
+                "bandwidth_out_kbps": 273.0751953125,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.32,
+                "latency_p99_ms": 0.55,
+                "persons_per_frame": 9.75,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 162.001112834,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457719660
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:20.667350",
+        "metrics": {
+            "data": {
+                "fps_in": 49,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 925.9697265625,
+                "bandwidth_out_kbps": 298.625,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.32,
+                "latency_p99_ms": 0.55,
+                "persons_per_frame": 8.307692307692308,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 163.001126167,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457720667
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:21.674086",
+        "metrics": {
+            "data": {
+                "fps_in": 52,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 994.7548828125,
+                "bandwidth_out_kbps": 298.4677734375,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.32,
+                "latency_p99_ms": 0.55,
+                "persons_per_frame": 9,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 164.001170334,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457721673
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:22.680404",
+        "metrics": {
+            "data": {
+                "fps_in": 51,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 985.298828125,
+                "bandwidth_out_kbps": 298.8251953125,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.32,
+                "latency_p99_ms": 0.43,
+                "persons_per_frame": 8.76923076923077,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 165.001142375,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457722680
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:23.683865",
+        "metrics": {
+            "data": {
+                "fps_in": 48,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 915.7412109375,
+                "bandwidth_out_kbps": 274.2880859375,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.32,
+                "latency_p99_ms": 0.4,
+                "persons_per_frame": 9,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 166.001126375,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457723683
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:24.690694",
+        "metrics": {
+            "data": {
+                "fps_in": 41,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 851.509765625,
+                "bandwidth_out_kbps": 287.072265625,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.32,
+                "latency_p99_ms": 0.4,
+                "persons_per_frame": 5.230769230769231,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 167.001141584,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457724690
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:25.697543",
+        "metrics": {
+            "data": {
+                "fps_in": 35,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 827.0224609375,
+                "bandwidth_out_kbps": 283.8271484375,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.33,
+                "persons_per_frame": 2.5384615384615383,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 168.001126459,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457725697
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:26.700717",
+        "metrics": {
+            "data": {
+                "fps_in": 39,
+                "fps_out": 14,
+                "bandwidth_in_kbps": 825.357421875,
+                "bandwidth_out_kbps": 311.0771484375,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.33,
+                "persons_per_frame": 3.857142857142857,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 169.001116167,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457726700
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:27.707368",
+        "metrics": {
+            "data": {
+                "fps_in": 39,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 818.4033203125,
+                "bandwidth_out_kbps": 288.2998046875,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.33,
+                "persons_per_frame": 4,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 170.001111959,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457727707
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:28.714091",
+        "metrics": {
+            "data": {
+                "fps_in": 39,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 820.9453125,
+                "bandwidth_out_kbps": 290.3046875,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.3,
+                "latency_p99_ms": 0.33,
+                "persons_per_frame": 4,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 171.000811584,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457728713
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:29.716493",
+        "metrics": {
+            "data": {
+                "fps_in": 42,
+                "fps_out": 14,
+                "bandwidth_in_kbps": 872.4169921875,
+                "bandwidth_out_kbps": 308.7939453125,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.3,
+                "latency_p99_ms": 0.33,
+                "persons_per_frame": 4,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 172.001196042,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457729716
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:30.721488",
+        "metrics": {
+            "data": {
+                "fps_in": 39,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 838.90625,
+                "bandwidth_out_kbps": 266.9931640625,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.29,
+                "latency_p99_ms": 0.33,
+                "persons_per_frame": 4.333333333333333,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 173.000788834,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457730721
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:31.728280",
+        "metrics": {
+            "data": {
+                "fps_in": 36,
+                "fps_out": 14,
+                "bandwidth_in_kbps": 809.197265625,
+                "bandwidth_out_kbps": 310.2822265625,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.29,
+                "latency_p99_ms": 0.31,
+                "persons_per_frame": 3.0714285714285716,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 174.001156459,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457731727
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:32.734166",
+        "metrics": {
+            "data": {
+                "fps_in": 33,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 788.2294921875,
+                "bandwidth_out_kbps": 271.2734375,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.29,
+                "latency_p99_ms": 0.32,
+                "persons_per_frame": 3.25,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 175.001144625,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457732733
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:33.739568",
+        "metrics": {
+            "data": {
+                "fps_in": 39,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 928.3662109375,
+                "bandwidth_out_kbps": 300.1396484375,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.33,
+                "persons_per_frame": 4,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 176.015096959,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457733739
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:34.746177",
+        "metrics": {
+            "data": {
+                "fps_in": 36,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 941.4619140625,
+                "bandwidth_out_kbps": 280.806640625,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.33,
+                "latency_p99_ms": 0.57,
+                "persons_per_frame": 4,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 178.001136375,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457734745
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:35.753488",
+        "metrics": {
+            "data": {
+                "fps_in": 36,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 961.107421875,
+                "bandwidth_out_kbps": 280.8466796875,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.34,
+                "latency_p99_ms": 0.57,
+                "persons_per_frame": 4,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 179.001158959,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457735753
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:36.760146",
+        "metrics": {
+            "data": {
+                "fps_in": 39,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 923.46484375,
+                "bandwidth_out_kbps": 300.1630859375,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.34,
+                "latency_p99_ms": 0.57,
+                "persons_per_frame": 4,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 180.00110675,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457736759
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:37.763217",
+        "metrics": {
+            "data": {
+                "fps_in": 39,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 909.6708984375,
+                "bandwidth_out_kbps": 300.599609375,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.34,
+                "latency_p99_ms": 0.59,
+                "persons_per_frame": 4,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 181.000261417,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457737762
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:38.766372",
+        "metrics": {
+            "data": {
+                "fps_in": 36,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 814.28515625,
+                "bandwidth_out_kbps": 272.7626953125,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.34,
+                "latency_p99_ms": 0.59,
+                "persons_per_frame": 4,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 182.001164167,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457738765
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:39.773054",
+        "metrics": {
+            "data": {
+                "fps_in": 39,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 872.548828125,
+                "bandwidth_out_kbps": 270.1005859375,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.34,
+                "latency_p99_ms": 0.59,
+                "persons_per_frame": 4.333333333333333,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 183.001139459,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457739772
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:40.779716",
+        "metrics": {
+            "data": {
+                "fps_in": 35,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 782.8212890625,
+                "bandwidth_out_kbps": 268.0107421875,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.35,
+                "latency_p99_ms": 0.59,
+                "persons_per_frame": 3.8333333333333335,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 184.000212542,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457740779
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:41.783790",
+        "metrics": {
+            "data": {
+                "fps_in": 37,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 822.34375,
+                "bandwidth_out_kbps": 291.0732421875,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.34,
+                "latency_p99_ms": 0.59,
+                "persons_per_frame": 3.8461538461538463,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 185.001180084,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457741783
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:42.786811",
+        "metrics": {
+            "data": {
+                "fps_in": 39,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 915.3798828125,
+                "bandwidth_out_kbps": 291.34765625,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.33,
+                "latency_p99_ms": 0.59,
+                "persons_per_frame": 4,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 186.001125334,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457742786
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:43.793605",
+        "metrics": {
+            "data": {
+                "fps_in": 39,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 885.1640625,
+                "bandwidth_out_kbps": 289.7373046875,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.59,
+                "persons_per_frame": 4,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 187.0011305,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457743793
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:44.799290",
+        "metrics": {
+            "data": {
+                "fps_in": 27,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 746.328125,
+                "bandwidth_out_kbps": 285.828125,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.59,
+                "persons_per_frame": 1.2307692307692308,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 188.001223125,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457744798
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:45.805017",
+        "metrics": {
+            "data": {
+                "fps_in": 40,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 877.2470703125,
+                "bandwidth_out_kbps": 296.40234375,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.59,
+                "persons_per_frame": 4.846153846153846,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 189.000543584,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457745804
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:46.808620",
+        "metrics": {
+            "data": {
+                "fps_in": 35,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 802.9072265625,
+                "bandwidth_out_kbps": 273.1611328125,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.58,
+                "persons_per_frame": 4.416666666666667,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 190.001132084,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457746808
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:47.815643",
+        "metrics": {
+            "data": {
+                "fps_in": 35,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 854.87109375,
+                "bandwidth_out_kbps": 270.4013671875,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.58,
+                "persons_per_frame": 3.1666666666666665,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 191.000432542,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457747815
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:48.820092",
+        "metrics": {
+            "data": {
+                "fps_in": 36,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 823.5439453125,
+                "bandwidth_out_kbps": 294.201171875,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.44,
+                "persons_per_frame": 3.8461538461538463,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 192.0011125,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457748819
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:49.826771",
+        "metrics": {
+            "data": {
+                "fps_in": 36,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 816.470703125,
+                "bandwidth_out_kbps": 268.267578125,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.32,
+                "latency_p99_ms": 0.53,
+                "persons_per_frame": 4,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 193.00113125,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457749826
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:50.833799",
+        "metrics": {
+            "data": {
+                "fps_in": 39,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 914.0556640625,
+                "bandwidth_out_kbps": 291.8681640625,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.32,
+                "latency_p99_ms": 0.53,
+                "persons_per_frame": 4,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 194.001135917,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457750833
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:51.840312",
+        "metrics": {
+            "data": {
+                "fps_in": 36,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 844.9111328125,
+                "bandwidth_out_kbps": 269.3798828125,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.32,
+                "latency_p99_ms": 0.53,
+                "persons_per_frame": 4,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 195.000451084,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457751840
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:52.847236",
+        "metrics": {
+            "data": {
+                "fps_in": 39,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 893.34765625,
+                "bandwidth_out_kbps": 267.37890625,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.32,
+                "latency_p99_ms": 0.53,
+                "persons_per_frame": 4.333333333333333,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 196.00111075,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457752846
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:53.853880",
+        "metrics": {
+            "data": {
+                "fps_in": 36,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 823.9404296875,
+                "bandwidth_out_kbps": 288.859375,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.32,
+                "latency_p99_ms": 0.55,
+                "persons_per_frame": 3.6923076923076925,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 197.0010425,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457753853
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:54.857977",
+        "metrics": {
+            "data": {
+                "fps_in": 39,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 869.533203125,
+                "bandwidth_out_kbps": 290.7021484375,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.32,
+                "latency_p99_ms": 0.53,
+                "persons_per_frame": 4,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 198.001131667,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457754857
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:55.860565",
+        "metrics": {
+            "data": {
+                "fps_in": 39,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 877.443359375,
+                "bandwidth_out_kbps": 290.8291015625,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.32,
+                "latency_p99_ms": 0.55,
+                "persons_per_frame": 4,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 199.000793917,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457755860
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:56.867220",
+        "metrics": {
+            "data": {
+                "fps_in": 39,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 862.8857421875,
+                "bandwidth_out_kbps": 286.767578125,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.55,
+                "persons_per_frame": 4,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 200.0003725,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457756866
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:57.873919",
+        "metrics": {
+            "data": {
+                "fps_in": 37,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 911.54296875,
+                "bandwidth_out_kbps": 271.654296875,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.53,
+                "persons_per_frame": 3.75,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 201.000777584,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457757873
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:58.880592",
+        "metrics": {
+            "data": {
+                "fps_in": 34,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 896.3837890625,
+                "bandwidth_out_kbps": 296.322265625,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.32,
+                "latency_p99_ms": 0.53,
+                "persons_per_frame": 2.769230769230769,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 202.000478292,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457758880
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:25:59.883883",
+        "metrics": {
+            "data": {
+                "fps_in": 30,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 798.025390625,
+                "bandwidth_out_kbps": 270.7197265625,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.32,
+                "latency_p99_ms": 0.53,
+                "persons_per_frame": 3.25,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 203.001124167,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457759883
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:00.890718",
+        "metrics": {
+            "data": {
+                "fps_in": 36,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 871.6669921875,
+                "bandwidth_out_kbps": 271.9970703125,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.33,
+                "latency_p99_ms": 0.53,
+                "persons_per_frame": 4.166666666666667,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 204.000691792,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457760890
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:01.893289",
+        "metrics": {
+            "data": {
+                "fps_in": 38,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 842.734375,
+                "bandwidth_out_kbps": 289.111328125,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.32,
+                "latency_p99_ms": 0.45,
+                "persons_per_frame": 4.230769230769231,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 205.000941667,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457761892
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:02.899455",
+        "metrics": {
+            "data": {
+                "fps_in": 50,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 907.7509765625,
+                "bandwidth_out_kbps": 267.2783203125,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.33,
+                "latency_p99_ms": 0.46,
+                "persons_per_frame": 9.083333333333334,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 206.000193834,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457762899
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:03.906244",
+        "metrics": {
+            "data": {
+                "fps_in": 54,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 869.6083984375,
+                "bandwidth_out_kbps": 284.8505859375,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.32,
+                "latency_p99_ms": 0.45,
+                "persons_per_frame": 12,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 207.001186667,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457763905
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:04.910215",
+        "metrics": {
+            "data": {
+                "fps_in": 49,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 883.2529296875,
+                "bandwidth_out_kbps": 265.439453125,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.32,
+                "latency_p99_ms": 0.41,
+                "persons_per_frame": 9.25,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 208.000290792,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457764909
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:05.917013",
+        "metrics": {
+            "data": {
+                "fps_in": 26,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 741.6005859375,
+                "bandwidth_out_kbps": 287.29296875,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.32,
+                "latency_p99_ms": 0.41,
+                "persons_per_frame": 1,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 209.0011195,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457765916
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:06.921343",
+        "metrics": {
+            "data": {
+                "fps_in": 24,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 677.3994140625,
+                "bandwidth_out_kbps": 286.08984375,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.39,
+                "persons_per_frame": 1,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 210.001134667,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457766920
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:07.928205",
+        "metrics": {
+            "data": {
+                "fps_in": 28,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 789.31640625,
+                "bandwidth_out_kbps": 285.8134765625,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.33,
+                "persons_per_frame": 1,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 211.001092792,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457767927
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:08.934680",
+        "metrics": {
+            "data": {
+                "fps_in": 25,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 728.349609375,
+                "bandwidth_out_kbps": 287.3701171875,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.33,
+                "persons_per_frame": 1.0769230769230769,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 212.001140709,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457768934
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:09.941525",
+        "metrics": {
+            "data": {
+                "fps_in": 25,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 710.45703125,
+                "bandwidth_out_kbps": 287.8740234375,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.33,
+                "persons_per_frame": 0.9230769230769231,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 213.001117459,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457769941
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:10.945238",
+        "metrics": {
+            "data": {
+                "fps_in": 35,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 836.53515625,
+                "bandwidth_out_kbps": 287.5595703125,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.33,
+                "persons_per_frame": 3.076923076923077,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 214.001147459,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457770944
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:11.952196",
+        "metrics": {
+            "data": {
+                "fps_in": 39,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 890.763671875,
+                "bandwidth_out_kbps": 266.63671875,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.32,
+                "persons_per_frame": 4.166666666666667,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 215.000261375,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457771951
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:12.958479",
+        "metrics": {
+            "data": {
+                "fps_in": 28,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 740.8056640625,
+                "bandwidth_out_kbps": 287.55859375,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.3,
+                "latency_p99_ms": 0.32,
+                "persons_per_frame": 2,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 216.001161167,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457772958
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:13.965421",
+        "metrics": {
+            "data": {
+                "fps_in": 30,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 799.955078125,
+                "bandwidth_out_kbps": 284.91796875,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.3,
+                "latency_p99_ms": 0.33,
+                "persons_per_frame": 1.9230769230769231,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 217.000535042,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457773965
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:14.972048",
+        "metrics": {
+            "data": {
+                "fps_in": 33,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 808.736328125,
+                "bandwidth_out_kbps": 263.8115234375,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.3,
+                "latency_p99_ms": 0.37,
+                "persons_per_frame": 2.75,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 218.001156375,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457774971
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:15.979342",
+        "metrics": {
+            "data": {
+                "fps_in": 30,
+                "fps_out": 14,
+                "bandwidth_in_kbps": 780.4130859375,
+                "bandwidth_out_kbps": 311.0888671875,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.4,
+                "persons_per_frame": 1.8571428571428572,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 219.001175,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457775978
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:16.986008",
+        "metrics": {
+            "data": {
+                "fps_in": 26,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 732.6806640625,
+                "bandwidth_out_kbps": 286.0302734375,
+                "latency_p50_ms": 0.15,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.4,
+                "persons_per_frame": 1,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 220.001116459,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457776985
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:17.992946",
+        "metrics": {
+            "data": {
+                "fps_in": 31,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 796.4990234375,
+                "bandwidth_out_kbps": 288.166015625,
+                "latency_p50_ms": 0.15,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.4,
+                "persons_per_frame": 2.1538461538461537,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 221.001134167,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457777992
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:18.999704",
+        "metrics": {
+            "data": {
+                "fps_in": 33,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 850.642578125,
+                "bandwidth_out_kbps": 270.921875,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.43,
+                "persons_per_frame": 3.25,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 222.0011695,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457778999
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:20.006050",
+        "metrics": {
+            "data": {
+                "fps_in": 29,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 748.052734375,
+                "bandwidth_out_kbps": 263.5595703125,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.4,
+                "persons_per_frame": 2.25,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 223.000198209,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457780005
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:21.013559",
+        "metrics": {
+            "data": {
+                "fps_in": 44,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 918.9091796875,
+                "bandwidth_out_kbps": 270.8798828125,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.4,
+                "persons_per_frame": 6.333333333333333,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 224.001167125,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457781012
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:22.017363",
+        "metrics": {
+            "data": {
+                "fps_in": 44,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 862.5927734375,
+                "bandwidth_out_kbps": 275.099609375,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.32,
+                "latency_p99_ms": 0.4,
+                "persons_per_frame": 8.5,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 225.001139167,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457782017
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:23.024037",
+        "metrics": {
+            "data": {
+                "fps_in": 49,
+                "fps_out": 11,
+                "bandwidth_in_kbps": 924.99609375,
+                "bandwidth_out_kbps": 249.919921875,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.32,
+                "latency_p99_ms": 0.39,
+                "persons_per_frame": 11.090909090909092,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 226.001156792,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457783023
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:24.028279",
+        "metrics": {
+            "data": {
+                "fps_in": 53,
+                "fps_out": 11,
+                "bandwidth_in_kbps": 949.263671875,
+                "bandwidth_out_kbps": 248.1220703125,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.32,
+                "latency_p99_ms": 0.34,
+                "persons_per_frame": 16.90909090909091,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 227.001132125,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457784027
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:25.035173",
+        "metrics": {
+            "data": {
+                "fps_in": 48,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 933.1953125,
+                "bandwidth_out_kbps": 272.064453125,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.33,
+                "latency_p99_ms": 0.34,
+                "persons_per_frame": 9,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 228.001127375,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457785034
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:26.041865",
+        "metrics": {
+            "data": {
+                "fps_in": 51,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 941.5908203125,
+                "bandwidth_out_kbps": 290.0341796875,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.33,
+                "latency_p99_ms": 0.34,
+                "persons_per_frame": 8.615384615384615,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 229.001126292,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457786041
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:27.048398",
+        "metrics": {
+            "data": {
+                "fps_in": 52,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 962.056640625,
+                "bandwidth_out_kbps": 290.5205078125,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.32,
+                "latency_p99_ms": 0.34,
+                "persons_per_frame": 9,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 230.0005855,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457787048
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:28.055068",
+        "metrics": {
+            "data": {
+                "fps_in": 44,
+                "fps_out": 11,
+                "bandwidth_in_kbps": 869.234375,
+                "bandwidth_out_kbps": 248.6396484375,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.32,
+                "latency_p99_ms": 0.34,
+                "persons_per_frame": 9,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 231.001124209,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457788054
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:29.061517",
+        "metrics": {
+            "data": {
+                "fps_in": 52,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 986.908203125,
+                "bandwidth_out_kbps": 292.4375,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.32,
+                "latency_p99_ms": 0.35,
+                "persons_per_frame": 9,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 232.00119125,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457789061
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:30.065364",
+        "metrics": {
+            "data": {
+                "fps_in": 48,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 885.9091796875,
+                "bandwidth_out_kbps": 270.578125,
+                "latency_p50_ms": 0.12,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.34,
+                "persons_per_frame": 9,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 233.001136209,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457790065
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:31.067464",
+        "metrics": {
+            "data": {
+                "fps_in": 52,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 963.96484375,
+                "bandwidth_out_kbps": 293.044921875,
+                "latency_p50_ms": 0.12,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.34,
+                "persons_per_frame": 9,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 234.001099125,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457791067
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:32.074182",
+        "metrics": {
+            "data": {
+                "fps_in": 55,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 952.7890625,
+                "bandwidth_out_kbps": 273.7294921875,
+                "latency_p50_ms": 0.12,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.34,
+                "persons_per_frame": 13.083333333333334,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 235.001139709,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457792073
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:33.077273",
+        "metrics": {
+            "data": {
+                "fps_in": 58,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 991.623046875,
+                "bandwidth_out_kbps": 269.9248046875,
+                "latency_p50_ms": 0.12,
+                "latency_p95_ms": 0.32,
+                "latency_p99_ms": 0.52,
+                "persons_per_frame": 13.75,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 236.000585542,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457793076
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:34.084050",
+        "metrics": {
+            "data": {
+                "fps_in": 32,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 792.8720703125,
+                "bandwidth_out_kbps": 288.783203125,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.52,
+                "persons_per_frame": 2.923076923076923,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 237.001122,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457794083
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:35.090912",
+        "metrics": {
+            "data": {
+                "fps_in": 39,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 844.033203125,
+                "bandwidth_out_kbps": 265.4306640625,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.46,
+                "persons_per_frame": 5,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 238.000337042,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457795090
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:36.097790",
+        "metrics": {
+            "data": {
+                "fps_in": 33,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 780.9013671875,
+                "bandwidth_out_kbps": 287.8369140625,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.46,
+                "persons_per_frame": 2.8461538461538463,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 239.001118834,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457796097
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:37.100490",
+        "metrics": {
+            "data": {
+                "fps_in": 37,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 845.2470703125,
+                "bandwidth_out_kbps": 287.39453125,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.42,
+                "persons_per_frame": 3.5384615384615383,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 240.001138709,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457797100
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:38.107356",
+        "metrics": {
+            "data": {
+                "fps_in": 37,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 751.900390625,
+                "bandwidth_out_kbps": 261.41796875,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.52,
+                "persons_per_frame": 4,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 241.000347125,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457798107
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:39.114300",
+        "metrics": {
+            "data": {
+                "fps_in": 38,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 817.73046875,
+                "bandwidth_out_kbps": 286.3037109375,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.52,
+                "persons_per_frame": 4,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 242.000273084,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457799114
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:40.118446",
+        "metrics": {
+            "data": {
+                "fps_in": 39,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 839.0830078125,
+                "bandwidth_out_kbps": 286.4697265625,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.3,
+                "latency_p99_ms": 0.38,
+                "persons_per_frame": 4,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 243.001129167,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457800118
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:41.125147",
+        "metrics": {
+            "data": {
+                "fps_in": 39,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 837.328125,
+                "bandwidth_out_kbps": 264.990234375,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.3,
+                "latency_p99_ms": 0.32,
+                "persons_per_frame": 4.333333333333333,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 244.001136667,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457801124
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:42.131943",
+        "metrics": {
+            "data": {
+                "fps_in": 36,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 786.3212890625,
+                "bandwidth_out_kbps": 289.5078125,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.3,
+                "latency_p99_ms": 0.38,
+                "persons_per_frame": 3.6923076923076925,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 245.001118834,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457802131
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:43.134251",
+        "metrics": {
+            "data": {
+                "fps_in": 39,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 851.9208984375,
+                "bandwidth_out_kbps": 288.2177734375,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.3,
+                "latency_p99_ms": 0.38,
+                "persons_per_frame": 4,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 246.001156584,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457803133
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:44.141005",
+        "metrics": {
+            "data": {
+                "fps_in": 36,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 791.9892578125,
+                "bandwidth_out_kbps": 266.15234375,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.3,
+                "latency_p99_ms": 0.58,
+                "persons_per_frame": 4,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 247.001122542,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457804140
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:45.148128",
+        "metrics": {
+            "data": {
+                "fps_in": 39,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 842.8876953125,
+                "bandwidth_out_kbps": 287.787109375,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.3,
+                "latency_p99_ms": 0.59,
+                "persons_per_frame": 4,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 248.001144417,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457805147
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:46.154964",
+        "metrics": {
+            "data": {
+                "fps_in": 39,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 832.5498046875,
+                "bandwidth_out_kbps": 286.7421875,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.3,
+                "latency_p99_ms": 0.58,
+                "persons_per_frame": 4,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 249.000932834,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457806154
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:47.161775",
+        "metrics": {
+            "data": {
+                "fps_in": 39,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 852.4638671875,
+                "bandwidth_out_kbps": 285.865234375,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.3,
+                "latency_p99_ms": 0.58,
+                "persons_per_frame": 4,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 250.000419334,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457807161
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:48.167752",
+        "metrics": {
+            "data": {
+                "fps_in": 39,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 865.708984375,
+                "bandwidth_out_kbps": 265.677734375,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.3,
+                "latency_p99_ms": 0.58,
+                "persons_per_frame": 4.166666666666667,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 251.001137125,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457808167
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:49.174452",
+        "metrics": {
+            "data": {
+                "fps_in": 39,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 855.275390625,
+                "bandwidth_out_kbps": 286.169921875,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.3,
+                "latency_p99_ms": 0.58,
+                "persons_per_frame": 4,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 252.000384334,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457809174
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:50.181158",
+        "metrics": {
+            "data": {
+                "fps_in": 36,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 785.3369140625,
+                "bandwidth_out_kbps": 285.8828125,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.3,
+                "latency_p99_ms": 0.46,
+                "persons_per_frame": 3.8461538461538463,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 253.001170625,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457810180
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:51.184155",
+        "metrics": {
+            "data": {
+                "fps_in": 32,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 760.794921875,
+                "bandwidth_out_kbps": 282.1064453125,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.3,
+                "latency_p99_ms": 0.46,
+                "persons_per_frame": 2.3846153846153846,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 254.001110042,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457811183
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:52.187039",
+        "metrics": {
+            "data": {
+                "fps_in": 26,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 675.384765625,
+                "bandwidth_out_kbps": 277.5947265625,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.3,
+                "latency_p99_ms": 0.42,
+                "persons_per_frame": 1,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 255.001106334,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457812186
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:53.193781",
+        "metrics": {
+            "data": {
+                "fps_in": 36,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 730.8623046875,
+                "bandwidth_out_kbps": 281.9775390625,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.3,
+                "latency_p99_ms": 0.42,
+                "persons_per_frame": 3.4615384615384617,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 256.000731667,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457813193
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:54.200527",
+        "metrics": {
+            "data": {
+                "fps_in": 46,
+                "fps_out": 11,
+                "bandwidth_in_kbps": 818.712890625,
+                "bandwidth_out_kbps": 240.978515625,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.46,
+                "persons_per_frame": 8.727272727272727,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 257.001158375,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457814200
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:55.205470",
+        "metrics": {
+            "data": {
+                "fps_in": 29,
+                "fps_out": 14,
+                "bandwidth_in_kbps": 739.568359375,
+                "bandwidth_out_kbps": 305.775390625,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.42,
+                "persons_per_frame": 1.7142857142857142,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 258.000618292,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457815205
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:56.212121",
+        "metrics": {
+            "data": {
+                "fps_in": 26,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 734.2451171875,
+                "bandwidth_out_kbps": 289.46484375,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.38,
+                "persons_per_frame": 1,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 259.001260209,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457816211
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:57.217395",
+        "metrics": {
+            "data": {
+                "fps_in": 26,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 722.166015625,
+                "bandwidth_out_kbps": 284.5322265625,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.3,
+                "latency_p99_ms": 0.38,
+                "persons_per_frame": 1,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 260.001112792,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457817217
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:58.224275",
+        "metrics": {
+            "data": {
+                "fps_in": 26,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 741.484375,
+                "bandwidth_out_kbps": 283.3876953125,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.3,
+                "latency_p99_ms": 0.38,
+                "persons_per_frame": 1,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 261.001106209,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457818223
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:26:59.231042",
+        "metrics": {
+            "data": {
+                "fps_in": 24,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 687.048828125,
+                "bandwidth_out_kbps": 261.228515625,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.3,
+                "latency_p99_ms": 0.38,
+                "persons_per_frame": 1,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 262.001119209,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457819230
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:00.233852",
+        "metrics": {
+            "data": {
+                "fps_in": 25,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 737.2314453125,
+                "bandwidth_out_kbps": 262.6533203125,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.3,
+                "latency_p99_ms": 0.38,
+                "persons_per_frame": 1.0833333333333333,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 263.001135209,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457820233
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:01.241294",
+        "metrics": {
+            "data": {
+                "fps_in": 26,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 683.01171875,
+                "bandwidth_out_kbps": 284.654296875,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.29,
+                "latency_p99_ms": 0.39,
+                "persons_per_frame": 1.1538461538461537,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 264.001130834,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457821240
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:02.245286",
+        "metrics": {
+            "data": {
+                "fps_in": 24,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 712.65234375,
+                "bandwidth_out_kbps": 274.9384765625,
+                "latency_p50_ms": 0.15,
+                "latency_p95_ms": 0.29,
+                "latency_p99_ms": 0.38,
+                "persons_per_frame": 1,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 265.000525375,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457822244
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:03.252433",
+        "metrics": {
+            "data": {
+                "fps_in": 27,
+                "fps_out": 11,
+                "bandwidth_in_kbps": 762.0302734375,
+                "bandwidth_out_kbps": 245.9775390625,
+                "latency_p50_ms": 0.15,
+                "latency_p95_ms": 0.29,
+                "latency_p99_ms": 0.38,
+                "persons_per_frame": 1.8181818181818181,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 266.000356084,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457823252
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:04.259220",
+        "metrics": {
+            "data": {
+                "fps_in": 22,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 628.7177734375,
+                "bandwidth_out_kbps": 259.1220703125,
+                "latency_p50_ms": 0.15,
+                "latency_p95_ms": 0.29,
+                "latency_p99_ms": 0.38,
+                "persons_per_frame": 1,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 267.001133584,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457824258
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:05.265987",
+        "metrics": {
+            "data": {
+                "fps_in": 26,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 736.05078125,
+                "bandwidth_out_kbps": 284.0517578125,
+                "latency_p50_ms": 0.16,
+                "latency_p95_ms": 0.28,
+                "latency_p99_ms": 0.36,
+                "persons_per_frame": 1,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 268.001119584,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457825265
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:06.273295",
+        "metrics": {
+            "data": {
+                "fps_in": 26,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 741.671875,
+                "bandwidth_out_kbps": 260.2998046875,
+                "latency_p50_ms": 0.17,
+                "latency_p95_ms": 0.27,
+                "latency_p99_ms": 0.29,
+                "persons_per_frame": 1,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 269.001112375,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457826272
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:07.280052",
+        "metrics": {
+            "data": {
+                "fps_in": 23,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 716.234375,
+                "bandwidth_out_kbps": 262.443359375,
+                "latency_p50_ms": 0.17,
+                "latency_p95_ms": 0.28,
+                "latency_p99_ms": 0.3,
+                "persons_per_frame": 1.0833333333333333,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 270.001102542,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457827279
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:08.286735",
+        "metrics": {
+            "data": {
+                "fps_in": 25,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 846.8095703125,
+                "bandwidth_out_kbps": 291.7587890625,
+                "latency_p50_ms": 0.18,
+                "latency_p95_ms": 0.29,
+                "latency_p99_ms": 0.32,
+                "persons_per_frame": 0.9230769230769231,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 271.001131459,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457828286
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:09.288822",
+        "metrics": {
+            "data": {
+                "fps_in": 26,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 770.3056640625,
+                "bandwidth_out_kbps": 281.1875,
+                "latency_p50_ms": 0.18,
+                "latency_p95_ms": 0.29,
+                "latency_p99_ms": 0.32,
+                "persons_per_frame": 1,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 272.001121,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457829288
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:10.292565",
+        "metrics": {
+            "data": {
+                "fps_in": 26,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 729.21484375,
+                "bandwidth_out_kbps": 260.955078125,
+                "latency_p50_ms": 0.22,
+                "latency_p95_ms": 0.29,
+                "latency_p99_ms": 0.36,
+                "persons_per_frame": 1.0833333333333333,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 273.000280667,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457830292
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:11.299303",
+        "metrics": {
+            "data": {
+                "fps_in": 26,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 773.83203125,
+                "bandwidth_out_kbps": 282.923828125,
+                "latency_p50_ms": 0.22,
+                "latency_p95_ms": 0.29,
+                "latency_p99_ms": 0.36,
+                "persons_per_frame": 0.9230769230769231,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 274.000685625,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457831298
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:12.306018",
+        "metrics": {
+            "data": {
+                "fps_in": 24,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 821.5380859375,
+                "bandwidth_out_kbps": 267.853515625,
+                "latency_p50_ms": 0.22,
+                "latency_p95_ms": 0.3,
+                "latency_p99_ms": 0.36,
+                "persons_per_frame": 1,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 275.001163375,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457832305
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:13.312770",
+        "metrics": {
+            "data": {
+                "fps_in": 23,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 825.44140625,
+                "bandwidth_out_kbps": 267.68359375,
+                "latency_p50_ms": 0.23,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.36,
+                "persons_per_frame": 1.0833333333333333,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 276.000485959,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457833312
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:14.320264",
+        "metrics": {
+            "data": {
+                "fps_in": 24,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 769.33984375,
+                "bandwidth_out_kbps": 263.9541015625,
+                "latency_p50_ms": 0.22,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.36,
+                "persons_per_frame": 0.9166666666666666,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 277.00021525,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457834319
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:15.326902",
+        "metrics": {
+            "data": {
+                "fps_in": 27,
+                "fps_out": 14,
+                "bandwidth_in_kbps": 811.873046875,
+                "bandwidth_out_kbps": 307.873046875,
+                "latency_p50_ms": 0.23,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.36,
+                "persons_per_frame": 1,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 278.000572542,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457835326
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:16.333895",
+        "metrics": {
+            "data": {
+                "fps_in": 26,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 757.8759765625,
+                "bandwidth_out_kbps": 262.689453125,
+                "latency_p50_ms": 0.23,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.34,
+                "persons_per_frame": 1,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 279.000199125,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457836333
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:17.340627",
+        "metrics": {
+            "data": {
+                "fps_in": 26,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 740.28125,
+                "bandwidth_out_kbps": 283.068359375,
+                "latency_p50_ms": 0.23,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.34,
+                "persons_per_frame": 1,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 280.001140792,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457837340
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:18.347690",
+        "metrics": {
+            "data": {
+                "fps_in": 29,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 768.3876953125,
+                "bandwidth_out_kbps": 287.470703125,
+                "latency_p50_ms": 0.18,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.37,
+                "persons_per_frame": 1.6153846153846154,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 281.001280834,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457838347
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:19.350292",
+        "metrics": {
+            "data": {
+                "fps_in": 37,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 810.3408203125,
+                "bandwidth_out_kbps": 285.8583984375,
+                "latency_p50_ms": 0.16,
+                "latency_p95_ms": 0.3,
+                "latency_p99_ms": 0.34,
+                "persons_per_frame": 3.6153846153846154,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 282.001136667,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457839349
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:20.357071",
+        "metrics": {
+            "data": {
+                "fps_in": 36,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 774.94921875,
+                "bandwidth_out_kbps": 282.8583984375,
+                "latency_p50_ms": 0.15,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.37,
+                "persons_per_frame": 3.769230769230769,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 283.001115375,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457840356
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:21.363775",
+        "metrics": {
+            "data": {
+                "fps_in": 39,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 842.603515625,
+                "bandwidth_out_kbps": 262.2783203125,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.34,
+                "persons_per_frame": 4.166666666666667,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 284.001160209,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457841363
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:22.366643",
+        "metrics": {
+            "data": {
+                "fps_in": 36,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 765.556640625,
+                "bandwidth_out_kbps": 282.83203125,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.3,
+                "latency_p99_ms": 0.37,
+                "persons_per_frame": 3.8461538461538463,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 285.000927917,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457842366
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:23.373402",
+        "metrics": {
+            "data": {
+                "fps_in": 36,
+                "fps_out": 12,
+                "bandwidth_in_kbps": 773.1650390625,
+                "bandwidth_out_kbps": 259.4970703125,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.3,
+                "latency_p99_ms": 0.56,
+                "persons_per_frame": 4,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 286.001114959,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457843373
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:24.375809",
+        "metrics": {
+            "data": {
+                "fps_in": 39,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 840.2578125,
+                "bandwidth_out_kbps": 284.9736328125,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.3,
+                "latency_p99_ms": 0.56,
+                "persons_per_frame": 4,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 287.001125875,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457844375
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:25.380938",
+        "metrics": {
+            "data": {
+                "fps_in": 39,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 824.4365234375,
+                "bandwidth_out_kbps": 282.033203125,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.3,
+                "latency_p99_ms": 0.56,
+                "persons_per_frame": 4,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 288.001136792,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457845380
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:26.387896",
+        "metrics": {
+            "data": {
+                "fps_in": 39,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 817.11328125,
+                "bandwidth_out_kbps": 282.501953125,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.3,
+                "latency_p99_ms": 0.56,
+                "persons_per_frame": 4,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 289.001123417,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457846387
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:27.394808",
+        "metrics": {
+            "data": {
+                "fps_in": 39,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 819.8486328125,
+                "bandwidth_out_kbps": 285.26171875,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.58,
+                "persons_per_frame": 4,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 290.001088667,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457847394
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:28.401527",
+        "metrics": {
+            "data": {
+                "fps_in": 39,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 792.1171875,
+                "bandwidth_out_kbps": 282.2958984375,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.57,
+                "persons_per_frame": 4,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 291.0011455,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457848401
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:29.408751",
+        "metrics": {
+            "data": {
+                "fps_in": 34,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 803.498046875,
+                "bandwidth_out_kbps": 279.666015625,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.58,
+                "persons_per_frame": 2.3846153846153846,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 292.000845459,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457849408
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:30.415558",
+        "metrics": {
+            "data": {
+                "fps_in": 38,
+                "fps_out": 13,
+                "bandwidth_in_kbps": 795.955078125,
+                "bandwidth_out_kbps": 278.845703125,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.58,
+                "persons_per_frame": 3.6923076923076925,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 293.000494584,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457850415
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:31.422547",
+        "metrics": {
+            "data": {
+                "fps_in": 18,
+                "fps_out": 19,
+                "bandwidth_in_kbps": 284.87109375,
+                "bandwidth_out_kbps": 307.9814453125,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.31,
+                "latency_p99_ms": 0.58,
+                "persons_per_frame": 0.10526315789473684,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 294.001130542,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457851422
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:32.429103",
+        "metrics": {
+            "data": {
+                "fps_in": 18,
+                "fps_out": 18,
+                "bandwidth_in_kbps": 284.87109375,
+                "bandwidth_out_kbps": 286.470703125,
+                "latency_p50_ms": 0.13,
+                "latency_p95_ms": 0.3,
+                "latency_p99_ms": 0.58,
+                "persons_per_frame": 0,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 295.001147459,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457852428
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:33.435896",
+        "metrics": {
+            "data": {
+                "fps_in": 18,
+                "fps_out": 18,
+                "bandwidth_in_kbps": 284.87109375,
+                "bandwidth_out_kbps": 286.470703125,
+                "latency_p50_ms": 0.14,
+                "latency_p95_ms": 0.3,
+                "latency_p99_ms": 0.58,
+                "persons_per_frame": 0,
+                "dropped_frames": 0,
+                "active_clients": 0,
+                "uptime_seconds": 296.001141709,
+                "force_mode": "auto"
+            },
+            "status": "ok",
+            "timestamp": 1774457853435
+        }
+    }
+]

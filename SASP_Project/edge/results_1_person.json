@@ -1,0 +1,41 @@
+{
+  "label": "1 Person",
+  "fps": 29.97002997002997,
+  "frames_sampled": 60,
+  "frames_with_persons": 60,
+  "bandwidth": {
+    "sasp_kbps": 1155.4651403284215,
+    "trad_kbps": 859.0984211101398,
+    "reduction_pct": -34.497411697639045
+  },
+  "roi_ssim": {
+    "sasp": 0.890263688175787,
+    "traditional_eq_bw": 0.9833667832179224
+  },
+  "detection_fidelity": {
+    "sasp_pct": 100.0,
+    "trad_pct": 100.0
+  },
+  "pbe": {
+    "sasp": 0.02309133221299438,
+    "traditional": 0.025506206060181367
+  },
+  "survival": {
+    "500": {
+      "sasp_pct": 0.0,
+      "trad_pct": 100.0
+    },
+    "250": {
+      "sasp_pct": 0.0,
+      "trad_pct": 55.0
+    },
+    "100": {
+      "sasp_pct": 0.0,
+      "trad_pct": 0.0
+    },
+    "50": {
+      "sasp_pct": 0.0,
+      "trad_pct": 0.0
+    }
+  }
+}

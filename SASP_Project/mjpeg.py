@@ -118,7 +118,8 @@ shared = SharedFrame()
 # ─────────────────────────────────────────────────────────────────────────────
 
 def capture_loop(stop_event: threading.Event) -> None:
-    cap = cv2.VideoCapture(CAMERA_INDEX)
+    #cap = cv2.VideoCapture(CAMERA_INDEX)
+    cap = cv2.VideoCapture("./edge/input2.mp4")
     cap.set(cv2.CAP_PROP_BUFFERSIZE,   1)
     cap.set(cv2.CAP_PROP_FRAME_WIDTH,  FRAME_WIDTH)
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, FRAME_HEIGHT)

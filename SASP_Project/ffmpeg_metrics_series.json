@@ -1,0 +1,3224 @@
+[
+    {
+        "timestamp": "2026-03-25T22:27:37.478392",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.3,
+                "bandwidth_kbps": 1034.76,
+                "bytes_per_frame": 38460,
+                "total_frames": 22,
+                "total_mb_sent": 0.81,
+                "uptime_seconds": 0.8,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457857476
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:38.490021",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.51,
+                "bandwidth_kbps": 1025.12,
+                "bytes_per_frame": 38782,
+                "total_frames": 49,
+                "total_mb_sent": 1.81,
+                "uptime_seconds": 1.9,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457858488
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:39.498637",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.74,
+                "bandwidth_kbps": 1043.13,
+                "bytes_per_frame": 39282,
+                "total_frames": 77,
+                "total_mb_sent": 2.87,
+                "uptime_seconds": 2.9,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457859497
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:40.510939",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.68,
+                "bandwidth_kbps": 1042.93,
+                "bytes_per_frame": 39360,
+                "total_frames": 103,
+                "total_mb_sent": 3.84,
+                "uptime_seconds": 3.9,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457860509
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:41.520729",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.69,
+                "bandwidth_kbps": 1037.74,
+                "bytes_per_frame": 39145,
+                "total_frames": 130,
+                "total_mb_sent": 4.84,
+                "uptime_seconds": 4.9,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457861519
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:42.531808",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.6,
+                "bandwidth_kbps": 1029.98,
+                "bytes_per_frame": 38983,
+                "total_frames": 157,
+                "total_mb_sent": 5.85,
+                "uptime_seconds": 5.9,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457862530
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:43.542889",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.73,
+                "bandwidth_kbps": 1040.82,
+                "bytes_per_frame": 39206,
+                "total_frames": 184,
+                "total_mb_sent": 6.87,
+                "uptime_seconds": 6.9,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457863541
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:44.553365",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.64,
+                "bandwidth_kbps": 1043.04,
+                "bytes_per_frame": 39422,
+                "total_frames": 211,
+                "total_mb_sent": 7.88,
+                "uptime_seconds": 7.9,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457864552
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:45.563909",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.44,
+                "bandwidth_kbps": 1042.2,
+                "bytes_per_frame": 39698,
+                "total_frames": 238,
+                "total_mb_sent": 8.91,
+                "uptime_seconds": 8.9,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457865562
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:46.574263",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.63,
+                "bandwidth_kbps": 1048.31,
+                "bytes_per_frame": 39636,
+                "total_frames": 265,
+                "total_mb_sent": 9.92,
+                "uptime_seconds": 9.9,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457866573
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:47.580274",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.68,
+                "bandwidth_kbps": 1039.05,
+                "bytes_per_frame": 39219,
+                "total_frames": 291,
+                "total_mb_sent": 10.89,
+                "uptime_seconds": 10.9,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457867579
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:48.591800",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.55,
+                "bandwidth_kbps": 1014.51,
+                "bytes_per_frame": 38482,
+                "total_frames": 318,
+                "total_mb_sent": 11.86,
+                "uptime_seconds": 12.0,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457868590
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:49.602514",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.39,
+                "bandwidth_kbps": 991.77,
+                "bytes_per_frame": 37845,
+                "total_frames": 345,
+                "total_mb_sent": 12.83,
+                "uptime_seconds": 13.0,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457869601
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:50.613875",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.32,
+                "bandwidth_kbps": 982.71,
+                "bytes_per_frame": 37602,
+                "total_frames": 371,
+                "total_mb_sent": 13.77,
+                "uptime_seconds": 14.0,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457870612
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:51.621979",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.44,
+                "bandwidth_kbps": 980.62,
+                "bytes_per_frame": 37340,
+                "total_frames": 398,
+                "total_mb_sent": 14.72,
+                "uptime_seconds": 15.0,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457871620
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:52.628385",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.71,
+                "bandwidth_kbps": 990.74,
+                "bytes_per_frame": 37356,
+                "total_frames": 425,
+                "total_mb_sent": 15.69,
+                "uptime_seconds": 16.0,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457872627
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:53.639024",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.5,
+                "bandwidth_kbps": 985.62,
+                "bytes_per_frame": 37449,
+                "total_frames": 452,
+                "total_mb_sent": 16.65,
+                "uptime_seconds": 17.0,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457873637
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:54.649664",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.41,
+                "bandwidth_kbps": 980.84,
+                "bytes_per_frame": 37392,
+                "total_frames": 479,
+                "total_mb_sent": 17.61,
+                "uptime_seconds": 18.0,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457874648
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:55.659518",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.57,
+                "bandwidth_kbps": 987.55,
+                "bytes_per_frame": 37424,
+                "total_frames": 506,
+                "total_mb_sent": 18.58,
+                "uptime_seconds": 19.0,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457875658
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:56.669478",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.62,
+                "bandwidth_kbps": 992.68,
+                "bytes_per_frame": 37550,
+                "total_frames": 533,
+                "total_mb_sent": 19.55,
+                "uptime_seconds": 20.0,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457876668
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:57.678139",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.54,
+                "bandwidth_kbps": 1005.96,
+                "bytes_per_frame": 38167,
+                "total_frames": 559,
+                "total_mb_sent": 20.51,
+                "uptime_seconds": 21.0,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457877677
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:58.682259",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.63,
+                "bandwidth_kbps": 1024.27,
+                "bytes_per_frame": 38736,
+                "total_frames": 586,
+                "total_mb_sent": 21.51,
+                "uptime_seconds": 22.0,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457878681
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:27:59.691277",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.57,
+                "bandwidth_kbps": 1041.13,
+                "bytes_per_frame": 39452,
+                "total_frames": 613,
+                "total_mb_sent": 22.55,
+                "uptime_seconds": 23.1,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457879690
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:00.702105",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.61,
+                "bandwidth_kbps": 1066.89,
+                "bytes_per_frame": 40367,
+                "total_frames": 640,
+                "total_mb_sent": 23.59,
+                "uptime_seconds": 24.1,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457880700
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:01.707891",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.64,
+                "bandwidth_kbps": 1057.66,
+                "bytes_per_frame": 39982,
+                "total_frames": 667,
+                "total_mb_sent": 24.6,
+                "uptime_seconds": 25.1,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457881707
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:02.714060",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.47,
+                "bandwidth_kbps": 1040.92,
+                "bytes_per_frame": 39596,
+                "total_frames": 693,
+                "total_mb_sent": 25.59,
+                "uptime_seconds": 26.1,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457882713
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:03.723871",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.61,
+                "bandwidth_kbps": 1041.78,
+                "bytes_per_frame": 39423,
+                "total_frames": 720,
+                "total_mb_sent": 26.59,
+                "uptime_seconds": 27.1,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457883723
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:04.732164",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.66,
+                "bandwidth_kbps": 1032.63,
+                "bytes_per_frame": 38996,
+                "total_frames": 747,
+                "total_mb_sent": 27.59,
+                "uptime_seconds": 28.1,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457884731
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:05.743287",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.6,
+                "bandwidth_kbps": 1014.21,
+                "bytes_per_frame": 38388,
+                "total_frames": 774,
+                "total_mb_sent": 28.57,
+                "uptime_seconds": 29.1,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457885742
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:06.751489",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.51,
+                "bandwidth_kbps": 994.25,
+                "bytes_per_frame": 37761,
+                "total_frames": 801,
+                "total_mb_sent": 29.53,
+                "uptime_seconds": 30.1,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457886750
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:07.759957",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.58,
+                "bandwidth_kbps": 993.04,
+                "bytes_per_frame": 37612,
+                "total_frames": 827,
+                "total_mb_sent": 30.47,
+                "uptime_seconds": 31.1,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457887759
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:08.770885",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.42,
+                "bandwidth_kbps": 989.59,
+                "bytes_per_frame": 37710,
+                "total_frames": 854,
+                "total_mb_sent": 31.44,
+                "uptime_seconds": 32.1,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457888769
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:09.780063",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 986.99,
+                "bytes_per_frame": 37536,
+                "total_frames": 881,
+                "total_mb_sent": 32.4,
+                "uptime_seconds": 33.1,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457889779
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:10.791518",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.38,
+                "bandwidth_kbps": 988.69,
+                "bytes_per_frame": 37736,
+                "total_frames": 907,
+                "total_mb_sent": 33.35,
+                "uptime_seconds": 34.2,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457890790
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:11.799015",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.44,
+                "bandwidth_kbps": 1008.91,
+                "bytes_per_frame": 38428,
+                "total_frames": 934,
+                "total_mb_sent": 34.35,
+                "uptime_seconds": 35.2,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457891797
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:12.805611",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.55,
+                "bandwidth_kbps": 1004.22,
+                "bytes_per_frame": 38088,
+                "total_frames": 961,
+                "total_mb_sent": 35.31,
+                "uptime_seconds": 36.2,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457892804
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:13.812981",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 999.7,
+                "bytes_per_frame": 38007,
+                "total_frames": 988,
+                "total_mb_sent": 36.3,
+                "uptime_seconds": 37.2,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457893812
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:14.824024",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.4,
+                "bandwidth_kbps": 1010.07,
+                "bytes_per_frame": 38528,
+                "total_frames": 1014,
+                "total_mb_sent": 37.26,
+                "uptime_seconds": 38.2,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457894822
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:15.828622",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.43,
+                "bandwidth_kbps": 1015.33,
+                "bytes_per_frame": 38688,
+                "total_frames": 1041,
+                "total_mb_sent": 38.26,
+                "uptime_seconds": 39.2,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457895827
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:16.837379",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.53,
+                "bandwidth_kbps": 1021.13,
+                "bytes_per_frame": 38761,
+                "total_frames": 1068,
+                "total_mb_sent": 39.26,
+                "uptime_seconds": 40.2,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457896836
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:17.847098",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.69,
+                "bandwidth_kbps": 1033.05,
+                "bytes_per_frame": 38970,
+                "total_frames": 1095,
+                "total_mb_sent": 40.26,
+                "uptime_seconds": 41.2,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457897846
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:18.854155",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.74,
+                "bandwidth_kbps": 1022.04,
+                "bytes_per_frame": 38491,
+                "total_frames": 1122,
+                "total_mb_sent": 41.25,
+                "uptime_seconds": 42.2,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457898853
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:19.864963",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.58,
+                "bandwidth_kbps": 1011.49,
+                "bytes_per_frame": 38322,
+                "total_frames": 1148,
+                "total_mb_sent": 42.2,
+                "uptime_seconds": 43.2,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457899863
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:20.871203",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.46,
+                "bandwidth_kbps": 1016.42,
+                "bytes_per_frame": 38683,
+                "total_frames": 1175,
+                "total_mb_sent": 43.21,
+                "uptime_seconds": 44.2,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457900870
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:21.879803",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.57,
+                "bandwidth_kbps": 1024.3,
+                "bytes_per_frame": 38819,
+                "total_frames": 1202,
+                "total_mb_sent": 44.2,
+                "uptime_seconds": 45.2,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457901879
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:22.890070",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.59,
+                "bandwidth_kbps": 1023.09,
+                "bytes_per_frame": 38741,
+                "total_frames": 1228,
+                "total_mb_sent": 45.17,
+                "uptime_seconds": 46.3,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457902888
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:23.893605",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.42,
+                "bandwidth_kbps": 1027.02,
+                "bytes_per_frame": 39138,
+                "total_frames": 1255,
+                "total_mb_sent": 46.18,
+                "uptime_seconds": 47.3,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457903893
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:24.904175",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.53,
+                "bandwidth_kbps": 1043.09,
+                "bytes_per_frame": 39596,
+                "total_frames": 1282,
+                "total_mb_sent": 47.2,
+                "uptime_seconds": 48.3,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457904903
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:25.911603",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.63,
+                "bandwidth_kbps": 1051.98,
+                "bytes_per_frame": 39783,
+                "total_frames": 1309,
+                "total_mb_sent": 48.23,
+                "uptime_seconds": 49.3,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457905910
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:26.919098",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.55,
+                "bandwidth_kbps": 1040.98,
+                "bytes_per_frame": 39481,
+                "total_frames": 1335,
+                "total_mb_sent": 49.2,
+                "uptime_seconds": 50.3,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457906918
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:27.925638",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.45,
+                "bandwidth_kbps": 1018.17,
+                "bytes_per_frame": 38761,
+                "total_frames": 1362,
+                "total_mb_sent": 50.2,
+                "uptime_seconds": 51.3,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457907924
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:28.933266",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.47,
+                "bandwidth_kbps": 1017.7,
+                "bytes_per_frame": 38710,
+                "total_frames": 1389,
+                "total_mb_sent": 51.19,
+                "uptime_seconds": 52.3,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457908932
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:29.942230",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.64,
+                "bandwidth_kbps": 1023.78,
+                "bytes_per_frame": 38689,
+                "total_frames": 1416,
+                "total_mb_sent": 52.18,
+                "uptime_seconds": 53.3,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457909941
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:30.949917",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.6,
+                "bandwidth_kbps": 1009.58,
+                "bytes_per_frame": 38217,
+                "total_frames": 1442,
+                "total_mb_sent": 53.12,
+                "uptime_seconds": 54.3,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457910948
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:31.956211",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.54,
+                "bandwidth_kbps": 1011.52,
+                "bytes_per_frame": 38382,
+                "total_frames": 1469,
+                "total_mb_sent": 54.12,
+                "uptime_seconds": 55.3,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457911955
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:32.968267",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.39,
+                "bandwidth_kbps": 1011.36,
+                "bytes_per_frame": 38590,
+                "total_frames": 1495,
+                "total_mb_sent": 55.08,
+                "uptime_seconds": 56.3,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457912967
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:33.976047",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.51,
+                "bandwidth_kbps": 1007.12,
+                "bytes_per_frame": 38258,
+                "total_frames": 1522,
+                "total_mb_sent": 56.05,
+                "uptime_seconds": 57.3,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457913975
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:34.980796",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.71,
+                "bandwidth_kbps": 1017.69,
+                "bytes_per_frame": 38367,
+                "total_frames": 1549,
+                "total_mb_sent": 57.05,
+                "uptime_seconds": 58.3,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457914980
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:35.991318",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.52,
+                "bandwidth_kbps": 1020.46,
+                "bytes_per_frame": 38745,
+                "total_frames": 1576,
+                "total_mb_sent": 58.05,
+                "uptime_seconds": 59.4,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457915990
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:37.002017",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.18,
+                "bandwidth_kbps": 1006.54,
+                "bytes_per_frame": 38710,
+                "total_frames": 1602,
+                "total_mb_sent": 59.01,
+                "uptime_seconds": 60.4,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457917000
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:38.012741",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.23,
+                "bandwidth_kbps": 1006.26,
+                "bytes_per_frame": 38625,
+                "total_frames": 1629,
+                "total_mb_sent": 60.0,
+                "uptime_seconds": 61.4,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457918011
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:39.021476",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.53,
+                "bandwidth_kbps": 1005.73,
+                "bytes_per_frame": 38178,
+                "total_frames": 1656,
+                "total_mb_sent": 60.97,
+                "uptime_seconds": 62.4,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457919020
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:40.031938",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.69,
+                "bandwidth_kbps": 1003.32,
+                "bytes_per_frame": 37857,
+                "total_frames": 1683,
+                "total_mb_sent": 61.95,
+                "uptime_seconds": 63.4,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457920030
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:41.044052",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 993.73,
+                "bytes_per_frame": 37790,
+                "total_frames": 1709,
+                "total_mb_sent": 62.88,
+                "uptime_seconds": 64.4,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457921042
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:42.054883",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.44,
+                "bandwidth_kbps": 990.54,
+                "bytes_per_frame": 37730,
+                "total_frames": 1736,
+                "total_mb_sent": 63.85,
+                "uptime_seconds": 65.4,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457922053
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:43.063130",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.45,
+                "bandwidth_kbps": 1001.8,
+                "bytes_per_frame": 38140,
+                "total_frames": 1763,
+                "total_mb_sent": 64.84,
+                "uptime_seconds": 66.4,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457923062
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:44.070686",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.61,
+                "bandwidth_kbps": 1027.81,
+                "bytes_per_frame": 38891,
+                "total_frames": 1790,
+                "total_mb_sent": 65.86,
+                "uptime_seconds": 67.4,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457924070
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:45.081200",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.74,
+                "bandwidth_kbps": 1046.16,
+                "bytes_per_frame": 39393,
+                "total_frames": 1817,
+                "total_mb_sent": 66.88,
+                "uptime_seconds": 68.4,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457925080
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:46.088724",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.55,
+                "bandwidth_kbps": 1022.51,
+                "bytes_per_frame": 38786,
+                "total_frames": 1844,
+                "total_mb_sent": 67.85,
+                "uptime_seconds": 69.5,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457926088
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:47.097275",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.36,
+                "bandwidth_kbps": 999.53,
+                "bytes_per_frame": 38175,
+                "total_frames": 1870,
+                "total_mb_sent": 68.81,
+                "uptime_seconds": 70.5,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457927096
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:48.107676",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.35,
+                "bandwidth_kbps": 1015.97,
+                "bytes_per_frame": 38822,
+                "total_frames": 1897,
+                "total_mb_sent": 69.81,
+                "uptime_seconds": 71.5,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457928106
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:49.118871",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.4,
+                "bandwidth_kbps": 1023.63,
+                "bytes_per_frame": 39047,
+                "total_frames": 1923,
+                "total_mb_sent": 70.78,
+                "uptime_seconds": 72.5,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457929117
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:50.128274",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.41,
+                "bandwidth_kbps": 1036.28,
+                "bytes_per_frame": 39515,
+                "total_frames": 1950,
+                "total_mb_sent": 71.81,
+                "uptime_seconds": 73.5,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457930127
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:51.140001",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.34,
+                "bandwidth_kbps": 1023.32,
+                "bytes_per_frame": 39119,
+                "total_frames": 1977,
+                "total_mb_sent": 72.8,
+                "uptime_seconds": 74.5,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457931138
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:52.148700",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.45,
+                "bandwidth_kbps": 1015.22,
+                "bytes_per_frame": 38646,
+                "total_frames": 2004,
+                "total_mb_sent": 73.79,
+                "uptime_seconds": 75.5,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457932148
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:53.157631",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.6,
+                "bandwidth_kbps": 1015.36,
+                "bytes_per_frame": 38432,
+                "total_frames": 2030,
+                "total_mb_sent": 74.74,
+                "uptime_seconds": 76.5,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457933156
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:54.160520",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.51,
+                "bandwidth_kbps": 1019.86,
+                "bytes_per_frame": 38742,
+                "total_frames": 2057,
+                "total_mb_sent": 75.75,
+                "uptime_seconds": 77.5,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457934159
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:55.169491",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.41,
+                "bandwidth_kbps": 1019.69,
+                "bytes_per_frame": 38871,
+                "total_frames": 2084,
+                "total_mb_sent": 76.74,
+                "uptime_seconds": 78.5,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457935168
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:56.180885",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.44,
+                "bandwidth_kbps": 1012.22,
+                "bytes_per_frame": 38555,
+                "total_frames": 2110,
+                "total_mb_sent": 77.7,
+                "uptime_seconds": 79.5,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457936179
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:57.186405",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.29,
+                "bandwidth_kbps": 1008.34,
+                "bytes_per_frame": 38619,
+                "total_frames": 2137,
+                "total_mb_sent": 78.69,
+                "uptime_seconds": 80.6,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457937185
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:58.197502",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.34,
+                "bandwidth_kbps": 1006.1,
+                "bytes_per_frame": 38461,
+                "total_frames": 2163,
+                "total_mb_sent": 79.64,
+                "uptime_seconds": 81.6,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457938196
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:28:59.204223",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.43,
+                "bandwidth_kbps": 1001.84,
+                "bytes_per_frame": 38169,
+                "total_frames": 2190,
+                "total_mb_sent": 80.62,
+                "uptime_seconds": 82.6,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457939203
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:00.215243",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.53,
+                "bandwidth_kbps": 1009.76,
+                "bytes_per_frame": 38318,
+                "total_frames": 2217,
+                "total_mb_sent": 81.62,
+                "uptime_seconds": 83.6,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457940214
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:01.223637",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.49,
+                "bandwidth_kbps": 1000.8,
+                "bytes_per_frame": 38042,
+                "total_frames": 2244,
+                "total_mb_sent": 82.58,
+                "uptime_seconds": 84.6,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457941223
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:02.231973",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.54,
+                "bandwidth_kbps": 999.75,
+                "bytes_per_frame": 37931,
+                "total_frames": 2271,
+                "total_mb_sent": 83.57,
+                "uptime_seconds": 85.6,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457942231
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:03.242605",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.3,
+                "bandwidth_kbps": 990.65,
+                "bytes_per_frame": 37930,
+                "total_frames": 2297,
+                "total_mb_sent": 84.5,
+                "uptime_seconds": 86.6,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457943241
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:04.247427",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.34,
+                "bandwidth_kbps": 982.93,
+                "bytes_per_frame": 37571,
+                "total_frames": 2323,
+                "total_mb_sent": 85.43,
+                "uptime_seconds": 87.6,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457944246
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:05.252211",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.5,
+                "bandwidth_kbps": 980.56,
+                "bytes_per_frame": 37254,
+                "total_frames": 2350,
+                "total_mb_sent": 86.38,
+                "uptime_seconds": 88.6,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457945251
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:06.262997",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.3,
+                "bandwidth_kbps": 973.75,
+                "bytes_per_frame": 37284,
+                "total_frames": 2376,
+                "total_mb_sent": 87.31,
+                "uptime_seconds": 89.6,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457946261
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:07.273672",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.49,
+                "bandwidth_kbps": 983.7,
+                "bytes_per_frame": 37390,
+                "total_frames": 2404,
+                "total_mb_sent": 88.31,
+                "uptime_seconds": 90.6,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457947272
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:08.281820",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.63,
+                "bandwidth_kbps": 1002.96,
+                "bytes_per_frame": 37925,
+                "total_frames": 2430,
+                "total_mb_sent": 89.26,
+                "uptime_seconds": 91.6,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457948281
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:09.292859",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.47,
+                "bandwidth_kbps": 1008.02,
+                "bytes_per_frame": 38346,
+                "total_frames": 2457,
+                "total_mb_sent": 90.25,
+                "uptime_seconds": 92.7,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457949291
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:10.303961",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.67,
+                "bandwidth_kbps": 1007.77,
+                "bytes_per_frame": 38041,
+                "total_frames": 2484,
+                "total_mb_sent": 91.22,
+                "uptime_seconds": 93.7,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457950302
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:11.312755",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 977.69,
+                "bytes_per_frame": 37171,
+                "total_frames": 2511,
+                "total_mb_sent": 92.16,
+                "uptime_seconds": 94.7,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457951312
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:12.324997",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.35,
+                "bandwidth_kbps": 959.89,
+                "bytes_per_frame": 36678,
+                "total_frames": 2537,
+                "total_mb_sent": 93.08,
+                "uptime_seconds": 95.7,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457952324
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:13.330386",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.53,
+                "bandwidth_kbps": 977.3,
+                "bytes_per_frame": 37093,
+                "total_frames": 2564,
+                "total_mb_sent": 94.04,
+                "uptime_seconds": 96.7,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457953329
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:14.341114",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.51,
+                "bandwidth_kbps": 988.96,
+                "bytes_per_frame": 37557,
+                "total_frames": 2591,
+                "total_mb_sent": 95.01,
+                "uptime_seconds": 97.7,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457954339
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:15.347911",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.46,
+                "bandwidth_kbps": 993.59,
+                "bytes_per_frame": 37807,
+                "total_frames": 2618,
+                "total_mb_sent": 95.99,
+                "uptime_seconds": 98.7,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457955347
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:16.359120",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.5,
+                "bandwidth_kbps": 996.52,
+                "bytes_per_frame": 37862,
+                "total_frames": 2644,
+                "total_mb_sent": 96.93,
+                "uptime_seconds": 99.7,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457956358
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:17.367343",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.45,
+                "bandwidth_kbps": 982.91,
+                "bytes_per_frame": 37416,
+                "total_frames": 2671,
+                "total_mb_sent": 97.88,
+                "uptime_seconds": 100.7,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457957366
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:18.377316",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.44,
+                "bandwidth_kbps": 964.7,
+                "bytes_per_frame": 36733,
+                "total_frames": 2698,
+                "total_mb_sent": 98.81,
+                "uptime_seconds": 101.7,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457958376
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:19.387789",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.42,
+                "bandwidth_kbps": 953.78,
+                "bytes_per_frame": 36357,
+                "total_frames": 2724,
+                "total_mb_sent": 99.72,
+                "uptime_seconds": 102.8,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457959386
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:20.393591",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.49,
+                "bandwidth_kbps": 973.41,
+                "bytes_per_frame": 37000,
+                "total_frames": 2751,
+                "total_mb_sent": 100.69,
+                "uptime_seconds": 103.8,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457960392
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:21.403730",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.38,
+                "bandwidth_kbps": 978.07,
+                "bytes_per_frame": 37330,
+                "total_frames": 2778,
+                "total_mb_sent": 101.64,
+                "uptime_seconds": 104.8,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457961402
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:22.414463",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.58,
+                "bandwidth_kbps": 976.84,
+                "bytes_per_frame": 37011,
+                "total_frames": 2805,
+                "total_mb_sent": 102.59,
+                "uptime_seconds": 105.8,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457962413
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:23.423125",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.63,
+                "bandwidth_kbps": 978.03,
+                "bytes_per_frame": 36983,
+                "total_frames": 2832,
+                "total_mb_sent": 103.55,
+                "uptime_seconds": 106.8,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457963422
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:24.433653",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.7,
+                "bandwidth_kbps": 996.69,
+                "bytes_per_frame": 37582,
+                "total_frames": 2859,
+                "total_mb_sent": 104.53,
+                "uptime_seconds": 107.8,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457964432
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:25.444587",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.4,
+                "bandwidth_kbps": 994.31,
+                "bytes_per_frame": 37924,
+                "total_frames": 2885,
+                "total_mb_sent": 105.47,
+                "uptime_seconds": 108.8,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457965443
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:26.454482",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.43,
+                "bandwidth_kbps": 999.45,
+                "bytes_per_frame": 38079,
+                "total_frames": 2912,
+                "total_mb_sent": 106.45,
+                "uptime_seconds": 109.8,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457966453
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:27.465197",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.6,
+                "bandwidth_kbps": 997.13,
+                "bytes_per_frame": 37749,
+                "total_frames": 2939,
+                "total_mb_sent": 107.42,
+                "uptime_seconds": 110.8,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457967464
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:28.474022",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.65,
+                "bandwidth_kbps": 1011.55,
+                "bytes_per_frame": 38224,
+                "total_frames": 2966,
+                "total_mb_sent": 108.43,
+                "uptime_seconds": 111.8,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457968472
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:29.483267",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.64,
+                "bandwidth_kbps": 1033.21,
+                "bytes_per_frame": 39059,
+                "total_frames": 2993,
+                "total_mb_sent": 109.43,
+                "uptime_seconds": 112.8,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457969482
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:30.488580",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.39,
+                "bandwidth_kbps": 1004.07,
+                "bytes_per_frame": 38304,
+                "total_frames": 3019,
+                "total_mb_sent": 110.36,
+                "uptime_seconds": 113.9,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457970487
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:31.497171",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.5,
+                "bandwidth_kbps": 995.89,
+                "bytes_per_frame": 37847,
+                "total_frames": 3046,
+                "total_mb_sent": 111.34,
+                "uptime_seconds": 114.9,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457971496
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:32.507602",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.56,
+                "bandwidth_kbps": 991.53,
+                "bytes_per_frame": 37590,
+                "total_frames": 3073,
+                "total_mb_sent": 112.29,
+                "uptime_seconds": 115.9,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457972506
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:33.518151",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.75,
+                "bandwidth_kbps": 1003.93,
+                "bytes_per_frame": 37788,
+                "total_frames": 3100,
+                "total_mb_sent": 113.29,
+                "uptime_seconds": 116.9,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457973517
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:34.527167",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.79,
+                "bandwidth_kbps": 1036.63,
+                "bytes_per_frame": 38962,
+                "total_frames": 3127,
+                "total_mb_sent": 114.32,
+                "uptime_seconds": 117.9,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457974526
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:35.536161",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.63,
+                "bandwidth_kbps": 1023.89,
+                "bytes_per_frame": 38714,
+                "total_frames": 3154,
+                "total_mb_sent": 115.27,
+                "uptime_seconds": 118.9,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457975535
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:36.547920",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.63,
+                "bandwidth_kbps": 990.31,
+                "bytes_per_frame": 37443,
+                "total_frames": 3180,
+                "total_mb_sent": 116.2,
+                "uptime_seconds": 119.9,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457976546
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:37.557193",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.31,
+                "bandwidth_kbps": 980.85,
+                "bytes_per_frame": 37533,
+                "total_frames": 3207,
+                "total_mb_sent": 117.18,
+                "uptime_seconds": 120.9,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457977556
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:38.568029",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.54,
+                "bandwidth_kbps": 1025.39,
+                "bytes_per_frame": 38899,
+                "total_frames": 3234,
+                "total_mb_sent": 118.21,
+                "uptime_seconds": 121.9,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457978566
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:39.578769",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.77,
+                "bandwidth_kbps": 1061.73,
+                "bytes_per_frame": 39942,
+                "total_frames": 3261,
+                "total_mb_sent": 119.25,
+                "uptime_seconds": 122.9,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457979577
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:40.587153",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.6,
+                "bandwidth_kbps": 1049.81,
+                "bytes_per_frame": 39746,
+                "total_frames": 3288,
+                "total_mb_sent": 120.25,
+                "uptime_seconds": 124.0,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457980586
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:41.599153",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.34,
+                "bandwidth_kbps": 1013.99,
+                "bytes_per_frame": 38756,
+                "total_frames": 3314,
+                "total_mb_sent": 121.2,
+                "uptime_seconds": 125.0,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457981598
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:42.604535",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.3,
+                "bandwidth_kbps": 998.14,
+                "bytes_per_frame": 38219,
+                "total_frames": 3341,
+                "total_mb_sent": 122.18,
+                "uptime_seconds": 126.0,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457982603
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:43.610836",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.39,
+                "bandwidth_kbps": 987.87,
+                "bytes_per_frame": 37688,
+                "total_frames": 3367,
+                "total_mb_sent": 123.11,
+                "uptime_seconds": 127.0,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457983610
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:44.621574",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.34,
+                "bandwidth_kbps": 980.1,
+                "bytes_per_frame": 37474,
+                "total_frames": 3394,
+                "total_mb_sent": 124.07,
+                "uptime_seconds": 128.0,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457984620
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:45.632689",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.35,
+                "bandwidth_kbps": 970.85,
+                "bytes_per_frame": 37099,
+                "total_frames": 3421,
+                "total_mb_sent": 125.02,
+                "uptime_seconds": 129.0,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457985631
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:46.643483",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.47,
+                "bandwidth_kbps": 971.67,
+                "bytes_per_frame": 36956,
+                "total_frames": 3447,
+                "total_mb_sent": 125.94,
+                "uptime_seconds": 130.0,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457986642
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:47.649588",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.42,
+                "bandwidth_kbps": 974.87,
+                "bytes_per_frame": 37159,
+                "total_frames": 3474,
+                "total_mb_sent": 126.9,
+                "uptime_seconds": 131.0,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457987648
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:48.655785",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.47,
+                "bandwidth_kbps": 968.21,
+                "bytes_per_frame": 36826,
+                "total_frames": 3501,
+                "total_mb_sent": 127.83,
+                "uptime_seconds": 132.0,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457988654
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:49.664324",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.47,
+                "bandwidth_kbps": 952.08,
+                "bytes_per_frame": 36217,
+                "total_frames": 3528,
+                "total_mb_sent": 128.76,
+                "uptime_seconds": 133.0,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457989663
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:50.672308",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.35,
+                "bandwidth_kbps": 949.54,
+                "bytes_per_frame": 36287,
+                "total_frames": 3554,
+                "total_mb_sent": 129.66,
+                "uptime_seconds": 134.0,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457990671
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:51.683141",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.44,
+                "bandwidth_kbps": 958.94,
+                "bytes_per_frame": 36518,
+                "total_frames": 3581,
+                "total_mb_sent": 130.6,
+                "uptime_seconds": 135.0,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457991682
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:52.693156",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.46,
+                "bandwidth_kbps": 960.62,
+                "bytes_per_frame": 36560,
+                "total_frames": 3608,
+                "total_mb_sent": 131.55,
+                "uptime_seconds": 136.1,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457992692
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:53.703716",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.45,
+                "bandwidth_kbps": 970.94,
+                "bytes_per_frame": 36966,
+                "total_frames": 3634,
+                "total_mb_sent": 132.47,
+                "uptime_seconds": 137.1,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457993702
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:54.714588",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.38,
+                "bandwidth_kbps": 970.1,
+                "bytes_per_frame": 37031,
+                "total_frames": 3661,
+                "total_mb_sent": 133.42,
+                "uptime_seconds": 138.1,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457994713
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:55.725925",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.62,
+                "bandwidth_kbps": 977.84,
+                "bytes_per_frame": 36993,
+                "total_frames": 3688,
+                "total_mb_sent": 134.38,
+                "uptime_seconds": 139.1,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457995724
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:56.732064",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.66,
+                "bandwidth_kbps": 970.97,
+                "bytes_per_frame": 36677,
+                "total_frames": 3715,
+                "total_mb_sent": 135.31,
+                "uptime_seconds": 140.1,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457996731
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:57.736509",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.67,
+                "bandwidth_kbps": 849.98,
+                "bytes_per_frame": 32091,
+                "total_frames": 3742,
+                "total_mb_sent": 136.0,
+                "uptime_seconds": 141.1,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457997735
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:58.747265",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.4,
+                "bandwidth_kbps": 679.23,
+                "bytes_per_frame": 25906,
+                "total_frames": 3768,
+                "total_mb_sent": 136.55,
+                "uptime_seconds": 142.1,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457998746
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:29:59.755658",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.53,
+                "bandwidth_kbps": 582.63,
+                "bytes_per_frame": 22111,
+                "total_frames": 3795,
+                "total_mb_sent": 137.12,
+                "uptime_seconds": 143.1,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774457999755
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:00.766282",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.58,
+                "bandwidth_kbps": 583.58,
+                "bytes_per_frame": 22112,
+                "total_frames": 3822,
+                "total_mb_sent": 137.69,
+                "uptime_seconds": 144.1,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458000765
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:01.776405",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 581.52,
+                "bytes_per_frame": 22112,
+                "total_frames": 3835,
+                "total_mb_sent": 137.96,
+                "uptime_seconds": 145.1,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458001775
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:02.787635",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 581.52,
+                "bytes_per_frame": 22112,
+                "total_frames": 3835,
+                "total_mb_sent": 137.96,
+                "uptime_seconds": 146.2,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458002786
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:03.798920",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 581.52,
+                "bytes_per_frame": 22112,
+                "total_frames": 3835,
+                "total_mb_sent": 137.96,
+                "uptime_seconds": 147.2,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458003797
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:04.810504",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 581.52,
+                "bytes_per_frame": 22112,
+                "total_frames": 3835,
+                "total_mb_sent": 137.96,
+                "uptime_seconds": 148.2,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458004809
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:05.822843",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 581.52,
+                "bytes_per_frame": 22112,
+                "total_frames": 3835,
+                "total_mb_sent": 137.96,
+                "uptime_seconds": 149.2,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458005821
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:06.834039",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 581.52,
+                "bytes_per_frame": 22112,
+                "total_frames": 3835,
+                "total_mb_sent": 137.96,
+                "uptime_seconds": 150.2,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458006832
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:07.845299",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 581.52,
+                "bytes_per_frame": 22112,
+                "total_frames": 3835,
+                "total_mb_sent": 137.96,
+                "uptime_seconds": 151.2,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458007844
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:08.853988",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 581.52,
+                "bytes_per_frame": 22112,
+                "total_frames": 3835,
+                "total_mb_sent": 137.96,
+                "uptime_seconds": 152.2,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458008853
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:09.863590",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 581.52,
+                "bytes_per_frame": 22112,
+                "total_frames": 3835,
+                "total_mb_sent": 137.96,
+                "uptime_seconds": 153.2,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458009862
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:10.881116",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 581.52,
+                "bytes_per_frame": 22112,
+                "total_frames": 3835,
+                "total_mb_sent": 137.96,
+                "uptime_seconds": 154.2,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458010879
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:11.887805",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 581.52,
+                "bytes_per_frame": 22112,
+                "total_frames": 3835,
+                "total_mb_sent": 137.96,
+                "uptime_seconds": 155.3,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458011885
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:12.903599",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 581.52,
+                "bytes_per_frame": 22112,
+                "total_frames": 3835,
+                "total_mb_sent": 137.96,
+                "uptime_seconds": 156.3,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458012902
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:13.908796",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 581.52,
+                "bytes_per_frame": 22112,
+                "total_frames": 3835,
+                "total_mb_sent": 137.96,
+                "uptime_seconds": 157.3,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458013908
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:14.916882",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 581.52,
+                "bytes_per_frame": 22112,
+                "total_frames": 3835,
+                "total_mb_sent": 137.96,
+                "uptime_seconds": 158.3,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458014916
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:15.928507",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 581.52,
+                "bytes_per_frame": 22112,
+                "total_frames": 3835,
+                "total_mb_sent": 137.96,
+                "uptime_seconds": 159.3,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458015927
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:16.939475",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 581.52,
+                "bytes_per_frame": 22112,
+                "total_frames": 3835,
+                "total_mb_sent": 137.96,
+                "uptime_seconds": 160.3,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458016938
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:17.951238",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 581.52,
+                "bytes_per_frame": 22112,
+                "total_frames": 3835,
+                "total_mb_sent": 137.96,
+                "uptime_seconds": 161.3,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458017950
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:18.958290",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 581.52,
+                "bytes_per_frame": 22112,
+                "total_frames": 3835,
+                "total_mb_sent": 137.96,
+                "uptime_seconds": 162.3,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458018957
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:19.970097",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 581.52,
+                "bytes_per_frame": 22112,
+                "total_frames": 3835,
+                "total_mb_sent": 137.96,
+                "uptime_seconds": 163.3,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458019968
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:20.977465",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 581.52,
+                "bytes_per_frame": 22112,
+                "total_frames": 3835,
+                "total_mb_sent": 137.96,
+                "uptime_seconds": 164.3,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458020976
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:21.979782",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 581.52,
+                "bytes_per_frame": 22112,
+                "total_frames": 3835,
+                "total_mb_sent": 137.96,
+                "uptime_seconds": 165.3,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458021979
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:22.986346",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 581.52,
+                "bytes_per_frame": 22112,
+                "total_frames": 3835,
+                "total_mb_sent": 137.96,
+                "uptime_seconds": 166.4,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458022985
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:23.989880",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 581.52,
+                "bytes_per_frame": 22112,
+                "total_frames": 3835,
+                "total_mb_sent": 137.96,
+                "uptime_seconds": 167.4,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458023989
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:25.000503",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 581.52,
+                "bytes_per_frame": 22112,
+                "total_frames": 3835,
+                "total_mb_sent": 137.96,
+                "uptime_seconds": 168.4,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458024999
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:26.011004",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 581.52,
+                "bytes_per_frame": 22112,
+                "total_frames": 3835,
+                "total_mb_sent": 137.96,
+                "uptime_seconds": 169.4,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458026009
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:27.018060",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 581.52,
+                "bytes_per_frame": 22112,
+                "total_frames": 3835,
+                "total_mb_sent": 137.96,
+                "uptime_seconds": 170.4,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458027016
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:28.029142",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 581.52,
+                "bytes_per_frame": 22112,
+                "total_frames": 3835,
+                "total_mb_sent": 137.96,
+                "uptime_seconds": 171.4,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458028028
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:29.032903",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 581.52,
+                "bytes_per_frame": 22112,
+                "total_frames": 3835,
+                "total_mb_sent": 137.96,
+                "uptime_seconds": 172.4,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458029032
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:30.039870",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 581.52,
+                "bytes_per_frame": 22112,
+                "total_frames": 3835,
+                "total_mb_sent": 137.96,
+                "uptime_seconds": 173.4,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458030039
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:31.047295",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 581.52,
+                "bytes_per_frame": 22112,
+                "total_frames": 3835,
+                "total_mb_sent": 137.96,
+                "uptime_seconds": 174.4,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458031046
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:32.057603",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 581.52,
+                "bytes_per_frame": 22112,
+                "total_frames": 3835,
+                "total_mb_sent": 137.96,
+                "uptime_seconds": 175.4,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458032056
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:33.067755",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 581.52,
+                "bytes_per_frame": 22112,
+                "total_frames": 3835,
+                "total_mb_sent": 137.96,
+                "uptime_seconds": 176.4,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458033066
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:34.075115",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 581.52,
+                "bytes_per_frame": 22112,
+                "total_frames": 3835,
+                "total_mb_sent": 137.96,
+                "uptime_seconds": 177.4,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458034074
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:35.085243",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 581.52,
+                "bytes_per_frame": 22112,
+                "total_frames": 3835,
+                "total_mb_sent": 137.96,
+                "uptime_seconds": 178.5,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458035084
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:36.095131",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 581.52,
+                "bytes_per_frame": 22112,
+                "total_frames": 3835,
+                "total_mb_sent": 137.96,
+                "uptime_seconds": 179.5,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458036094
+        }
+    },
+    {
+        "timestamp": "2026-03-25T22:30:37.106889",
+        "metrics": {
+            "status": "ok",
+            "data": {
+                "fps": 26.48,
+                "bandwidth_kbps": 581.52,
+                "bytes_per_frame": 22112,
+                "total_frames": 3835,
+                "total_mb_sent": 137.96,
+                "uptime_seconds": 180.5,
+                "jpeg_quality": 80,
+                "resolution": "640\u00d7480",
+                "protocol": "MJPEG/HTTP multipart"
+            },
+            "timestamp": 1774458037105
+        }
+    }
+]

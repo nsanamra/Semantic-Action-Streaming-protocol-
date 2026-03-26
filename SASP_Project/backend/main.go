@@ -810,7 +810,7 @@ func encodeAndBroadcast(img image.Image, hub *Hub) {
 		return
 	}
 	var out bytes.Buffer
-	if err := jpeg.Encode(&out, img, &jpeg.Options{Quality: 82}); err != nil {
+	if err := jpeg.Encode(&out, img, &jpeg.Options{Quality: 32}); err != nil {
 		log.Printf("[encode] %v", err)
 		return
 	}

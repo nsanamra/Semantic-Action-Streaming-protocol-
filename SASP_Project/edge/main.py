@@ -399,7 +399,7 @@ def run_sasp_edge() -> None:
     )
 
     # ── Camera setup ──────────────────────────────────────────────────────────
-    cap = cv2.VideoCapture("input2.mp4")
+    cap = cv2.VideoCapture("input.mp4")
     cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
     cap.set(cv2.CAP_PROP_FRAME_WIDTH,  FRAME_WIDTH)
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, FRAME_HEIGHT)

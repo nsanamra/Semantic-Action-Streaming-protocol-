@@ -119,7 +119,7 @@ shared = SharedFrame()
 
 def capture_loop(stop_event: threading.Event) -> None:
     #cap = cv2.VideoCapture(CAMERA_INDEX)
-    cap = cv2.VideoCapture("./edge/input2.mp4")
+    cap = cv2.VideoCapture("./edge/single_person.mp4")
     cap.set(cv2.CAP_PROP_BUFFERSIZE,   1)
     cap.set(cv2.CAP_PROP_FRAME_WIDTH,  FRAME_WIDTH)
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, FRAME_HEIGHT)
@@ -306,16 +306,6 @@ def main():
             pass  # swallow BrokenPipeError noise
 
     server = _QuietThreadingServer(("0.0.0.0", HTTP_PORT), MJPEGHandler)
-    # NO settimeout here — it breaks serve_forever's select() loop
-
-    def _shutdown(sig, _frame):
-        print("\n[mjpeg] Shutting down…")
-        stop_event.set()
-        server.shutdown()
-        sys.exit(0)
-
-    signal.signal(signal.SIGINT,  _shutdown)
-    signal.signal(signal.SIGTERM, _shutdown)
 
     print("══════════════════════════════════════════════════════")
     print("  MJPEG Baseline Server  —  Industry Standard")
@@ -323,10 +313,27 @@ def main():
     print(f"  Stream     → http://localhost:{HTTP_PORT}/stream")
     print(f"  Metrics    → http://localhost:{HTTP_PORT}/metrics")
     print(f"  Quality={MJPEG_QUALITY}  Resolution={FRAME_WIDTH}×{FRAME_HEIGHT}  FPS={TARGET_FPS}")
+    print("  Press Ctrl+C to stop.")
     print("══════════════════════════════════════════════════════")
 
-    # serve_forever on main thread — clean and simple
-    server.serve_forever()
+    # Run serve_forever in a daemon thread so the main thread stays free
+    # to catch SIGINT. On macOS, signal handlers only fire on the main thread,
+    # so blocking it with serve_forever() prevents Ctrl+C from working.
+    server_thread = threading.Thread(target=server.serve_forever, daemon=True, name="mjpeg-http")
+    server_thread.start()
+
+    try:
+        # Main thread just waits — signals will interrupt this sleep loop
+        while not stop_event.is_set():
+            time.sleep(0.5)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        print("\n[mjpeg] Shutting down…")
+        stop_event.set()
+        server.shutdown()       # signals serve_forever() to exit
+        server_thread.join(timeout=3)
+        print("[mjpeg] Done.")
 
 
 if __name__ == "__main__":

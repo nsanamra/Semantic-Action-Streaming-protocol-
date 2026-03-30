@@ -43,7 +43,7 @@ def compute_metrics(raw, compressed, bbox=None):
     return float(ssim_val), float(psnr_val)
 
 def main():
-    parser = argparse.ArgumentParser(description="Generate SSIM/PSNR Paper Data")
+    parser = argparse.ArgumentParser(description="Generate SSIM Paper Data")
     parser.add_argument("--image", type=str, required=True, help="Path to a test image with a person in it")
     args = parser.parse_args()
 

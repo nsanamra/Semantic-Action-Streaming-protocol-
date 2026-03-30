@@ -10,7 +10,7 @@ with open("ffmpeg_metrics_series.json") as f:
 with open("sasp_metrics_series.json") as f:
     sasp = json.load(f)
 
-# ---------- PARSE FFMPEG ----------
+# ---------- PARSE MJPEG ----------
 ffmpeg_rows = []
 for entry in ffmpeg:
     ts = datetime.fromisoformat(entry["timestamp"])
@@ -63,7 +63,7 @@ plt.rcParams.update({
 # 1️⃣ BANDWIDTH vs TIME
 # =========================================================
 plt.figure()
-plt.plot(df_ff["t"], df_ff["bw"], label="FFMPEG")
+plt.plot(df_ff["t"], df_ff["bw"], label="MJPEG")
 plt.plot(df_sasp["t"], df_sasp["bw"], label="SASP")
 plt.xlabel("Time (s)")
 plt.ylabel("Bandwidth (kbps)")
@@ -77,7 +77,7 @@ plt.close()
 # 2️⃣ FPS COMPARISON
 # =========================================================
 plt.figure()
-plt.plot(df_ff["t"], df_ff["fps"], label="FFMPEG")
+plt.plot(df_ff["t"], df_ff["fps"], label="MJPEG")
 plt.plot(df_sasp["t"], df_sasp["fps"], label="SASP")
 plt.xlabel("Time (s)")
 plt.ylabel("FPS")
@@ -89,7 +89,7 @@ plt.close()
 
 # =========================================================
 # 3️⃣ BANDWIDTH SAVING %
-# (INTERPOLATE SASP TO FFMPEG TIME)
+# (INTERPOLATE SASP TO MJPEG TIME)
 # =========================================================
 sasp_interp = pd.Series(df_sasp["bw"].values, index=df_sasp["t"])
 sasp_interp = sasp_interp.reindex(df_ff["t"], method="nearest")
@@ -127,7 +127,7 @@ plt.close()
 df_sasp["bytes_per_frame"] = (df_sasp["bw"] * 1000 / 8) / df_sasp["fps"]
 
 plt.figure()
-plt.plot(df_ff["t"], df_ff["bytes_per_frame"], label="FFMPEG")
+plt.plot(df_ff["t"], df_ff["bytes_per_frame"], label="MJPEG")
 plt.plot(df_sasp["t"], df_sasp["bytes_per_frame"], label="SASP")
 plt.xlabel("Time (s)")
 plt.ylabel("Bytes per Frame")
@@ -155,7 +155,7 @@ plt.close()
 df_sasp["cum_mb"] = (df_sasp["bw"].cumsum() / 8000)
 
 plt.figure()
-plt.plot(df_ff["t"], df_ff["total_mb"], label="FFMPEG")
+plt.plot(df_ff["t"], df_ff["total_mb"], label="MJPEG")
 plt.plot(df_sasp["t"], df_sasp["cum_mb"], label="SASP")
 plt.xlabel("Time (s)")
 plt.ylabel("Total Data (MB)")
